@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Release 4942"
+date:   2013-04-30
+categories: release
+---
+
+Revision 4942 has been designated a MESA release version.

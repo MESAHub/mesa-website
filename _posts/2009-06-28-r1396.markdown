@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Release 1396"
+date:   2009-06-28
+categories: release
+---
+
+Revision 1396 has been designated a MESA release version.

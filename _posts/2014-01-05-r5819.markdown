@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "Release 5819"
+date:   2014-01-05
+categories: release
+---
+
+Revision 5819 has been designated a MESA release version.  MESA is now
+getting bit-for-bit identical results on Mac and Linux, using either
+gfortran or ifort.  For the full release notes, see
+[this mailing list post][notes].
+
+[notes]:http://sourceforge.net/mailarchive/message.php?msg_id=31811755

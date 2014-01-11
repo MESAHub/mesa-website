@@ -17,7 +17,7 @@ For more information, see http://andreasviklund.com/templates/andreas07/
 body {margin:0; padding:0; color:#404040; background:#fafafa url(images/bodybg.gif) top left repeat-y; font:76% Verdana,Tahoma,sans-serif;}
 ul {margin:5px 0 16px 5px; padding:0;}
 li {margin:0 0 8px 15px; padding:0; }
-img {margin:10px auto 16px auto; padding:1px; background:#ffffff; border:1px solid #d0d0d0;}
+img {margin:10px auto 16px auto; padding:1px; border:1px solid #d0d0d0;}
 a {color:#0000CE; font-weight:bold; text-decoration:none;}
 a:hover {color:#505050; text-decoration:underline;}
 a img {border-color:#0000CE;}
@@ -27,7 +27,7 @@ a img:hover {background:#0000CE; border-color:#0000CE;}
 #wrap {width: 990px;}
 
 /* Left sidebar */
-#leftside {width:220px; background:#e0e0e0 url(images/sidebarbg.gif) top right repeat-y; text-align:right; float:left;}
+#leftside {width:220px; background:#e0e0e0 url(images/sidebarbg.gif) top right repeat-y; text-align:right; float:left; height:100%}
 #leftside h1 {margin:20px 18px 0 5px; color:#0000CE; font-size:1.6em; letter-spacing:-2px; text-align:right;}
 #leftside h2, #leftside h3 {margin:0 20px 18px 5px; color:#808080; font-size:1.1em; font-weight:bold; letter-spacing:-1px; text-align:right;}
 #leftside h3 {margin:20px 18px 4px 5px; color:#606060;}
@@ -54,6 +54,8 @@ a img:hover {background:#0000CE; border-color:#0000CE;}
 /* Content area */
 #content {width:520px; margin:0 0 0 240px; padding:10px 0; background:#fafafa;}
 #content p {margin:0 0 16px 0; line-height:1.5em;}
-#content h1 {margin:0; color:#0000CE; font-size:3.6em; letter-spacing:-4px; text-align:center;}
-#content h2 {margin:0; color:#808080; font-weight:normal; font-size:2em; letter-spacing:-2px; text-align:center;}
-#content h3 {margin:20px 0 10px 0; color:#0000CE; font-weight:normal; font-size: 2em; letter-spacing:-2px;}
+#content h1 {margin:10px 0 20px 0; color:#0000CE; font-weight:normal; font-size:2em; letter-spacing:-1px;}
+#content h2 {margin:20px 0 10px 0; color:#606060; font-weight:normal; font-size:1.6em; letter-spacing:-1px;}
+#content h3 {color:#606060}
+
+

@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Release 2871"
+date:   2010-12-23
+categories: release
+---
+
+Revision 2871 has been designated a MESA release version.

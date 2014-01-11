@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Release 1296"
+date:   2009-06-07
+categories: release
+---
+
+Revision 1296 has been designated a MESA release version.

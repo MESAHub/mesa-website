@@ -1,0 +1,55 @@
+---
+layout: default
+title: MESA home
+permalink: index.html
+---
+# Why a new 1D stellar evolution code?
+
+The MESA Manifesto discusses the motivation for the MESA project,
+outlines a MESA code of conduct, and describes the establishment of a
+MESA Council.  Before using MESA, you should and read the
+[manifesto document](/assets/mesa_manifesto.pdf).  Here's a brief
+extract of some of the key points
+
+Stellar evolution calculations remain a basic tool of broad impact for
+astrophysics.  New observations constantly test the models, even in
+1D.  The continued demand requires the construction of a general,
+modern stellar evolution code that combines the following advantages:
+
+* **Openness**: anyone can download sources from the website.
+
+* **Modularity**: independent modules for physics and for numerical
+  algorithms; the parts can be used stand-alone.
+
+* **Wide Applicability**: capable of calculating the evolution of
+  stars in a wide range of environments.
+
+* **Modern Techniques**: advanced AMR, fully coupled solution for
+  composition and abundances, mass loss and gain, etc.
+
+* **Comprehensive Microphysics**: up-to-date, wide-ranging, flexible,
+  and independently useable microphysics modules.
+
+* **Performance**: runs well on a personal computer and makes
+  effective use of parallelism with multi-core architectures.
+
+Users are encouraged to add to the capabilities of MESA, which will
+remain a community resources However, use of MESA requires adherence
+to the MESA code of conduct:
+
+* That all publications and presentations (research, educational, or
+  outreach) deriving from the use of MESA acknowledge the MESA
+  Instrument papers.
+
+* That user modifications and additions are given back to the
+  community.
+
+* That users alert the MESA Council about their publications, either
+  pre-release or at the time of publication.
+
+* That users make available in a timely fashion (e.g., online at the
+MESA website) all information needed for others to recreate their MESA
+results -- "open know how" to match "open source."
+
+* That users agree to help others learn MESA, giving back as the
+  project progresses.

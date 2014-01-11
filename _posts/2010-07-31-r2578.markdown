@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Release 2578"
+date:   2010-07-31
+categories: release
+---
+
+Revision 2578 has been designated a MESA release version.

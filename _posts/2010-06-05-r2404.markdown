@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Release 2404"
+date:   2010-06-05
+categories: release
+---
+
+Revision 2404 has been designated a MESA release version.
