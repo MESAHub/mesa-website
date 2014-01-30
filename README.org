@@ -1,0 +1,15 @@
+* MESA Website
+This is a draft of a new website for the MESA stellar evolution code.
+The goal is to get new users started more quickly.  The rough plan is
+to replace the old one with this one around the time of the next
+release.
+
+You can [[http://eridanus.berkeley.edu][view the site here]].
+* Contributing
+Do you see something that needs improved?  Please let me know!  Do you
+have tutorial materials you've written yourself that you think could
+be incorporated?  Send them to me.
+** Email Me
+If you're on mesa-users, you should have no trouble finding my address.
+** Contribute on GitHub
+Clone this repo and send me a pull request.
