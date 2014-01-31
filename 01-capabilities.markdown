@@ -26,7 +26,7 @@ of a 1 Msun star from pre-main sequence to cool white dwarf. (61MB)
 
 ## Evolve a 2 Msun star
 
-Here is the evolution of a 2 Msun star from He core flash to to cool
+Here is the evolution of a 2 Msun star from He core flash to cool
 white dwarf with some nice thermal pulses at the tip of the AGB
 (initial Z = 0.02). (40MB)
 
