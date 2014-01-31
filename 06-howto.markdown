@@ -405,7 +405,7 @@ end subroutine tutorial_other_neu
 
 ## Instruct MESA to use your routine
 
-There are two things that you must to in order to have MESA execute
+There are two things that you must do in order to have MESA execute
 your other\_\\\* routine.  Failure to do both of these is the most common
 problem people encounter when using the other\_\\\* hooks.
 
