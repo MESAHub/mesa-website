@@ -10,13 +10,13 @@ star.  It assumes you have already installed MESA. It tries to give
 you a tour of the basic MESA features and introduce you to some "best
 practices" along the way.  It is by no means a complete guide to MESA.
 
-## A whirlwhind tour of MESA
+## A whirlwind tour of MESA
 
 When you download MESA, you get a directory with lots of
 subdirectories.  Most of these subdirectories are modules (the "M" in
 MESA) that provides some specific functionality (e.g., "kap" provides
 routines for calculating opacities).  The most important module is
-"star", which contains the module that knows how put the capiiblities
+"star", which contains the module that knows how to put the capabilities
 of all the other modules together and advance the state of a stellar
 model by a single step and then suggest a new time increment for the
 next step.  Basically, that’s all it does.
@@ -225,7 +225,7 @@ controls, you'll get exactly the same results.  For that to work, the
 saved information must be complete, and that means there's a lot of
 it.  To make this run fast, the restart information is dumped in
 binary format.  These binary dumps are referred to as "photos" and are
-saved in the subdirectory of the same name.
+saved in a subdirectory with the same name.
 
 It should be emphasized that the photos are not intended for long-term
 storage of models.  In particular, when you update to a new version of
@@ -301,7 +301,7 @@ This time when the run terminates MESA will save a model named
 ## Loading a model
 
 Now you could begin studying the post-main sequence evolution of
-stars, staring a new MESA run using the model you've just saved.  Your
+stars, starting a new MESA run using the model you've just saved.  Your
 inlist might look like:
 
 {% highlight fortran %}
@@ -403,12 +403,12 @@ You may want to copy an inlist from the test suite to one of your
 working directories to use as a starting point for a project of your
 own.
 
-The each of the test suite problems live in a subdirectory of
+Each test suite problem lives in a subdirectory of
 
     $MESA_DIR/star/test_suite
 
 and you can find (slightly out-of-date, but still useful) descriptions
-of the test problems on the [MESA Forum][test_suite].
+of some of the test problems on the [MESA Forum][test_suite].
 
 [test_suite]:http://mesastar.org/documentation/tutorials
 [high_mass]:http://mesastar.org/documentation/tutorials/massive-star-test-cases/high_mass/view

@@ -36,7 +36,7 @@ is not mandatory to view pages, but is required to post material on
 pages.
 
 
-## Install the prerequistes (MESA SDK)
+## Install the prerequisites (MESA SDK)
 
 *MESA is no longer supported on 32-bit systems.  This isn't by design;
 we simply haven't been able to get it to work!  So if you REALLY want
@@ -66,7 +66,7 @@ Note that there might be newer versions out there in the svn
 repository, but they are probably untested, unstable, and generally
 not at all what you want, so please stick to the officially released
 ones.  To repeat: always use "-r", and to make sure that you get an
-officially released version, and always follow "-r" with a version
+officially released version always follow "-r" with a version
 number from this page.
 
 

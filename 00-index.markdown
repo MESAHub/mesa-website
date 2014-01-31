@@ -7,7 +7,7 @@ permalink: index.html
 
 The MESA Manifesto discusses the motivation for the MESA project,
 outlines a MESA code of conduct, and describes the establishment of a
-MESA Council.  Before using MESA, you should and read the
+MESA Council.  Before using MESA, you should read the
 [manifesto document](/assets/mesa_manifesto.pdf).  Here's a brief
 extract of some of the key points
 
@@ -34,7 +34,7 @@ modern stellar evolution code that combines the following advantages:
   effective use of parallelism with multi-core architectures.
 
 Users are encouraged to add to the capabilities of MESA, which will
-remain a community resources However, use of MESA requires adherence
+remain a community resource. However, use of MESA requires adherence
 to the MESA code of conduct:
 
 * That all publications and presentations (research, educational, or
