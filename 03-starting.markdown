@@ -278,12 +278,13 @@ designed for portablity to different machines or even to different
 versions of MESA.  So we need another way to save a model so we can
 use it later, perhaps as a starting model for later runs, or to send
 to someone for them to use with their own copy of MESA.  For example,
-when you find some bug in MESA, and I want to see if I can reproduce
-it on my machine.  I'll ask you to save a model from just before the
-bug happens and send it to me in an email along with your inlist.
+if you find some bug in MESA, and the developers will want to see if
+they can reproduce it on their machines.  You'll be asked to save a
+model from just before the bug happens and send it in an email along
+with your inlist.
 
-Let's save a model file at the end of our run.  Add following lines to
-the &star_job section of your inlist:
+Let's save a model file at the end of our run.  Add the following
+lines to the &star_job section of your inlist:
 
 {% highlight fortran %}
   ! save a model at the end of the run
@@ -308,7 +309,7 @@ inlist might look like:
 &star_job
 
   ! start a run from a saved model
-    load_saved_model = .false.
+    load_saved_model = .true.
     saved_model_name = '15M_at_TAMS.mod'
 
   ! display on-screen plots
@@ -398,10 +399,9 @@ number of options.  That's where the test_suite comes in handy.
 Your first stop when setting up a new problem with MESA should be the
 MESA test suite.  You will find a wide range of sample cases there.
 Looking at the test\_suite inlists is a quick way to familiarize
-yourself with the set of options that is relevant for your problem.
-You may want to copy an inlist from the test suite to one of your
-working directories to use as a starting point for a project of your
-own.
+yourself with the set of options relevant to your problem.  You may
+want to copy an inlist from the test suite to one of your working
+directories to use as a starting point for a project of your own.
 
 Each test suite problem lives in a subdirectory of
 
@@ -416,9 +416,8 @@ of some of the test problems on the [MESA Forum][test_suite].
 For example, take a look at the ["high mass" test case][high_mass].
 It starts by creating a pre-main-sequence model of 100 Msun with
 Z=0.02, and then it "relaxes" Z down to 1e-5 and the mass up to 110
-Msun before starting the evolution.  When I checked last, it took
-under 200 steps to reach a central X of 0.5, and the run took a few
-minutes.  To try it yourself,
+Msun before starting the evolution.  It will take under 200 steps (and
+a few minutes) to reach a central X of 0.5.  To try it yourself,
 
     cd star/test_suite/high_mass
     ./mk

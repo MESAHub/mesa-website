@@ -39,7 +39,7 @@ to) reproduce your problem.
 Perhaps someone else can give you some useful information -- or at
 least some sympathy.
 
-## General Advice
+## Some general advice from Bill
 
 It is an unfortunate truth that you often have to tune the inlist
 control parameters to fit the particular task you are attempting.  How
@@ -77,3 +77,4 @@ of variables.  It makes me tired just to think about it.
 And remember that it takes time to learn how to use the code -- you'll
 get better at it with experience.
 
+-- Bill Paxton
