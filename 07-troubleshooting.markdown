@@ -54,7 +54,7 @@ Try giving the code more points to work with by decreasing the value
 of "mesh\_delta\_coeff" and restarting from a step before the
 convergence problems started.
 
-Use your favorite the visualization tools to get an idea of what's
+Use your favorite visualization tools to get an idea of what's
 going on -- make lots of plots! I strongly recommend using PGstar or
 something like it to make on-screen plots as the run progresses.
 
