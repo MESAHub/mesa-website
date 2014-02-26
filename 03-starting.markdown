@@ -73,12 +73,13 @@ All of the controls are given reasonable default values at
 initialization, so you only need to set the ones that you actually
 want to change.
 
-The file we've given you tells MESA to go look elsewhere for its
-configuration info.  This makes changing between different inlists
-easier, by allowing you to easily change the name of the file that
-gets read.
-
 {% highlight fortran %}
+! this is the master inlist that MESA reads when it starts.
+
+! This file tells MESA to go look elsewhere for its configuration
+! info. This makes changing between different inlists easier, by
+! allowing you to easily change the name of the file that gets read.
+
 &star_job
 
     read_extra_star_job_inlist1 = .true.
@@ -86,12 +87,14 @@ gets read.
 
 / ! end of star_job namelist
 
+
 &controls
 
     read_extra_controls_inlist1 = .true.
     extra_controls_inlist1_name = 'inlist_project'
 
 / ! end of controls namelist
+
 
 &pgstar
 
@@ -119,10 +122,15 @@ reach the zero-age main sequence (ZAMS).
   ! begin with a pre-main sequence model
     create_pre_main_sequence_model = .true.
 
+  ! save a model at the end of the run
+    save_model_when_terminate = .false.
+    save_model_filename = '15M_at_TAMS.mod'
+
   ! display on-screen plots
     pgstar_flag = .true.
 
 / !end of star_job namelist
+
 
 &controls
 
@@ -138,7 +146,6 @@ reach the zero-age main sequence (ZAMS).
     xa_central_lower_limit(1) = 1d-3
 
 / ! end of controls namelist
-
 {% endhighlight %}
 
 
@@ -184,7 +191,6 @@ these for now, but to learn more, have look at the
     TRho_Profile_win_aspect_ratio = 0.75
 
 / ! end of pgstar namelist
-
 {% endhighlight %}
 
 ## Running MESA
@@ -283,14 +289,17 @@ they can reproduce it on their machines.  You'll be asked to save a
 model from just before the bug happens and send it in an email along
 with your inlist.
 
-Let's save a model file at the end of our run.  Add the following
+Let's save a model file at the end of our run.  Go to the following
 lines to the &star_job section of your inlist:
 
 {% highlight fortran %}
   ! save a model at the end of the run
-    save_model_when_terminate = .true.
+    save_model_when_terminate = .false.
     save_model_filename = '15M_at_TAMS.mod'
 {% endhighlight %}
+
+Tell MESA that you want to save a model file at the end by editing
+your inlist and changing save\_model\_when\_terminate to true.
 
 Save the file and then restart MESA from the same point as before.
 
@@ -302,8 +311,8 @@ This time when the run terminates MESA will save a model named
 ## Loading a model
 
 Now you could begin studying the post-main sequence evolution of
-stars, starting a new MESA run using the model you've just saved.  Your
-inlist might look like:
+stars, starting a new MESA run using the model you've just saved.  In
+order to to this your inlist might look like:
 
 {% highlight fortran %}
 &star_job
@@ -333,11 +342,15 @@ inlist might look like:
 / ! end of controls namelist
 {% endhighlight %}
 
-As usual, do
+If you want to try this out, save the preceeding text as a file named
+inlist\_load in your work directory.  Then edit your main inlist file
+so that it will use inlist\_load instead of inlist project.
+
+Then as usual, do
 
     ./rn
 
-and MESA starts up using your newly saved file.  Unlike the
+and MESA will start up using your newly saved file.  Unlike the
 photos, saved models don't have a complete snapshot of the internal
 state of the system.  Photos are guaranteed to give the same results;
 saved models are not.  There may be small differences when you run a
@@ -366,7 +379,6 @@ Searching in controls.defaults for the word "Dutch" quickly leads to
 the following summary of these options.
 
 {% highlight fortran %}
-
 ! the "Dutch" wind scheme for massive stars combines results from
 ! several papers, all with authors mostly from the Netherlands.
    
@@ -408,7 +420,7 @@ Each test suite problem lives in a subdirectory of
     $MESA_DIR/star/test_suite
 
 and you can find (slightly out-of-date, but still useful) descriptions
-of some of the test problems on the [MESA Forum][test_suite].
+of most of the test problems on the [MESA Forum][test_suite].
 
 [test_suite]:http://mesastar.org/documentation/tutorials
 [high_mass]:http://mesastar.org/documentation/tutorials/massive-star-test-cases/high_mass/view
