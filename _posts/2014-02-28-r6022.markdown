@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Release 6022"
+date:   2014-02-28
+categories: release
+---
+
+Revision 6022 has been designated a MESA release version.  For the
+full release notes, see [this mailing list post][notes].
+
+[notes]:http://sourceforge.net/p/mesa/mailman/message/32039793/
