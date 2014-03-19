@@ -77,7 +77,7 @@ subroutine data_for_extra_history_columns(s, id, id_extra, n, names, vals, ierr)
 
    ! MESA provides routines for taking logarithms which will handle
    ! cases where you pass them zero, etc.  Take advantage of this!
-   use num_lib, only : safe_log10
+   use crlibm_lib, only: safe_log10_cr
 
    type (star_info), pointer :: s
    integer, intent(in) :: id, id_extra, n
@@ -115,7 +115,7 @@ subroutine data_for_extra_history_columns(s, id, id_extra, n, names, vals, ierr)
 
    ! column 2
    names(2) = "log_R90"
-   vals(2) = safe_log10(s% R(i) / rsol) ! in solar radii
+   vals(2) = safe_log10_cr(s% R(i) / rsol) ! in solar radii
 
    ierr = 0
 end subroutine data_for_extra_history_columns
@@ -224,6 +224,10 @@ integer function extras_finish_step(s, id, id_extra)
 
    endif
 
+   ! see extras_check_model for information about custom termination codes
+   ! by default, indicate where (in the code) MESA terminated
+   if (extras_finish_step == terminate) s% termination_code = t_extras_finish_step
+
 end function extras_finish_step
 {% endhighlight %}
 
@@ -245,10 +249,10 @@ to say in star/defaults/controls.defaults.
 {% endhighlight %}
 
 If you want to be sure the profiles that you're triggering in
-extras\_finish\_step stick around &#x2013; perhaps you're making a movie &#x2013;
-you should set max\_num\_profile\_models to be greater that the number of
-profiles you anticipate generating.  You might also want to crank up
-the priority which with they are saved by setting
+extras\_finish\_step stick around &#x2013; perhaps you're making a
+movie &#x2013; you should set max\_num\_profile\_models to be greater
+that the number of profiles you anticipate generating.  You might also
+want to crank up the priority which with they are saved by setting
 save\_profiles\_model\_priority to be 10.  This will prevent MESA from
 discarding them in lieu of other automatically saved profiles.
 
@@ -272,26 +276,39 @@ Here's a routine that stops when the star's luminosity is dominated by
 neon burning.
 
 {% highlight fortran %}
-    ! returns either keep_going, retry, backup, or terminate.
-    integer function extras_check_model(s, id, id_extra)
+! returns either keep_going, retry, backup, or terminate.
+integer function extras_check_model(s, id, id_extra)
 
-       use chem_def, only : i_burn_ne, category_name
+  use chem_def, only : i_burn_ne, category_name
 
-       type (star_info), pointer :: s
-       integer, intent(in) :: id, id_extra
-       integer :: i_burn_max
-       extras_check_model = keep_going
+  type (star_info), pointer :: s
+  integer, intent(in) :: id, id_extra
+  integer :: i_burn_max
+  extras_check_model = keep_going
 
-       ! determine the category of maximum burning
-       i_burn_max = maxloc(s% L_by_category,1)
+  ! if you want to check multiple conditions, it can be useful
+  ! to set a different termination code depenending on which
+  ! condition was triggered.  MESA provides 9 customizeable
+  ! termination codes, named t_xtra1 .. t_xtra9.  You can
+  ! customize the messages that will be printed upon exit by
+  ! setting the corresponding termination_code_str value.
+  ! termination_code_str(t_xtra1) = 'my termination conditon'
 
-       ! stop if the luminosity is dominated by neon burning
-       if ( i_burn_max .eq. i_burn_ne) then
-          extras_check_model = terminate
-          write(*, *) 'terminating because neon burning is dominant'
-          return
-       end if
-    end function extras_check_model
+  ! determine the category of maximum burning
+  i_burn_max = maxloc(s% L_by_category,1)
+
+  ! stop if the luminosity is dominated by neon burning
+  if ( i_burn_max .eq. i_burn_ne) then
+     extras_check_model = terminate
+     s% termination_code = t_xtra1
+     termination_code_str(t_xtra1) = 'neon burning is dominant'
+     return
+  end if
+
+  ! by default, indicate where (in the code) MESA terminated
+  if (extras_check_model == terminate) s% termination_code = t_extras_check_model
+
+end function extras_check_model
 {% endhighlight %}
 
 # Using the "other" hooks
