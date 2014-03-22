@@ -1,9 +1,9 @@
 ---
 layout: default
-title: using run_star_extras
+title: modifying the code
 permalink: run_star_extras.html
 ---
-# How do you use run\_star\_extras.f?
+# How do you modify the MESA code?
 
 Sometimes MESA's many options are not sufficient to tackle the problem
 you're interested in solving.  MESA is designed such that for most
