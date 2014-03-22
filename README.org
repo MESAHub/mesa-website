@@ -1,10 +1,9 @@
 * MESA Website
-This is a draft of a new website for the MESA stellar evolution code.
-The goal is to get new users started more quickly.  The rough plan is
-to replace the old one with this one around the time of the next
-release.
+This is the new website for the MESA stellar evolution code.  The goal
+is to get new users started more quickly.  This replaced the old one
+with this one around the time release 6188.
 
-You can [[http://eridanus.berkeley.edu][view the site here]].
+You can [[http://mesa.sourceforge.net][view the site here]].
 * Contributing
 Do you see something that needs improved?  Please let me know!  Do you
 have tutorial materials you've written yourself that you think could
