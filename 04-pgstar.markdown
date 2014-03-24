@@ -14,10 +14,10 @@ and PNG for frames of movies to animate those plots.
 If you're using the MESA SDK, you should have everything you need to
 use PGSTAR.  Otherwise, you need to have installed PGPLOT, XWindows,
 and a few libraries that they need.  See the
-makefile\_header\_non\_mesasdk in mesa/utils for details.  You'll also
-find pgplot.tar.bz2 in mesa/utils in case you need to install PGPLOT
-(thanks to Tim Pearson of CalTech for creating PGPLOT and giving us
-permission to distribute it with MESA).
+makefile\_header\_non\_mesasdk in $MESA\_DIR/utils for details.
+You'll also find pgplot.tar.bz2 in $MESA\_DIR/utils in case you need
+to install PGPLOT (thanks to Tim Pearson of CalTech for creating
+PGPLOT and giving us permission to distribute it with MESA).
 
 ## Overview of PGSTAR
 
@@ -62,10 +62,10 @@ to hit a return.
 You can have the code pause at each step by setting pause = .true.  It
 will pause every nth step if you set pause_interval = n.
 
-You can slow it down by setting pgstar_sleep to the minimum number of
+You can slow it down by setting pgstar\_sleep to the minimum number of
 seconds to allow between plot updates.
 
-It will update the windows every nth step if you set pgstar_cnt = n.
+It will update the windows every nth step if you set pgstar\_cnt = n.
 
 To save the plot as a png file, set the "file\_flag" for the window to
 .true.  You can specify a directory and prefix for the files, as well
@@ -152,15 +152,15 @@ LOGS/history.data.
 
 ## Hands-on Tutorial
 
-Do this tutorial while mesa/star is running and pgstar\_flag is set
-.true.  so you can watch as the plots change as you edit and save your
-inlist.
+Do this tutorial while $MESA\_DIR/star is running and pgstar\_flag is
+set .true.  so you can watch as the plots change as you edit and save
+your inlist.
 
-I suggest using the test case 1M\_pre\_ms\_to\_wd.
-Go to the directory, mesa/star/test\_suite/1M\_pre\_ms\_to\_wd, and open
-"inlist\_1.0" in your text editor.  Set pgstar\_flag = .true. and
-check the &pgstar section to make sure it starts empty.
-Then do the usual ./mk and ./rn to start the test case.
+I suggest using the test case 1M\_pre\_ms\_to\_wd.  Go to the
+directory, $MESA\_DIR/star/test\_suite/1M\_pre\_ms\_to\_wd, and open
+"inlist\_1.0" in your text editor.  In the &star\_job section, set
+pgstar\_flag = .true. and check the &pgstar section to make sure it
+starts empty.  Then do the usual ./mk and ./rn to start the test case.
 
 First, open some plot windows and take a look at what's available.
 Just edit your pgstar inlist to set the "win\_flag" for the plot;
@@ -239,6 +239,7 @@ are the only things shown unscaled.  Here are some examples from
 the default settings.   Note the use of the PGPLOT symbol for "omega".
 
 {% highlight fortran %}
+Summary_Profile_win_flag = .true.
 
 Summary_Profile_num_lines = 11 ! <= 16
 
@@ -263,8 +264,6 @@ you can remove a line just by setting the name to ''; you don't have
 to renumber the other lines.
 
 {% highlight fortran %}
-
-Summary_Profile_win_flag = .true.
 Summary_Profile_num_lines = 12 ! <= 16
 Summary_Profile_name(12) = 'zone'
 Summary_Profile_name(3) = ''
@@ -496,7 +495,8 @@ Profile_Panels4_title = 'Abundance-Power-Mixing'
 
 ## Output to files
 
-   Every plot has controls for file output similar to the following ones for the TRho_Profile:
+Every plot has controls for file output similar to the following ones
+for the TRho_Profile:
 
 {% highlight fortran %}
 
@@ -509,7 +509,13 @@ TRho_Profile_file_aspect_ratio = -1 ! negative means use same value as for windo
 
 {% endhighlight %}
 
- You can also change the foreground/background for file output.
+A directory with the name given by the value of
+TRho\_Profile\_file\_dir (in this case, the default value, which is
+"png") must exist in the work directory in order for the files to be
+stored.  Otherwise MESA will run, but fail to write the png
+files.  Make sure to create such a directory first!
+
+You can also change the foreground/background for file output.
 
 {% highlight fortran %}
 ! white_on_black flags -- true means white foreground color on black background
