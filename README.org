@@ -1,14 +1,39 @@
 * MESA Website
-This is the new website for the MESA stellar evolution code.  The goal
-is to get new users started more quickly.  This replaced the old one
-with this one around the time release 6188.
+This is the raw version of the new (as of March 2014, revision 6188)
+website for the MESA stellar evolution code.  One of the main goals is
+to help get new users started more quickly.
 
 You can [[http://mesa.sourceforge.net][view the site here]].
-* Contributing
-Do you see something that needs improved?  Please let me know!  Do you
-have tutorial materials you've written yourself that you think could
+** Contributing
+Did you find an error?  Do you see something that can be improved?  Do
+you have other materials you've written yourself that you think could
 be incorporated?  Send them to me.
-** Email Me
-If you're on mesa-users, you should have no trouble finding my address.
-** Contribute on GitHub
+*** Email Me
+If you subscribe to the mesa-users mailing list, you should have no
+trouble finding my email address.
+*** Contribute on GitHub
 Clone this repo and send me a pull request.
+** Generating
+Unless you are making large changes to the site and need to see the
+effects as you go along, there will be no need to generate the site.
+
+We now use the [[http://jekyllrb.com/][jekyll]] static site generator.  (The old site used
+webgen.)  If you want to generate the site on your own machine,
+install jekyll
+#+BEGIN_EXAMPLE
+gem install jekyll
+#+END_EXAMPLE
+and then do
+#+BEGIN_EXAMPLE
+jekyll build
+#+END_EXAMPLE
+to generate the site.
+
+You can have jekyll serve a local copy for you with
+#+BEGIN_EXAMPLE
+jekyll serve
+#+END_EXAMPLE
+Read the jekyll documentation to learn more.
+** Publishing
+Email me if you want to know about how the site is published to
+sourceforge.
