@@ -313,7 +313,7 @@ This time when the run terminates MESA will save a model named
 
 Now you could begin studying the post-main sequence evolution of
 stars, starting a new MESA run using the model you've just saved.  In
-order to to this your inlist might look like:
+order to do this your inlist might look like:
 
 {% highlight fortran %}
 &star_job
@@ -345,7 +345,7 @@ order to to this your inlist might look like:
 
 If you want to try this out, save the preceeding text as a file named
 inlist\_load in your work directory.  Then edit your main inlist file
-so that it will use inlist\_load instead of inlist project.
+so that it will use inlist\_load instead of inlist\_project.
 
 Then as usual, do
 
