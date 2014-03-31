@@ -345,7 +345,10 @@ order to do this your inlist might look like:
 
 If you want to try this out, save the preceeding text as a file named
 inlist\_load in your work directory.  Then edit your main inlist file
-so that it will use inlist\_load instead of inlist\_project.
+so that it will use "inlist\_load" instead of "inlist\_project"
+everywhere within inlist (i.e., extra\_star\_job\_inlist1\_name and
+extra\_controls\_inlist1\_name).
+
 
 Then as usual, do
 
