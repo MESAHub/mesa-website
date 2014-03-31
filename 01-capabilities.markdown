@@ -5,6 +5,9 @@ permalink: capabilities.html
 ---
 # What kinds of things can MESA do?
 
+For a brief summary of the capabilities of MESA, take a look at this
+[presentation by Matteo Cantiello](assets/mesa_slides.pdf).
+
 The full capabilites of MESA are documented in the instrument papers.
 Looking through the figures will give you a feel for the broad range
 of problems that can be studied using MESA.
@@ -12,8 +15,8 @@ of problems that can be studied using MESA.
 * [Paper 1 (Paxton et al. 2011)](http://adsabs.harvard.edu/abs/2011ApJS..192....3P)
 * [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
 
-To give you some flavor of what MESA can do, here are some movies made
-using png output from mesa/star.
+To give you some more flavor of what MESA can do, here are some movies
+made using png output from mesa/star.
 
 ## Evolve a 1 Msun star
 
