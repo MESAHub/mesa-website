@@ -73,6 +73,13 @@ to right, Frank Timmes, Aaron Dotter, Falk Herwig, Lars Bildsten, and
 Bill Paxton).  Photo taken by Bill's patient wife, Kathlyn, who
 deserves a great deal of credit for the existence of MESA.
 
+### Can MESA be run on 32-bit machines?
+
+MESA is no longer supported on 32-bit systems.  This isn't by design;
+we simply haven't been able to get it to work!  So if you REALLY want
+to use an antique 32-bit system for MESA, you'll have to try to make
+it work yourself.
+
 ### Why wasn't MESA written on punch cards?
 
 MESA is written using advanced features of modern Fortran which make

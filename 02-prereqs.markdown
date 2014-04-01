@@ -57,11 +57,6 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 
 ## Install the prerequisites (MESA SDK)
 
-*MESA is no longer supported on 32-bit systems.  This isn't by design;
-we simply haven't been able to get it to work!  So if you REALLY want
-to use an antique 32-bit system for MESA, you'll have to try to make
-it work yourself.*
-
 Before you can do an install for MESA, you need to get the
 prerequisites.  Unless you are a masochist, you'll probably want to
 use the [MESA SDK] provided by Rich Townsend.  It provides a prebuilt
