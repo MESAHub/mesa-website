@@ -10,14 +10,20 @@ important to remember that MESA is under construction -- and probably
 will be for the indefinite future.
 
 
-## Skim the MESA papers
+## Look through this presention; skim the MESA papers
 
-Before you use MESA, you should at least skim the "instrument papers".
+Before you use MESA, you should get a feel for what it can do.
+
+For a brief summary of the capabilities of MESA, take a look at this
+[presentation by Matteo Cantiello](assets/mesa_slides.pdf).  (He has
+also provided a [Keynote version](assets/mesa_slides.key.zip).)
+
+The full capabilites of MESA are documented in the instrument papers.
+Looking through the figures will give you a feel for the broad range
+of problems that can be studied using MESA.
 
 * [Paper 1 (Paxton et al. 2011)](http://adsabs.harvard.edu/abs/2011ApJS..192....3P)
 * [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
-
-These document the basic algorthims and capabilities of MESA.
 
 
 ## Join the mailing list

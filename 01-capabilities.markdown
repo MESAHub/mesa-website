@@ -6,7 +6,8 @@ permalink: capabilities.html
 # What kinds of things can MESA do?
 
 For a brief summary of the capabilities of MESA, take a look at this
-[presentation by Matteo Cantiello](assets/mesa_slides.pdf).
+[presentation by Matteo Cantiello](assets/mesa_slides.pdf).  (He has
+also provided a [Keynote version](assets/mesa_slides.key.zip).)
 
 The full capabilites of MESA are documented in the instrument papers.
 Looking through the figures will give you a feel for the broad range
