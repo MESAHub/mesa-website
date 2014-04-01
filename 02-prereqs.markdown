@@ -9,6 +9,7 @@ This page has information to help you prepare for using MESA.  It is
 important to remember that MESA is under construction -- and probably
 will be for the indefinite future.
 
+
 ## Skim the MESA papers
 
 Before you use MESA, you should at least skim the "instrument papers".
@@ -34,6 +35,24 @@ by responding to posts on the list.  You should also visit the
 [MESA Forum](http://mesastar.org/).  Registration (upper right corner)
 is not mandatory to view pages, but is required to post material on
 pages.
+
+
+## Check the MESA map
+
+Take a look at the maps below to see the locations of MESA users.  To
+have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
+
+[![Map of MESA users (USA)][mmu_png]][mmu_pdf]
+[mmu_png]:assets/images/mesa_users_usa.png
+[mmu_pdf]:assets/images/mesa_users_usa.pdf
+
+[![Map of MESA users (Europe)][mme_png]][mme_pdf]
+[mme_png]:assets/images/mesa_users_europe.png
+[mme_pdf]:assets/images/mesa_users_europe.pdf
+
+[![Map of MESA users (World)][mmw_png]][mmu_pdf]
+[mmw_png]:assets/images/mesa_users_world.png
+[mmw_pdf]:assets/images/mesa_users_world.pdf
 
 
 ## Install the prerequisites (MESA SDK)
