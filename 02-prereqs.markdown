@@ -50,7 +50,7 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 [mme_png]:assets/images/mesa_users_europe.png
 [mme_pdf]:assets/images/mesa_users_europe.pdf
 
-[![Map of MESA users (World)][mmw_png]][mmu_pdf]
+[![Map of MESA users (World)][mmw_png]][mmw_pdf]
 [mmw_png]:assets/images/mesa_users_world.png
 [mmw_pdf]:assets/images/mesa_users_world.pdf
 
