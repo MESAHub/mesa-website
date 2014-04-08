@@ -64,14 +64,27 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 ## Install the prerequisites (MESA SDK)
 
 Before you can do an install for MESA, you need to get the
-prerequisites.  Unless you are a masochist, you'll probably want to
-use the [MESA SDK] provided by Rich Townsend.  It provides a prebuilt
-set of compilers and run-time libraries that should make your MESA
-install go smoothly.  Visit the [MESA SDK website][MESA SDK] for the
-details of setting it up.
+prerequisites.  The [MESA SDK] provided by Rich Townsend simplifies
+this process.  It provides a prebuilt set of compilers and run-time
+libraries that should make your MESA install go smoothly.  Visit the
+[MESA SDK website][MESA SDK] for the details of setting it up.
 
 [MESA SDK]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk
 
+If you would prefer to use ifort (the MESA SDK uses gfortran), that is
+also an option, so long as you use ifort 14 or later.  Even if you
+choose to use ifort, you should still visit the MESA SDK website to
+get a feel for the other MESA requirements.
+
+Not using the MESA SDK means you'll need to replace the file
+$MESA\_DIR/utils/makefile\_header with a version customized to your
+system.  There's a template to get you started at
+$MESA\_DIR/utils/makefile\_header\_non\_mesasdk.
+
+Regardless of whether you use the MESA SDK or ifort, and whether your
+machine runs mac or linux, the output of MESA should be bit-for-bit
+identical.  If it's not, Bill considers it to be a bug.  (This has
+been the case since Release 5819 in early January 2014.)
 
 ## Download MESA
 
