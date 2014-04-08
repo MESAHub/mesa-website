@@ -2,6 +2,7 @@
 layout: default
 title: MESA home
 permalink: index.html
+noToc: true
 ---
 # Why a new 1D stellar evolution code?
 

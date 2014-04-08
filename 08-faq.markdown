@@ -3,11 +3,12 @@ layout: default
 title: FAQ
 permalink: faq.html
 ---
-### How do you say MESA?
+# What are some frequently asked questions about MESA?
+## How do you say MESA?
 
 Say "MAY-sa".
 
-### Can I use the MESA logo in an presentation?
+## Can I use the MESA logo in an presentation?
 
 Yes.  It is available in a variety of sizes for your convenience.
 
@@ -18,7 +19,7 @@ Yes.  It is available in a variety of sizes for your convenience.
 * [200 pt](/assets/logo/mesa_logo2_200pt.png)
 * [400 pt](/assets/logo/mesa_logo2_400pt.png)
 
-### What does "thread-safe" mean?
+## What does "thread-safe" mean?
 
 "Thread-safe" simply means that users can take advantage of multicore
 processors.
@@ -61,7 +62,7 @@ to be done to make good use of more than 3 or 4 cores in
 MESA/star.<br> It will be an ongoing effort to improve the design of
 the code in that area; help with that is welcomed!
 
-### What happens when an instrument paper is being written?
+## What happens when an instrument paper is being written?
 
 The picture shows the intense authors hard at work making final edits.
 
@@ -73,14 +74,14 @@ to right, Frank Timmes, Aaron Dotter, Falk Herwig, Lars Bildsten, and
 Bill Paxton).  Photo taken by Bill's patient wife, Kathlyn, who
 deserves a great deal of credit for the existence of MESA.
 
-### Can MESA be run on 32-bit machines?
+## Can MESA be run on 32-bit machines?
 
 MESA is no longer supported on 32-bit systems.  This isn't by design;
 we simply haven't been able to get it to work!  So if you REALLY want
 to use an antique 32-bit system for MESA, you'll have to try to make
 it work yourself.
 
-### Why wasn't MESA written on punch cards?
+## Why wasn't MESA written on punch cards?
 
 MESA is written using advanced features of modern Fortran which make
 it very different from Fortran 77 codes you might have previously seen
@@ -91,7 +92,7 @@ available on the web -- here's one:
 
 [Fortran]:http://en.wikipedia.org/wiki/Fortran_95_language_features
 
-### How can I use an individual MESA module?
+## How can I use an individual MESA module?
 
 The easiest way to get the idea is to look at a sample, and in the
 MESA directory you will find a subdirectory called “sample”. Make a
@@ -99,7 +100,7 @@ copy of the sample directory anywhere you’d like and give it whatever
 name you want. Follow the instructions in the README file to make and
 test the sample.
 
-### Which SVN revisions were MESA release versions?
+## Which SVN revisions were MESA release versions?
 
 {% include releases.html %}
 
