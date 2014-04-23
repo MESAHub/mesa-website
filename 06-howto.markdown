@@ -1,14 +1,19 @@
 ---
 layout: default
-title: modifying the code
+title: beyond inlists (extending MESA)
 permalink: run_star_extras.html
 ---
-# How do you modify the MESA code?
+# How do you extend MESA?
 
-Sometimes MESA's many options are not sufficient to tackle the problem
-you're interested in solving.  MESA is designed such that for most
-uses, one should not have to modify the main MESA code.  Instead, MESA
-provides a file "run\_star\_extras.f" that has a variety of hooks.
+Sometimes MESA's many inlist options are not sufficient to tackle the
+problem you're interested in solving.  Extending MESA is relatively
+easy and painless to do.  MESA is designed such that for most uses,
+one should not need to touch the core MESA code.
+
+MESA provides a file "run\_star\_extras.f" that has a variety of
+hooks.  These let you do things that you can't do with inlists alone,
+like change parameters at each step using simple routines or override
+many of the default physics routines.
 
 ## Activate run\_star\_extras.f
 
