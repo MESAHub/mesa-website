@@ -10,7 +10,7 @@ important to remember that MESA is under construction -- and probably
 will be for the indefinite future.
 
 
-## Look through this presention; skim the MESA papers
+## Look through this presentation; skim the MESA papers
 
 Before you use MESA, you should get a feel for what it can do.
 
@@ -18,7 +18,7 @@ For a brief summary of the capabilities of MESA, take a look at this
 [presentation by Matteo Cantiello](assets/mesa_slides.pdf).  (He has
 also provided a [Keynote version](assets/mesa_slides.key.zip).)
 
-The full capabilites of MESA are documented in the instrument papers.
+The full capabilities of MESA are documented in the instrument papers.
 Looking through the figures will give you a feel for the broad range
 of problems that can be studied using MESA.
 
@@ -32,7 +32,7 @@ The "how-to" documentation is largely embedded in the experience of
 the community of users.  Therefore the first step to becoming a MESA
 user is to join the
 [mesa-users mailing list](https://lists.sourceforge.net/lists/listinfo/MESA-users).
-(Click the preceeding link and complete the "Subscribing to
+(Click the preceding link and complete the "Subscribing to
 mesa-users" section of the form.)
 
 If you have requests for help, you should post your questions to
@@ -103,7 +103,7 @@ officially released version always follow "-r" with a version
 number from this page.
 
 
-## Set your enviroment variables
+## Set your environment variables
 
 The easiest way to make sure that your system is always configured
 appropriately is to add the needed commands to the appropriate shell

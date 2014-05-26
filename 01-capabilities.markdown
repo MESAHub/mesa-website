@@ -9,7 +9,7 @@ For a brief summary of the capabilities of MESA, take a look at this
 [presentation by Matteo Cantiello](assets/mesa_slides.pdf).  (He has
 also provided a [Keynote version](assets/mesa_slides.key.zip).)
 
-The full capabilites of MESA are documented in the instrument papers.
+The full capabilities of MESA are documented in the instrument papers.
 Looking through the figures will give you a feel for the broad range
 of problems that can be studied using MESA.
 

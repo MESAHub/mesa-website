@@ -261,8 +261,8 @@ stopping conditions,
 {% endhighlight %}
 
 As MESA indicated in the termination message, we stopped because of
-the first condition (naturally, ZAMS is before H-exaustion).  Turn off
-this stopping condition by editing your inlist so that
+the first condition (naturally, ZAMS is before H-exhaustion).  Turn
+off this stopping condition by editing your inlist so that
 
 {% highlight fortran %}
     stop_near_zams = .false.
@@ -275,13 +275,13 @@ Now we can restart using the photo and our new settings.  Try it.
     ./re x942
 
 This resumes the run from model 942, but this time the run will stop
-when our other condition is statistfied, when the central hydrogen
+when our other condition is satisfied, when the central hydrogen
 drops below 1e-3.  This will happen at about model number 1050.
 
 ## Saving a model
 
 Remember that the photo file is a machine readable binary that is not
-designed for portablity to different machines or even to different
+designed for portability to different machines or even to different
 versions of MESA.  So we need another way to save a model so we can
 use it later, perhaps as a starting model for later runs, or to send
 to someone for them to use with their own copy of MESA.  For example,
@@ -343,7 +343,7 @@ order to do this your inlist might look like:
 / ! end of controls namelist
 {% endhighlight %}
 
-If you want to try this out, save the preceeding text as a file named
+If you want to try this out, save the preceding text as a file named
 inlist\_load in your work directory.  Then edit your main inlist file
 so that it will use "inlist\_load" instead of "inlist\_project"
 everywhere within inlist (i.e., extra\_star\_job\_inlist1\_name and

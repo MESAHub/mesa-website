@@ -64,8 +64,8 @@ is 15, the profile data will be found in the file named
 Each profile includes both a set of global properties of the star,
 such as its age, and a large set of properties for each point in the
 model of the star given one line per point.  In each case, the lines
-of data are preceeded by a line with column numbers
-and a line with column names.
+of data are preceded by a line with column numbers and a line with
+column names.
 
 ## Controlling MESA Output
 

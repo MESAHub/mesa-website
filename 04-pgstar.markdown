@@ -216,7 +216,7 @@ When you're finished admiring these beauties, delete the "win\_flag"
 lines from your inlist, and we'll take a look at how you can modify
 plots.
 
-Let's start by changing some of the Adundance plot controls; do the
+Let's start by changing some of the Abundance plot controls; do the
 changes one at a time so you can see each change.  And make sure the
 plot is visible when you do the save!
 
@@ -322,7 +322,7 @@ History_Track1_title = 'L vs Center P'
 {% endhighlight %}
 
 Turn on Profile\_Panels1 and History\_Panels1; they are set up with
-defaults for the number of panels and axes.  Change the defaults to to
+defaults for the number of panels and axes.  Change the defaults to
 show other things -- for the profiles you can select anything that can
 be in a profile_columns.list; for the history you have to select one
 of the column headings in your current LOGS/history.data
@@ -531,7 +531,7 @@ file_digits = 5 ! number of digits for model_number in filenames
 Finally, there is an HR distance trigger for file output.
 
 {% highlight fortran %}
-! trigger file output by distance travelled on HR diagram
+! trigger file output by distance traveled on HR diagram
 delta_HR_limit_for_file_output = -1 ! negative means no limit
 
 ! HR distance since last file output = sum of dHR

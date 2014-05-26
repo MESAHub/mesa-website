@@ -28,7 +28,7 @@ good answer, it helps ask a good question.
 
 Provide some information about the computer you are using, including:
 
-+ your operating sytem (including version information)
++ your operating system (including version information)
 + which version of MESA you are using
 + which version of the MESA SDK you are using
 
