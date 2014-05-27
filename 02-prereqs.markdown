@@ -60,6 +60,17 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 [mmu_png]:assets/images/mesa_users_usa.png
 [mmu_pdf]:assets/images/mesa_users_usa.pdf
 
+## Ensure your system meets the minimum hardware requirements
+
+The minimum system requirements for MESA are:
+
+* Mac or Linux operating system
+* 64-bit processor
+* 4 GB RAM
+* 10 GB free disk space
+
+Most laptop or desktop computers built in the last three years will
+satisfy these requirements.
 
 ## Install the prerequisites (MESA SDK)
 
