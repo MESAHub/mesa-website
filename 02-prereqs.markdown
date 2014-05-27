@@ -110,9 +110,10 @@ Note that there might be newer versions out there in the svn
 repository, but they are probably untested, unstable, and generally
 not at all what you want, so please stick to the officially released
 ones.  To repeat: always use "-r", and to make sure that you get an
-officially released version always follow "-r" with a version
-number from this page.
+officially released version always follow "-r" with the version
+number of an [official MESA release][versions].
 
+[versions]:http://mesa.sourceforge.net/faq.html#tocAnchor-1-1-8
 
 ## Set your environment variables
 
