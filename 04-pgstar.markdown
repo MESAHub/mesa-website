@@ -495,13 +495,44 @@ Profile_Panels4_title = 'Abundance-Power-Mixing'
 
 ## Output to files
 
-Every plot has controls for file output similar to the following ones
-for the TRho_Profile:
+PGSTAR has a number of options to control its file output.
+
+The default output format is PNG
+
+{% highlight fortran %}
+file_device = 'png'
+file_extension = 'png'
+{% endhighlight %}
+
+but you can use PostScript output by setting
+
+{% highlight fortran %}
+file_device = 'vcps'
+file_extension = 'ps'
+{% endhighlight %}
+
+You can change the foreground/background color of your plots between
+black/white and white/black
+
+{% highlight fortran %}
+! white_on_black flags -- true means white foreground color on black background
+file_white_on_black_flag = .true.
+{% endhighlight %}
+
+and control the number of digits that appear in the filenames
+
+{% highlight fortran %}
+file_digits = 5 ! number of digits for model_number in filenames
+{% endhighlight %}
+
+
+In addition, each plot has controls for its own file output similar to
+the following ones for the TRho_Profile:
 
 {% highlight fortran %}
 
-TRho_Profile_file_flag = .false.
 TRho_Profile_file_dir = 'png'
+TRho_Profile_file_flag = .false.
 TRho_Profile_file_prefix = 'trho_profile_'
 TRho_Profile_file_cnt = 5 ! output when mod(model_number,TRho_Profile_file_cnt)==0
 TRho_Profile_file_width = -1 ! (inches) negative means use same value as for window
@@ -512,21 +543,10 @@ TRho_Profile_file_aspect_ratio = -1 ! negative means use same value as for windo
 A directory with the name given by the value of
 TRho\_Profile\_file\_dir (in this case, the default value, which is
 "png") must exist in the work directory in order for the files to be
-stored.  Otherwise MESA will run, but fail to write the png
-files.  Make sure to create such a directory first!
-
-You can also change the foreground/background for file output.
-
-{% highlight fortran %}
-! white_on_black flags -- true means white foreground color on black background
-file_white_on_black_flag = .true.
-{% endhighlight %}
-
- And the number of digits in filenames
-
-{% highlight fortran %}
-file_digits = 5 ! number of digits for model_number in filenames
-{% endhighlight %}
+stored.  Otherwise MESA will run, but fail to write the png files.
+Make sure to create such a directory first!  (If you're using
+PostScript output, you probably want to create a directory named "ps"
+and set TRho\_Profile\_file\_dir='ps'.)
 
 Finally, there is an HR distance trigger for file output.
 
