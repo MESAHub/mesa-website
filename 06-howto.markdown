@@ -328,7 +328,7 @@ our massive star.
 ## Writing a routine
 
 Navigate to $MESA\_DIR/star/other, where you will see a set of files
-named with the pattern other\_\\\*.f, where the wildcard match describes
+named with the pattern other\_\*.f, where the wildcard match describes
 some sort of MESA physics (e.g. other\_neu.f, other\_wind.f ).
 
 Find the one corresponding to the physics that you want to alter.
@@ -338,8 +338,8 @@ helpful comments and examples.
 Note that we do not want to directly edit these files.  Instead we
 want to copy the template routines that these files provide into our
 working directory copy of run\_star\_extras.f and then further modify
-them there.  The template routines are named either null\_other\_\\\* or
-default\_other\_\\\*.
+them there.  The template routines are named either null\_other\_\* or
+default\_other\_\*.
 
 For our neutrino example, copy the following subroutine into
 run\_star\_extras.f.
@@ -428,11 +428,11 @@ end subroutine tutorial_other_neu
 ## Instruct MESA to use your routine
 
 There are two things that you must do in order to have MESA execute
-your other\_\\\* routine.  Failure to do both of these is the most common
-problem people encounter when using the other\_\\\* hooks.
+your other\_\* routine.  Failure to do both of these is the most common
+problem people encounter when using the other\_\* hooks.
 
 First, edit the controls section of your inlist to set the appropriate
-use\_other\_\\\* flag to .true. .  In our example, this means adding the line
+use\_other\_\* flag to .true. .  In our example, this means adding the line
 
     use_other_neu = .true.
 
