@@ -27,6 +27,7 @@
       ! asteroseismology controls
       ! structure equations 
       ! solver controls
+      ! split mixing
       ! timestep controls
       ! debugging output controls  
       ! miscellaneous controls
@@ -599,6 +600,7 @@
             ! use method of Traxler, Garaud, & Stellmach, ApJ Letters, 728:L29 (2011).
          ! if == 'Brown_Garaud_Stellmach_13',
             ! use method of Brown, Garaud, & Stellmach, (2013).
+            ! recommends thermo_haline_coeff = 1, but it can nevertheless be changed.
                      
       alt_scale_height_flag = .true.
          ! if false, then stick to the usual definition -- P/(g*rho)
@@ -1096,6 +1098,17 @@
          ! if you select a table option, but the args are out of the range of the tables,
          ! then this flag determines whether you get an error or the code automatically
          ! switches to option = atm_simple_photosphere as a backup.
+         
+      ! parameter for extra pressure in surface boundary conditions
+         Pextra_factor = 1
+         ! pressure at optical depth tau is calculated as P = tau*g/kap*(1 + Pextra)
+         ! Pextra takes into account nonzero radiation pressure at tau=0
+         ! the equation for Pextra includes Pextra_factor
+         ! Pextra = Pextra_factor*(kap/tau)*(L/M)/(6d0*pi*clight*cgrav)
+         ! for certain situations such super eddington L,
+         ! you may need to increase Pextra to help convergence.
+         ! e.g. try Pextra_factor = 2
+         ! Pextra_factor < 0 means use (incorrect) old form 1.6d-4*kap*(L/Lsun)/(M/Msun).
          
       ! parameters for the grey_and_kap option
          ! iterates on kap until err := |delta kap|/(atol + rtol*kap) is < 1
@@ -1780,22 +1793,9 @@
       net_logTcut_lo = 5.3d0 ! strong rates are zero logT < logTcut_lo
       net_logTcut_lim = 5.4d0  ! strong rates cutoff smoothly for logT < logTcut_lim
             
-      ! suppress certain dubious burning situations
-      
-         suppress_dubious_PP_burning = .true.
-            ! if cell has logT > 7.7 and H1 & He3 mass fractions both < 1d-15,
-            ! then turn off PP chain reactions in that cell for the current step.
-            ! shouldn't be necessary, but the solver seems to need some help on this.
-            
-         suppress_dubious_N_burning = .true.
-            ! if cell has logT > 8.7 and N14 mass fraction is < 1d-15,
-            ! then turn off reactions for category 'burn_n' in that cell for the current step.
-            ! shouldn't be necessary, but the solver seems to need some help on this.
-            
-         max_abar_for_burning = 199
+      max_abar_for_burning = 199
             ! if abar > this, suppress all burning
             ! e.g., if want an "inert" core heavy elements, set this to 55
-            
       
       ! control for abundance changes by burning
          
@@ -1815,58 +1815,10 @@
             ! eps_nuc_factor changes eps_nuc without changing rates or dxdt_nuc
                ! thus controls energy production without modifying the amount of change in abundances  
          
+         weak_rate_factor = 1 ! all weak rates are multiplied by this factor
+         
          ! neutrinos
             reaction_neuQs_factor = 1
-            
-         ! reaction category rate factors
-      
-         ! the reaction rates are multipled by these factors, so you can do experiments 
-         ! like turning off cno reactions by setting net_cno_rate_factor = 0.
-         
-         ! NOTE: if you need to control individual rates rather than entire categories,
-         ! you'll need to write some code to do it.  Use the 'rate_factors' array in star_data.
-         ! Your code to change the rate_factors can go in your work directory copy of run_star_extra.f.
-         ! Put it in the extras_startup routine if you just set the factors at startup, or in the
-         ! extras_check_model routine if you want to set them at each step depending on the state.
-      
-         net_pp_rate_factor = 1
-         net_cno_rate_factor = 1
-         net_3alf_rate_factor = 1
-      
-         net_burn_c_rate_factor = 1
-         net_burn_n_rate_factor = 1      
-         net_burn_o_rate_factor = 1
-         net_burn_ne_rate_factor = 1
-         net_burn_na_rate_factor = 1
-         net_burn_mg_rate_factor = 1
-         net_burn_si_rate_factor = 1
-         net_burn_s_rate_factor = 1
-         net_burn_ar_rate_factor = 1
-         net_burn_ca_rate_factor = 1
-         net_burn_ti_rate_factor = 1
-         net_burn_cr_rate_factor = 1
-         net_burn_fe_rate_factor = 1
-      
-         net_cc_rate_factor = 1
-         net_co_rate_factor = 1
-         net_oo_rate_factor = 1
-
-         net_pnhe4_rate_factor = 1
-         net_photo_rate_factor = 1
-         net_other_rate_factor = 1
-         
-         
-         ! the fake reaction for fe56 + 2e => cr56 is special.
-         ! it is provided as a way to get enhanced neutonization during
-         ! the creation of an iron core prior to core collapse.
-         ! the rate for this reaction is the ni56 + 2e => fe56 rate
-         ! multiplied by rate_factor_for_fe56ec_to_cr56
-         rate_factor_for_fe56ec_to_cr56 = 1d-4
-         
-         max_center_cr56_for_fe56ec = 0.999
-         ! if center mass fraction of cr56 exceeds this limit,
-         ! fe56 + 2e => cr56 is turned off everywhere in the star.
-         
          
       ! NSE controls  ---- EXPERIMENTAL.  NOT READY FOR USE.
       
@@ -2191,6 +2143,8 @@
             ! thus controls the amount of change in abundances without modifying energy production
          ! eps_nuc_factor changes eps_nuc without changing rates or dxdt_nuc
             ! thus controls energy production without modifying the amount of change in abundances
+            
+      fe56ec_fake_factor = 1d-4
       
       
       ! eps_grav
@@ -2425,9 +2379,12 @@
       do_newton_damping_for_neg_xa = .true.
          ! if true, uniformly reduce newton corrections if necessary to avoid neg abundances
 
+      ! force retry with smaller timestep if hydro solves change T, Rho, or Pgas by too much
       hydro_mtx_max_allowed_abs_dlogT = 99
       hydro_mtx_max_allowed_abs_dlogRho = 99
       hydro_mtx_max_allowed_abs_dlogPgas = 99
+      min_logT_for_hydro_mtx_max_allowed = 99
+      
       
    ! split mixing
       
@@ -2446,7 +2403,7 @@
       op_split_mix_atol = 1d-5
       op_split_mix_rtol = 1d-6
       
-      ! timestep controls related to split mixing
+      ! controls related to split mixing for timesteps
          
          max_fixup_for_mix_limit = 1d-3
             ! if split mix fixup is bigger than this, reduce the next timestep
@@ -2505,8 +2462,12 @@
          
    
          substep_min_T = 1d99 
-            ! controls use of substeps for solving burn
-            ! use substeps for cell k when T(k) >= this
+         burn_stptry = 1d-16 ! 0 means try to do it in 1 step, then retry if necessary
+         burn_max_steps = 200
+         burn_eps = 1d-6
+         burn_odescal = 1d-6
+
+            
          substep_burn_solver = 'rodas4_solver'
          substep_burn_decsol = 'lapack'
          substep_burn_max_steps = 1000
@@ -2989,6 +2950,15 @@
          delta_lg_total_J_hard_limit = 0.5
 
 
+      report_why_dt_limits = .true.
+         ! if true, produce terminal output about choice of timestep
+      report_all_dt_limits = .false.
+         ! if true, produce terminal output about all influences for choice of timestep
+      report_hydro_dt_info = .false.
+         ! if true, produce terminal output about choice of timestep based on varcontrol_target
+      report_dX_nuc_drop_dt_limits = .false.
+         ! if true, report timestep limits from drop in abundance from nuclear reactions
+
 
 
          
@@ -2998,15 +2968,6 @@
 
       report_hydro_solver_progress = .false. ! set true to see info about newton iterations
       report_ierr = .false. ! if true, produce terminal output when have some internal error
-
-      report_why_dt_limits = .true.
-         ! if true, produce terminal output about choice of timestep
-      report_all_dt_limits = .false.
-         ! if true, produce terminal output about all influences for choice of timestep
-      report_hydro_dt_info = .false.
-         ! if true, produce terminal output about choice of timestep based on varcontrol_target
-      report_dX_nuc_drop_dt_limits = .false.
-         ! if true, report timestep limits from drop in abundance from nuclear reactions
          
       trace_newton_bcyclic_solve_input = .false. ! input is "B" j k iter B(j,k)
       trace_newton_bcyclic_solve_output = .false. ! output is "X" j k iter X(j,k)

@@ -336,34 +336,40 @@
 
       relax_mass_scale = .false. ! gradually rescale mass of star to new_mass
          ! rescales star mass without changing composition as function of m/mstar
+      relax_initial_mass_scale = .false.
       dlgm_per_step = 1d-3
       change_mass_years_for_dt = 1
 
       relax_dxdt_nuc_factor = .false. ! gradually rescale dxdt_nuc_factor 
          ! at each step, multiply dxdt_nuc_factor by dxdt_nuc_factor_multiplier
          ! until reach new_dxdt_nuc_factor
+      relax_initial_dxdt_nuc_factor = .false.
       new_dxdt_nuc_factor = 0
       dxdt_nuc_factor_multiplier = 0 
 
       relax_eps_nuc_factor = .false. ! gradually rescale eps_nuc_factor 
          ! at each step, multiply eps_nuc_factor by eps_nuc_factor_multiplier
          ! until reach new_eps_nuc_factor
+      relax_initial_eps_nuc_factor = .false.
       new_eps_nuc_factor = 0
       eps_nuc_factor_multiplier = 0 
 
       relax_opacity_max = .false. ! gradually rescale opacity_max 
          ! at each step, multiply opacity_max by opacity_max_multiplier
          ! until reach new_opacity_max
+      relax_initial_opacity_max = .false.
       new_opacity_max = 0
       opacity_max_multiplier = 0       
 
       relax_max_surf_dq = .false. ! gradually rescale max_surface_cell_dq 
          ! at each step, multiply max_surface_cell_dq by opacity_max_multiplier
          ! until reach new_max_surf_dq
+      relax_initial_max_surf_dq = .false.
       new_max_surf_dq = 0
       max_surf_dq_multiplier = 0       
 
       relax_surf_bc_offset_factor = .false. ! gradually change surf_bc_offset_factor 
+      relax_initial_surf_bc_offset_factor = .false.
       new_bc_offset_factor = 0
       dlnbc_offset_factor = 0 
 
@@ -371,6 +377,7 @@
          ! can go much larger or much smaller to move surface in or out from photosphere.
       dlogtau_factor = 0.1 ! change log10(tau_factor) by at most this amount per step
       relax_tau_factor = .false. ! gradually change tau_factor, reconverging at each step.
+      relax_initial_tau_factor = .false.
       relax_tau_factor_after_core_He_burn = -1 ! ignore if <= 0
          ! change tau_factor when center H1 < 1e-4 and center He4 < this.
       relax_tau_factor_after_core_C_burn = -1  ! ignore if <= 0
@@ -378,6 +385,7 @@
          
       set_to_this_tau_factor = -1
       set_tau_factor = .false. ! change tau_factor without reconverging.
+      set_initial_tau_factor = .false.
       set_tau_factor_after_core_He_burn = -1 ! ignore if <= 0
          ! change tau_factor when center H1 < 1e-4 and center He4 < this.
       set_tau_factor_after_core_C_burn = -1 ! ignore if <= 0
@@ -385,6 +393,7 @@
       
       
       relax_mass_change = .false.
+      relax_initial_mass_change = .false.
       relax_mass_change_min_steps = 10
       relax_mass_change_max_yrs_dt = 10 ! years
       relax_mass_change_init_mdot = 0 ! Msun/year
@@ -393,6 +402,7 @@
       
       ! extra heat near surface to model irradiation
       relax_irradiation = .false.
+      relax_initial_irradiation = .false.
       relax_to_this_irrad_flux = 0 ! erg s^-1 cm^-2
          ! this is flux from companion
          ! we capture Pi*R^2 of that flux
@@ -402,6 +412,7 @@
       irrad_col_depth = -1 ! g cm^-2
 
       set_irradiation = .false.
+      set_initial_irradiation = .false.
       set_to_this_irrad_flux = 0
 
 
@@ -409,6 +420,7 @@
       
       ! lnPgas_flag is true if we are using lnPgas variables in place of lnd
       change_lnPgas_flag = .false.
+      change_initial_lnPgas_flag = .false.
       new_lnPgas_flag = .false.
 
 
@@ -418,6 +430,7 @@
       !       but not with shocks or other "violent" hydrodynamic events.
       
       change_v_flag = .false.
+      change_initial_v_flag = .false.
       new_v_flag = .false.
       
       center_ye_limit_for_v_flag = 0.45
@@ -437,6 +450,7 @@
       change_rotation_flag = .false. 
          ! if this is true, then change rotation_flag to new_rotation_flag
          ! rotation is enabled iff rotation_flag is true
+      change_initial_rotation_flag = .false. 
          
       ! NOTE: why 2 flags? 
          ! because I want 3 options: set true, set false, and leave it alone.
@@ -535,6 +549,7 @@
    ! controls for nonzero center M, R, L (e.g., to model neutron star envelope or rocky core planet)
    
       relax_core = .false.
+      relax_initial_core = .false.
       new_core_mass = 0 ! in Msun units
       ! if you have convergence problems, you'll need to reduce these mass/step and dt values
          dlg_core_mass_per_step = 1d-3
@@ -547,6 +562,7 @@
       ! the following let you make separate changes to M, R, L for core 
    
       relax_M_center = .false. 
+      relax_initial_M_center = .false. 
          ! like relax_mass_scale, but all change in mass goes into M_center
          ! NOTE: new_mass is new total mass for star, not the new M_center value.
          ! uses dlgm_per_step in same way as relax_mass_scale.
@@ -559,11 +575,13 @@
       relax_M_center_dt = 3.1558149984d1 ! secyer*1d-6
       
       relax_R_center = .false.
+      relax_initial_R_center = .false.
       new_R_center = 0 ! in cm
       dlgR_per_step = 3d-3
       relax_R_center_dt = 3.1558149984d1 ! secyer*1d-6
       
       relax_L_center = .false.
+      relax_initial_L_center = .false.
       new_L_center = 0 ! in ergs/second
       dlgL_per_step = 5d-2
       relax_L_center_dt = 3.1558149984d1 ! secyer*1d-6
@@ -574,7 +592,9 @@
       report_mass_not_fe56 = .false.
       report_cell_for_xm = -1 ! (grams)
          ! if > 0 then write smallest k s.t. mass in cells 1 to k is >= this
+         
       set_to_xa_for_accretion = .false.
+      set_initial_to_xa_for_accretion = .false.
       set_nzlo = -1
       set_nzhi = -1
 
@@ -640,17 +660,17 @@
    adjust_abundances_for_new_isos = .true. ! if false, new isos initial abundance set to 0
    
    set_rates_preference = .false. ! for use by net + rates modules
-   new_rates_preference = 1  ! only used if set_rates_preference is true
-      ! 1 = NACRE rates -- this is the default
+   new_rates_preference = 2 ! only used if set_rates_preference is true
+      ! 1 = NACRE rates
       ! 2 = jina reaclib rates
       
    set_rate_c12ag = '' ! empty string means ignore this control
-      ! one of 'NACRE', 'Buchmann', 'Kunz', or 'CF88'
+      ! one of 'NACRE', 'jina reaclib', 'Kunz', or 'CF88'
          ! (note: our CF88 is larger than the original by a factor of 1.7)
    set_rate_n14pg = '' ! empty string means ignore this control
-      ! one of 'NACRE', 'Imbriani', or 'CF88'
+      ! one of 'NACRE', 'jina reaclib', or 'CF88'
    set_rate_3a = '' ! empty string means ignore this control
-      ! one of 'NACRE', 'Fynbo', 'CF88', or 'FL87'
+      ! one of 'NACRE', 'jina reaclib', 'CF88', or 'FL87'
          ! FL87 is Fushiki and Lamb, Apj, 317, 368-388, 1987
          ! and includes both strong screening and pyconuclear
    set_rate_1212 = '' ! empty string means ignore this control
@@ -700,6 +720,11 @@
                
    net_reaction_filename = 'reactions.list'
       ! looks first in current directory, then in <data_dir>/net_data
+      
+   jina_reaclib_filename = '' ! empty string means use current standard version
+      ! else give name of file in directory mesa/data/rates_data
+      ! e.g., jina_reaclib_results_20130213default2  --- 18.8 MB file of rates data
+      ! to use previous version, set to 'jina_reaclib_results05301331'
 
    rate_tables_dir = 'rate_tables'
          ! it will look for a local directory of this name first.
@@ -709,32 +734,6 @@
          ! if this is non-empty, then use it when creating names
          ! for cache files for reaction rates from rate_tables_dir.
          ! if empty, the suffix will be '0'.
-
-   
-   ! rate limit factors for high temperatures
-
-      ! For every reaction in the nuclear net there is a reverse reaction -- 
-      ! e.g., fe52(a,g)ni56 goes with ni56(g,a)fe52.  
-      ! At very high temperatures both reactions are running at extreme rates and 
-      ! nearly cancel out.  Nature thinks this is fine, but it is a nightmare numerically!  
-      ! So we provide an option to reduce both rates by the same factor to help 
-      ! the numerics while hopefully doing minimal damage to the results.
-      
-      ! rate limits are off by default.
-      turn_on_T_limits = .false.
-      turn_off_T_limits = .true.
-      
-      ! rate limits for reactions involving a neutron (and optionally protons)
-      T_lo_neut = 2d9 ! below this, limit doesn't apply
-      T_hi_neut= 5d9 ! above this, limit in full force
-      min_factor_neut = 1d-9 ! use this factor for T >= T_hi_neut
-         ! factor gradually goes to 1.0 as T drops from T_hi_neut to T_lo_neut
-
-      ! rate limits for reactions involving a proton (but no neutrons)
-      T_lo_prot = 2d9 ! below this, limit doesn't apply
-      T_hi_prot = 5d9 ! above this, limit in full force
-      min_factor_prot = 1d-12 ! use this factor for T >= T_hi_prot
-         ! factor gradually goes to 1.0 as T drops from T_hi_prot to T_lo_prot
          
    ! weak rates blend weaklib and reaclib according to temperature
       ! these can be used to overwrite the defaults in mesa/rates/public/rates_def
@@ -841,13 +840,3 @@
       extra_star_job_inlist5_name = 'undefined'
          ! if read_extra_star_job_inlist5 is true, then read &star_job from this namelist file
 
-
-
-! private or experimental
-      
-   ! cosmetic smoothing of abundances (for stellar engineering)
-   do_abundance_smoothing = .false.
-   abundance_smoothing_cnt = 20 ! this many passes of smoothing
-   abundance_smoothing_nzlo = -1 ! only smooth zones nzlo to nzhi inclusive
-   abundance_smoothing_nzhi = -1
-   
