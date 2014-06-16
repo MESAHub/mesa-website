@@ -54,3 +54,50 @@ results -- "open know how" to match "open source."
 
 * That users agree to help others learn MESA, giving back as the
   project progresses.
+
+# What are the official roles in MESA?
+<a name="roles"></a>
+
+There are a few defined roles in the MESA community.
+
+## 1st Author
+<a name="role-1au"></a>
+
+The 1st author is the primary developer of MESA and the first author
+on the MESA instrument papers
+
+## Area Steward
+<a name="role-steward"></a>
+
+A MESA area steward has a prime role in the development of an area of
+MESA and also has responsibility for responding to user bug reports
+and requests for help related to that area.
+
+## Council
+<a name="role-council"></a>
+
+The MESA Council consists of those engaged in working towards the
+shared missions outlined here:
+
+### Steward MESA
+
+There are many ways this will be done: supporting the contributors,
+maintaining the web access and web page updates, seeking enabling
+funding, holding yearly working groups that allow for continued
+engagement, documenting MESA development in the refereed literature,
+and sustaining advanced development.
+
+### Interface with the User Community
+
+This starts with answering questions from users, developing a way to
+accept new code in an integrated fashion, maintain a user registry,
+and identify new MESA Council members from those most active and
+engaged in the intelligent use of MESA.
+
+### Enable Scientific Research and Education with MESA
+
+Promote MESA and its goals, e.g., through scientific contributions at
+relevant conferences.  Identify science opportunities that match MESA
+capabilities and facilitate and encourage appropriate collaborative
+activities.  Track the science carried out by the community with MESA.
+
