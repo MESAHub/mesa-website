@@ -99,10 +99,22 @@ been the case since Release 5819 in early January 2014.)
 
 ## Download MESA
 
-The following command will download the latest release version of MESA
-into a directory named mesa.  The package is large, so make sure you
-have at least 10 GB free on your disk and don't worry if it takes a
-little while to download.
+The simplest way to get the MESA software is to download a zip file of
+the [latest MESA release][release].
+
+[release]:http://sourceforge.net/projects/mesa/files/mesa-release-{{site.version}}.zip/download
+
+The compressed file is about 1GB, so don't worry if it takes a little
+while to download.  The installed package will be large, so make sure
+you have at least 10 GB free on your disk.
+
+When you unzip the file, it will create a directory named
+mesa-code-{{site.version}}-trunk.  This will be your main MESA
+directory.  Feel free to rename it as you wish, just make sure to set
+MESA\_DIR accordingly (see below).
+
+If you'd prefer, you can instead checkout a copy of MESA from its
+subversion repository, using the command:
 
     svn co -r {{site.version}} svn://svn.code.sf.net/p/mesa/code/trunk mesa
 
@@ -124,10 +136,10 @@ installed MESA and whether you are using OS X or Linux.  After you add
 these commands to your shell startup file, don't forget to open a new
 shell (or source the file in an existing one).
 
-Here is an example from a .bashrc on OS X:
+Here is an example from a .bashrc on OS X, using the zip file:
 {% highlight bash %}
 # set MESA_DIR to be the directory to which you downloaded MESA
-export MESA_DIR=/Users/jschwab/Software/mesa
+export MESA_DIR=/Users/jschwab/Software/mesa-code-{{site.version}}-trunk
 
 # set OMP_NUM_THREADS to be the number of cores on your machine
 export OMP_NUM_THREADS=2
@@ -137,7 +149,7 @@ export MESASDK_ROOT=/Applications/mesasdk
 source $MESASDK_ROOT/bin/mesasdk_init.sh
 {% endhighlight %}
 
-Here is an example from a .cshrc on Linux:
+Here is an example from a .cshrc on Linux, using SVN:
 {% highlight csh %}
 # set MESA_DIR to be the directory to which you downloaded MESA
 setenv MESA_DIR /home/jschwab/Software/mesa
