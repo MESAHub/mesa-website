@@ -13,27 +13,89 @@ If you subscribe to the mesa-users mailing list, you should have no
 trouble finding my email address.
 *** Contribute on GitHub
 Clone this repo and send me a pull request.
+** Repository Layout
+This site uses the [[http://jekyllrb.com/][jekyll]] static site generator.  (The old site used
+webgen.) 
+*** ??-<name>.markdown
+These files are the main pages of the site.  They are written in
+Markdown and then the HTML pages are generated from these files.
+*** assets/
+This directory contains images, movies, etc.
+*** _config.yml
+This file contains options to control the configuration of jekyll.
+*** css/
+This directory contains the CSS files.  (They could use a good cleanup
+from someone who knows modern CSS.)
+*** _includes/
+This directory contains snippets like the site header (head.html),
+left side bar (leftside.html) and right news bar (news.html).
+*** _layouts/
+This directory has HTML templates that control the overall layout of
+the site.
+*** _plugins/
+This directory contains plug-ins (written in Ruby), which allow one to
+extend the functionality of jekyll.
+*** _posts/
+This directory contains a Markdown file for each of the MESA news
+posts that appear in the right hand sidebar.
+*** _site/
+This directory should not be under version control, but will be
+created once you run jekyll.  It contains the static version of the
+website, which is what is copied to the sourceforge server.
 ** Generating
-Unless you are making large changes to the site and need to see the
-effects as you go along, there will be no need to generate the site.
+If you're making significant changes to the site, you probably want to
+see the effects of your changes as you go along.  You can generate and
+view a version of the site on your own machine.
 
-We now use the [[http://jekyllrb.com/][jekyll]] static site generator.  (The old site used
-webgen.)  If you want to generate the site on your own machine,
-install jekyll
+First, install a current version (1.9+) of ruby, using whichever tools
+are appropriate for your OS (e.g., port, brew, apt-get, pacman, etc.).
+This will come with rubygems (a ruby package manager).
+
+Next, install the following three gems.  (Rubygems will take care of
+installing their dependencies).
+
 #+BEGIN_EXAMPLE
 gem install jekyll
+gem install therubyracer
+gem install nokogiri
 #+END_EXAMPLE
-and then do
-#+BEGIN_EXAMPLE
-jekyll build
-#+END_EXAMPLE
-to generate the site.
 
-You can have jekyll serve a local copy for you with
+Next, clone this git repository.
 #+BEGIN_EXAMPLE
-jekyll serve
+git clone https://github.com/jschwab/mesa-website
 #+END_EXAMPLE
-Read the jekyll documentation to learn more.
+
+Now, change to the mesa-website directory and tell jekyll to serve a
+local copy of the site for you.
+#+BEGIN_EXAMPLE
+jekyll serve --watch
+#+END_EXAMPLE
+Visit 0.0.0.0:4000 in your web browser to see the site.  As you edit
+the files, the site will be regenerated to reflect the changes you've
+made.  Read the jekyll documentation to learn more.
+
+Once you've finished making your changes, commit them and then send me
+a pull request or email me a patch.
 ** Publishing
 Email me if you want to know about how the site is published to
 sourceforge.
+** Doing a MESA release
+The following things need to be done when a new MESA release occurs.
+*** Edit _config.yml
+Update the version number to the current release.
+*** Check the tutorial 
+Make a copy of the star/work directory and run the default inlists
+with the new MESA version. Check to make sure that the output roughly
+agrees with what is written in 03-staring.markdown.  If not, update
+the tutorial to reduce possible confusion for new users.
+*** Add a news post
+Copy an existing release newspost (e.g.,
+_posts/2014-06-08-r6596.markdown) and update the date and release
+number.  Briefly summarize the release notes, mentioning any major
+changes or issues that require user intervention.  Link to the mailing
+list post announcing the new release.
+*** Update the defaults files
+Copy the defaults files for the latest release.
+#+BEGIN_EXAMPLE
+cp $MESA_DIR/star/defaults/*.defaults _includes/
+#+END_EXAMPLE
