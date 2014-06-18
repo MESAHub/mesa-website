@@ -99,3 +99,44 @@ Copy the defaults files for the latest release.
 #+BEGIN_EXAMPLE
 cp $MESA_DIR/star/defaults/*.defaults _includes/
 #+END_EXAMPLE
+*** Upload a new zip file to sourceforge
+Make a zip file of the latest release.  Here's an example script to do
+that.
+
+#+BEGIN_EXAMPLE
+
+do_one() {
+
+    MESA_SVN=/home/jschwab/Software/mesa-svn
+    MESA_FILENAME=mesa-r$1
+
+    svn export -r $1 ${MESA_SVN} /tmp/${MESA_FILENAME}
+
+    zip -r /tmp/${MESA_FILENAME}.zip /tmp/${MESA_FILENAME}
+    rsync -e ssh /tmp/${MESA_FILENAME}.zip frs.sourceforge.net:/home/frs/project/mesa/releases
+
+    rm /tmp/${MESA_FILENAME}.zip
+    rm -rf /tmp/${MESA_FILENAME}
+
+}
+
+do_one 6596
+#+END_EXAMPLE
+
+If you need to adjust the modification date of the zipfile, here's a
+sketch how to do so.
+
+Get the modification date from the svn logs:
+#+BEGIN_EXAMPLE
+svn log -r 6596 ${MESA_SVN} | grep -oE "[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} -[0-9]{4}"
+#+END_EXAMPLE
+
+Get a shell on sourceforge:
+#+BEGIN_EXAMPLE
+ssh -t jschwab,mesa@shell.sourceforge.net create
+#+END_EXAMPLE
+
+In the shell, touch the file with the date:
+#+BEGIN_EXAMPLE
+touch --date="2014-06-06 19:30:30 -0700" mesa-r6596.zip
+#+END_EXAMPLE
