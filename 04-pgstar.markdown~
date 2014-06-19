@@ -37,9 +37,13 @@ the same as one of the column headings in your current
 LOGS/history.data -- these are the same as the entries in the
 history\_columns.list but with any spaces replaced by "\_".  For
 example, "center h1" in history\_columns.list changes to "center\_h1" as a
+<<<<<<< HEAD
 column heading in LOGS/history.data, so you should use "center_h1" 
 as the name in the plot.
-
+=======
+column heading in LOGS/history.data, so you should use "center_h1" as the 
+name in the plot.
+>>>>>>> a471db482f37693a9ebbc286d1f9d43f3d700c49
 
 ### Single Panel, Multiple Panel, and Grid Plots
 
