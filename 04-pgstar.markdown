@@ -40,6 +40,7 @@ example, "center h1" in history\_columns.list changes to "center\_h1" as a
 column heading in LOGS/history.data, so you should use "center_h1" 
 as the name in the plot.
 
+
 ### Single Panel, Multiple Panel, and Grid Plots
 
 Single panel plots contain one graph, optionally with a 2nd Y axis.
