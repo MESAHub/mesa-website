@@ -36,8 +36,9 @@ can show it in a history plot.  The name for a history item must be
 the same as one of the column headings in your current
 LOGS/history.data -- these are the same as the entries in the
 history\_columns.list but with any spaces replaced by "\_".  For
-example, "center h1" in the columns list changes to "center\_h1" as a
-column heading, so you should use "center_h1" as the name in the plot.
+example, "center h1" in history\_columns.list changes to "center\_h1" as a
+column heading in LOGS/history.data, so you should use "center_h1" as the
+name in the plot.
 
 ### Single Panel, Multiple Panel, and Grid Plots
 
