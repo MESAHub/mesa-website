@@ -462,7 +462,7 @@ Change the text summary to report 'log\_L\_div\_Ledd' instead of 'log\_LH'.
 
 {% highlight fortran %}
 
-Summary1_name(3,4) = 'log_L_div_Ledd'
+Text_Summary1_name(3,4) = 'log_L_div_Ledd'
 
 {% endhighlight %}
 
