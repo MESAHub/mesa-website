@@ -58,6 +58,7 @@ installing their dependencies).
 gem install jekyll
 gem install therubyracer
 gem install nokogiri
+gem install parslet
 #+END_EXAMPLE
 
 Next, clone this git repository.
@@ -98,6 +99,11 @@ list post announcing the new release.
 Copy the defaults files for the latest release.
 #+BEGIN_EXAMPLE
 cp $MESA_DIR/star/defaults/*.defaults _includes/
+#+END_EXAMPLE
+
+Now run the provided parser/converter
+#+BEGIN_EXAMPLE
+ruby parseDefaults.rb
 #+END_EXAMPLE
 *** Upload a new zip file to sourceforge
 Make a zip file of the latest release.  Here's an example script to do
