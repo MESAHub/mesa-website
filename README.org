@@ -110,13 +110,13 @@ do_one() {
     MESA_SVN=/home/jschwab/Software/mesa-svn
     MESA_FILENAME=mesa-r$1
 
-    svn export -r $1 ${MESA_SVN} /tmp/${MESA_FILENAME}
+    svn export -r $1 ${MESA_SVN} ${MESA_FILENAME}
 
-    zip -r /tmp/${MESA_FILENAME}.zip /tmp/${MESA_FILENAME}
-    rsync -e ssh /tmp/${MESA_FILENAME}.zip frs.sourceforge.net:/home/frs/project/mesa/releases
+    zip -r ${MESA_FILENAME}.zip ${MESA_FILENAME}
+    rsync -e ssh ${MESA_FILENAME}.zip frs.sourceforge.net:/home/frs/project/mesa/releases
 
-    rm /tmp/${MESA_FILENAME}.zip
-    rm -rf /tmp/${MESA_FILENAME}
+    rm ${MESA_FILENAME}.zip
+    rm -rf ${MESA_FILENAME}
 
 }
 
