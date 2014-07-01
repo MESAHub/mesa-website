@@ -1,5 +1,8 @@
 require 'nokogiri'
 
+# this code is based on
+# https://github.com/dafi/jekyll-toc-generator/blob/master/_plugins/tocGenerator.rb
+
 module Jekyll
   module TOCGenerator
     TOGGLE_HTML = '<div id="toctitle"><h2>%1</h2>%2</div>'
