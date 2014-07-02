@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'nokogiri'
 
 # this code is based on
@@ -45,7 +46,8 @@ module Jekyll
           end
 
           num = "%s.%s" % [h1_index+1, h2_index+1]
-          level_html += create_level_html(anchor_id, num, h2.text, '')
+          level_html += create_level_html(anchor_id, num, h2.text.chomp(' ¶'), '')
+
         end
 
         if level_html.length > 0
@@ -60,7 +62,7 @@ module Jekyll
         end
 
         num = (h1_index+1).to_s
-        toc_html += create_level_html(anchor_id, num, h1.text, level_html);
+        toc_html += create_level_html(anchor_id, num, h1.text.chomp(' ¶'), level_html);
 
       end
 
