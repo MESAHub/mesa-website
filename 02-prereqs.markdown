@@ -128,7 +128,7 @@ ones.  To repeat: always use "-r", and to make sure that you get an
 officially released version always follow "-r" with the version
 number of an [official MESA release][versions].
 
-[versions]:http://mesa.sourceforge.net/faq.html#tocAnchor-1-1-8
+[versions]:faq.html#releases
 
 ## Set your environment variables
 

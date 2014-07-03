@@ -43,6 +43,7 @@ we simply haven't been able to get it to work!  So if you REALLY want
 to use an antique 32-bit system for MESA, you'll have to try to make
 it work yourself.
 
+<a id="releases"></a>
 ## Which SVN revisions were MESA release versions?
 
 {% include releases.html %}
