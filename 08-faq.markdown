@@ -3,12 +3,14 @@ layout: default
 title: FAQ
 permalink: faq.html
 ---
-# What are some frequently asked questions about MESA?
+
+# General Questions
+
 ## How do you say MESA?
 
 Say "MAY-sa".
 
-## Can I use the MESA logo in an presentation?
+## Can I use the MESA logo in a talk or presentation?
 
 Yes.  It is available in a variety of sizes for your convenience.
 
@@ -18,6 +20,68 @@ Yes.  It is available in a variety of sizes for your convenience.
 * [144 pt](/assets/logo/mesa_logo2_144pt.png)
 * [200 pt](/assets/logo/mesa_logo2_200pt.png)
 * [400 pt](/assets/logo/mesa_logo2_400pt.png)
+
+## What happens when an instrument paper is being written?
+
+The picture shows the intense authors hard at work making final edits.
+
+![writing the mesa paper](/assets/images/paper_session.jpg "Paper Session")
+
+A late night session working on the paper around Bill's dining room
+table with a projector, a makeshift screen, and ample red wine (left
+to right, Frank Timmes, Aaron Dotter, Falk Herwig, Lars Bildsten, and
+Bill Paxton).  Photo taken by Bill's patient wife, Kathlyn, who
+deserves a great deal of credit for the existence of MESA.
+
+
+# Prereqs & Installation
+
+## Can MESA be run on 32-bit machines?
+
+MESA is no longer supported on 32-bit systems.  This isn't by design;
+we simply haven't been able to get it to work!  So if you REALLY want
+to use an antique 32-bit system for MESA, you'll have to try to make
+it work yourself.
+
+## Which SVN revisions were MESA release versions?
+
+{% include releases.html %}
+
+
+## Why am I getting "wrong module version" errors?
+
+Errors like
+
+    Fatal Error: Wrong module version '7' (expected '5')
+
+typically arise because you have changed the gfortran compiler since
+you last built MESA.  (Sometimes a changed gfortran version is an
+indication that you forgot to activate the MESA SDK.)  To fix, run
+./clean in the MESA directory, and then try building again.
+
+
+# PGPLOT and pgstar
+
+## Why don't I see any PGPLOT output when I run MESA?
+
+Make sure you have the option pgstar\_flag = .TRUE. in the &star\_job
+section of your input file. Also, if you're not using the SDK, make
+sure you enabled PGPLOT in your utils/makefile_header file (when using
+the SDK, PGPLOT is enabled by default).
+
+
+# Programming
+
+## What programming language is MESA written in?
+
+Fortran.  But MESA is written using advanced features of modern
+Fortran which make it very different from Fortran 77 codes you might
+have previously seen (or written!).  If you are not already familiar
+with the new and wonderful things that have been added, there are good
+resources available on the web -- here's one:
+[Fortran 95 language features][Fortran].
+
+[Fortran]:http://en.wikipedia.org/wiki/Fortran_95_language_features
 
 ## What does "thread-safe" mean?
 
@@ -62,35 +126,6 @@ to be done to make good use of more than 3 or 4 cores in
 MESA/star.<br> It will be an ongoing effort to improve the design of
 the code in that area; help with that is welcomed!
 
-## What happens when an instrument paper is being written?
-
-The picture shows the intense authors hard at work making final edits.
-
-![writing the mesa paper](/assets/images/paper_session.jpg "Paper Session")
-
-A late night session working on the paper around Bill's dining room
-table with a projector, a makeshift screen, and ample red wine (left
-to right, Frank Timmes, Aaron Dotter, Falk Herwig, Lars Bildsten, and
-Bill Paxton).  Photo taken by Bill's patient wife, Kathlyn, who
-deserves a great deal of credit for the existence of MESA.
-
-## Can MESA be run on 32-bit machines?
-
-MESA is no longer supported on 32-bit systems.  This isn't by design;
-we simply haven't been able to get it to work!  So if you REALLY want
-to use an antique 32-bit system for MESA, you'll have to try to make
-it work yourself.
-
-## Why wasn't MESA written on punch cards?
-
-MESA is written using advanced features of modern Fortran which make
-it very different from Fortran 77 codes you might have previously seen
-(or written!).  If you are not already familiar with the new and
-wonderful things that have been added, there are good resources
-available on the web -- here's one:
-[Fortran 95 language features][Fortran].
-
-[Fortran]:http://en.wikipedia.org/wiki/Fortran_95_language_features
 
 ## How can I use an individual MESA module?
 
@@ -99,8 +134,4 @@ MESA directory you will find a subdirectory called “sample”. Make a
 copy of the sample directory anywhere you’d like and give it whatever
 name you want. Follow the instructions in the README file to make and
 test the sample.
-
-## Which SVN revisions were MESA release versions?
-
-{% include releases.html %}
 

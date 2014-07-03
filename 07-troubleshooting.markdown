@@ -9,10 +9,16 @@ This page has information about troubleshooting MESA.
 
 ## Consult the FAQ
 
-Your first stop, especially if you're having a problem with
-installation, should be to consult the [MESA Forum FAQ][faq].
+Check to see if there is any information about your problem in the
+[MESA FAQ][faq].
 
-[faq]:http://mesastar.org/documentation/frequently-asked-questions
+[faq]:faq.html
+
+If you are using the MESA SDK and are having a problem with
+installation, you should also consult the [MESA SDK FAQ][sdkfaq].
+
+[sdkfaq]:http://mesastar.org/documentation/frequently-asked-questions
+
 
 ## Search the mesa-users mailing list archive
 
