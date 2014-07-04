@@ -8,4 +8,4 @@ categories: release
 Revision 5596 has been designated a MESA release version.  For the
 release notes, see [this mailing list post][notes].
 
-[notes]:http://sourceforge.net/mailarchive/message.php?msg_id=31643416
+[notes]:http://sourceforge.net/p/mesa/mailman/message/31643416/

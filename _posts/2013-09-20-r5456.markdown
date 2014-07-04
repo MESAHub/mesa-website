@@ -5,4 +5,8 @@ date:   2013-09-20
 categories: release
 ---
 
-Revision 5456 has been designated a MESA release version.
+Revision 5456 has been designated a MESA release version.  For the
+release notes, see [this mailing list post][notes].
+
+[notes]:http://sourceforge.net/p/mesa/mailman/message/31428288/
+
