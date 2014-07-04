@@ -17,7 +17,7 @@ Check to see if there is any information about your problem in the
 If you are using the MESA SDK and are having a problem with
 installation, you should also consult the [MESA SDK FAQ][sdkfaq].
 
-[sdkfaq]:http://mesastar.org/documentation/frequently-asked-questions
+[sdkfaq]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Frequently_Asked_Questions_.01FAQ.01
 
 
 ## Search the mesa-users mailing list archive
