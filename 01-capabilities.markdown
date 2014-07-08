@@ -16,7 +16,12 @@ of problems that can be studied using MESA.
 * [Paper 1 (Paxton et al. 2011)](http://adsabs.harvard.edu/abs/2011ApJS..192....3P)
 * [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
 
-To give you some more flavor of what MESA can do, here are some movies
+Additional capabilities are documented by MESA users in their publications
+
+* [Citations to Instrument Paper 1 ](http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=2011ApJS..192....3P&amp;refs=CITATIONS&amp;db_key=AST)
+* [Citations to Instrument Paper 2 ](http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=2013ApJS..208....4P&amp;refs=CITATIONS&amp;db_key=AST)
+
+To give you yet more flavor of what MESA can do, here are some movies
 made using png output from mesa/star.
 
 ## Evolve a 1 Msun star
