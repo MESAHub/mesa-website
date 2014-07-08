@@ -103,7 +103,7 @@ cp $MESA_DIR/star/defaults/*.defaults _includes/
 
 Now run the provided parser/converter
 #+BEGIN_EXAMPLE
-ruby parseDefaults.rb
+ruby make_docs.rb
 #+END_EXAMPLE
 *** Upload a new zip file to sourceforge
 Make a zip file of the latest release.  Here's an example script to do

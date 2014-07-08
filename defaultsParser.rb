@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'parslet'
 
-class Controls < Parslet::Parser
+class DefaultsParser < Parslet::Parser
 
   # the format being parsed is described in 
   # $MESA_DIR/star/defaults/FORMAT
@@ -87,73 +87,3 @@ class Controls < Parslet::Parser
   root :controls
 
 end
-
-def make_anchor(s)
-  String(s).gsub(' ', '_').gsub(/[^[:alnum:]_]/, '')
-end
-
-def escape_string(s)
-  String(s).gsub('_','\_')
-end
-
-class MarkdownControls < Parslet::Transform
-
-  # this is still a work in progress...
-
-  # for now, leave the values alone
-  rule(:number => simple(:x)) { x }
-  rule(:string => simple(:x)) { "'%s'" % [x] }
-  rule(:string => sequence(:x)) { "''" }
-  rule(:true => simple(:x)) { x }
-  rule(:false => simple(:x)) { x }
-
-  # text gets html-escapled
-  rule(:text => simple(:x)) { escape_string(x) }
-
-  # make the anchor
-  rule(:level => simple(:l), :anchor => simple(:a)) {
-    id = make_anchor(a)
-    level = String(l).length
-    "<h%i id=\"%s\">%s <a href=\"#%s\" title=\"Permalink to this headline\">¶</a></h%i>\n" % [level, id, a, id, level]
-  }
-
-  # option goes back to looking like it did in the fortran file
-  rule(:option => simple(:o),:value => simple(:v)) { '%s = %s' % [o,v] }
-  rule(:default => sequence(:x)) { ["{% highlight fortran %}", x.join("\n"), "{% endhighlight %}", ""].join("\n") }
-
-
-  rule(:comment => sequence(:x)) { x.join("\n") }
-
-  rule(:summary => sequence(:x)) { "<div class=\"comment\">\n%s\n</div>\n" % x.join("\n") }
-
-  rule(:section => sequence(:x)) { x.join("\n\n") }
-  rule(:section => simple(:x)) { x }
-
-  rule(:prelude => sequence(:p), :sections => sequence(:s)) { 
-    s.join("\n")
-  }
-
-  rule(:controls => simple(:x)) { x }
-
-end
-
-
-def parse(str)
-  c = Controls.new
-  return c.parse(str)
-rescue Parslet::ParseFailed => failure
-  puts failure.cause.ascii_tree
-end
-
-file = File.open("/home/jschwab/Software/mesa-git-svn/star/defaults/star_job.defaults")
-
-contents = file.read
-
-tree = parse(contents)
-md = MarkdownControls.new.apply(tree)
-
-g = File.open("./_includes/star_job.md", "w")
-g.write(md)
-g.close
-
-
