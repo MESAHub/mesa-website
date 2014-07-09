@@ -28,7 +28,7 @@ class DefaultsParser < Parslet::Parser
   # option is 
   # a value is a string, number, or boolean
 
-  rule(:option)     { match('[A-Za-z0-9_(:)]').repeat(1).as(:option) }
+  rule(:option)     { match('[A-Za-z0-9_(:),]').repeat(1).as(:option) }
 
   rule(:digit)      { match('[0-9]') }
 
