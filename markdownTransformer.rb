@@ -34,9 +34,10 @@ class MarkdownTransformer < Parslet::Transform
     "<h%i id=\"%s\">%s <a href=\"#%s\" title=\"Permalink to this location\">¶</a></h%i>\n" % [level, id, a, id, level]
   }
 
-  # option goes back to looking like it did in the fortran file
-  rule(:option => simple(:o),:value => simple(:v)) { '%s = %s' % [o,v] }
-  rule(:default => sequence(:x)) { ["{% highlight fortran %}", x.join("\n"), "{% endhighlight %}", ""].join("\n") }
+  # options go back to looking like they did in the fortran file
+  # except that trailing comments are dropped
+  rule(:option => simple(:o), :value => simple(:v)) { '%s = %s' % [o,v] }
+  rule(:option => simple(:o), :value => simple(:v), :trailingcomment => simple(:t)) { '%s = %s' % [o,v] }
 
   # default values will be syntax highlighted
   rule(:default => sequence(:x)) { ["{% highlight fortran %}", x.join("\n"), "{% endhighlight %}", ""].join("\n") }

@@ -50,7 +50,7 @@ class DefaultsParser < Parslet::Parser
     str('.true.').as(:true) | str('.false.').as(:false)
   }
 
-  rule(:default) { space? >> option >> equals >> value.as(:value) >> empty }
+  rule(:default) { space? >> option >> equals >> value.as(:value) >> (comment.as(:trailingcomment) | empty) }
 
 
   # a divider looks like !---- (or more)
