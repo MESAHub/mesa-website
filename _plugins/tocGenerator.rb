@@ -71,7 +71,12 @@ module Jekyll
         toc_table = TOC_CONTAINER_HTML
           .gsub('%1', CONTENTS_LABEL)
           .gsub('%2', toc_html);
-        doc.css('body').children.before(toc_table)
+
+        if doc.css('body > div#toc-container').size > 0 then
+          doc.css('body > div#toc-container').first.replace(toc_table)
+        else
+          doc.css('body').children.before(toc_table)
+        end
 
         doc.css('body').children.to_html()
 
