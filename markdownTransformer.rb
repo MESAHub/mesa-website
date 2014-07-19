@@ -6,13 +6,9 @@ def make_anchor(s)
 end
 
 def escape_string(s)
-  ss = String(s)
-  # prevent material that appears in literal blocks from being escaped
-  if ss.start_with?('    ') then
-    ss
-  else
-    ss.gsub('_','\_').gsub('*','\*')
-  end
+  # at this point, nothing needs escaped
+  # but this provides a hook if needed
+  String(s)
 end
 
 class MarkdownTransformer < Parslet::Transform
