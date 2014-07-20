@@ -3,10 +3,13 @@
 require_relative 'defaultsParser.rb'
 require_relative 'markdownTransformer.rb'
 
-DEFAULTS_PATH="./_includes/"
+# get the absolute path of this file
+FILE_PATH=File.expand_path(File.dirname(__FILE__))
+
+DEFAULTS_PATH=File.join(FILE_PATH,"_includes/")
 DEFAULTS_FILES=["FORMAT", "star_job.defaults", "controls.defaults", "pgstar.defaults"]
 
-OUTPUT_PATH="./_includes/"
+OUTPUT_PATH=File.join(FILE_PATH,"_includes/")
 
 def convert_file(filename)
   contents = File.open(filename).read
