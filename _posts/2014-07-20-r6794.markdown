@@ -20,4 +20,4 @@ and provides new (to the web) documentation for [star_job][star_job],
 
 For the full release notes, see [this mailing list post][notes].
 
-[notes]:http://example.com/
+[notes]:http://sourceforge.net/p/mesa/mailman/message/32629541/
