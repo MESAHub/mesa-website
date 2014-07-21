@@ -201,7 +201,7 @@
          
          show_TRho_Profile_mass_locs = .false.
          show_TRho_accretion_mesh_borders = .false.
-            !If true, plots the borders of the mesh and newly accreted material in the appropriate xcoord
+            ! If true, plots the borders of the mesh and newly accreted material in the appropriate xcoord
          show_TRho_Profile_kap_regions = .false.
          show_TRho_Profile_eos_regions = .false.
          show_TRho_Profile_degeneracy_line = .true.
