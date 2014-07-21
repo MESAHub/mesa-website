@@ -1,0 +1,23 @@
+---
+layout: post
+title:  "Release 6794"
+date:   2014-07-20
+categories: release
+---
+
+Revision 6794 has been designated a MESA release version.  This
+release includes changes to mixing, rotation, networks, and pgstar.
+This is the release that will be used in the 2014 MESA Summer School.
+
+This release also defines a [format for MESA defaults files][format],
+and provides new (to the web) documentation for [star_job][star_job],
+[controls][controls], and [pgstar][pgstar].
+
+[format]:/format.html
+[star_job]:/star_job_defaults.html
+[controls]:/controls_defaults.html
+[pgstar]:/pgstar_defaults.html
+
+For the full release notes, see [this mailing list post][notes].
+
+[notes]:http://example.com/
