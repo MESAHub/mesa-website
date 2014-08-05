@@ -48,6 +48,14 @@ it work yourself.
 
 {% include releases.html %}
 
+## Why is my MESA zipfile download taking forever?
+
+The MESA zipfiles are large (~1GB), so if you're on a slow connection,
+there's nothing to be done.  However, users have reported substantial
+variations in download speed from the sourceforge site.  If you are
+experiencing slow download speeds, you may want to change which mirror
+you are using.  (After you select a zipfile to download, click the
+"try another mirror" link near the top of the page.)
 
 ## Why am I getting "wrong module version" errors?
 

@@ -110,8 +110,13 @@ the [latest MESA release][release].
 [release]:http://sourceforge.net/projects/mesa/files/releases/mesa-r{{site.version}}.zip/download
 
 The compressed file is about 1GB, so don't worry if it takes a little
-while to download.  The installed package will be large, so make sure
-you have at least 10 GB free on your disk.
+while to download.  If you are experiencing slow download speeds, you
+may want to change which mirror you are using.  (After you select a
+zipfile to download, click the "try another mirror" link near the top
+of the page.)
+
+The unzipped and installed package will be large, so make sure you
+have at least 10 GB free on your disk.
 
 When you unzip the file, it will create a directory named
 mesa-r{{site.version}}.  This will be your main MESA directory.  You
