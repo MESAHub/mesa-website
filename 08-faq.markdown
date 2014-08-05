@@ -60,6 +60,16 @@ you last built MESA.  (Sometimes a changed gfortran version is an
 indication that you forgot to activate the MESA SDK.)  To fix, run
 ./clean in the MESA directory, and then try building again.
 
+<a id="svn-error"></a>
+## When I install MESA from a zipfile, why do I get svn errors?
+
+Older versions of MESA (r6794 or earlier) assumed that they would be
+installed from the subversion repository.  Therefore, if you install
+these versions from a zipfile, you will see messages like
+
+    svn: E155007: '/Users/fxt/mesa/mesa-r6794' is not a working copy
+
+when you run MESA.  These messages are safe to ignore.
 
 # PGPLOT and pgstar
 
@@ -135,4 +145,3 @@ MESA directory you will find a subdirectory called “sample”. Make a
 copy of the sample directory anywhere you’d like and give it whatever
 name you want. Follow the instructions in the README file to make and
 test the sample.
-
