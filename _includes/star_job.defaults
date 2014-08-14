@@ -251,19 +251,19 @@
 
    !# starting model
 
-         ! by default at the start of a run a zams starting model is loaded,
+         ! By default at the start of a run a zams starting model is loaded,
          ! and then the `initial_mass`, `initial_z`, and `initial_y` are adjusted as necessary.
-         ! however, there are alternatives.  you can use a model you saved previously,
+         ! However, there are alternatives.  you can use a model you saved previously,
          ! or you can request the system to create a pre-main-sequence model.
 
-         ! btw: the system finds the zams file by using the control called `zams_filename`
+         ! BTW: the system finds the zams file by using the control called `zams_filename`
          ! the default zams file is for Z=0.02 and lives in `data/star_data/zams_models`.
-         ! you can create your own zams file and use it instead -- see `test_suite/create_zams`.
+         ! You can create your own zams file and use it instead -- see `test_suite/create_zams`.
 
 
          !### load_saved_model
          !### saved_model_name
-         ! if load_saved_model is true, then use the specified initial model
+         ! If `load_saved_model` is true, then use the specified initial model.
 
       load_saved_model = .false.
       saved_model_name = 'undefined'
@@ -272,19 +272,19 @@
 
          !### create_pre_main_sequence_model
 
-         ! if true, the code will create a starting model with uniform composition,
+         ! If true, the code will create a starting model with uniform composition,
          ! a core temperature below 10^6 so no nuclear burning,
          ! and uniform contraction for enough luminosity to make it fully convective.
 
-         ! the mass is `initial_mass` from the controls namelist.
+         ! The mass is `initial_mass` from the controls namelist.
 
-         ! if `initial_y` is < 0 in the controls, then code uses `0.24 + 2*initial_z` for `initial_y`.
+         ! If `initial_y` is < 0 in the controls, then code uses `0.24 + 2*initial_z` for `initial_y`.
 
-         ! the h1 mass fraction is set to `1 - (initial_y + initial_z)`.
-         ! the he3 and he4 mass fractions are set according to `initial_y`
+         ! The h1 mass fraction is set to `1 - (initial_y + initial_z)`.
+         ! The he3 and he4 mass fractions are set according to `initial_y`
          ! with relative amounts set according to the AG89 solar mass fractions (from `chem_def`).
 
-         ! the metallicity is `initial_z` from the controls namelist
+         ! The metallicity is `initial_z` from the controls namelist
          ! with the metals fractions set according to the GS98 values (from `chem_def`).
 
          ! to set the metals fractions, use `initial_zfracs` (described below)
@@ -293,64 +293,64 @@
 
 
          !### pre_ms_T_c
-         ! initial center temperature (below 1d6)
-         ! if you have initial convergence problems creating a pre-ms model,
+         ! Initial center temperature (must be below 1d6).
+         ! If you have initial convergence problems creating a pre-ms model,
          ! you might try different values for `pre_ms_T_c` -- that sometimes helps.
 
       pre_ms_T_c = 3e5
 
 
          !### pre_ms_guess_rho_c
-         ! guess for initial center density; set to 0 to let code pick
+         ! Guess for initial center density; set to 0 to let the code pick.
 
       pre_ms_guess_rho_c = 0
 
 
          !### pre_ms_d_log10_P
-         ! suggested spacing in pressure between points; set to 0 to let code pick
+         ! Suggested spacing in pressure between points; set to 0 to let the code pick.
 
       pre_ms_d_log10_P = 0
 
 
          !### pre_ms_logT_surf_limit
          !### pre_ms_logP_surf_limit
-         ! model contruction is from inside out and stops when reaches either of the following limits.
+         ! Model contruction is from inside out and stops when reaches either of the following limits.
 
       pre_ms_logT_surf_limit = 3.7
       pre_ms_logP_surf_limit = 3.5
 
 
          !### pre_ms_relax_num_steps
-         ! let pre-ms model settle in for this many steps before changing anything else
+         ! Let pre-ms model settle in for this many steps before changing anything else.
 
       pre_ms_relax_num_steps = 100
 
 
 
          !### create_initial_model
-         ! this is an alternative to `create_pre_main_sequence_model`
-         ! if true, creates an adiabatic, contracting model for given mass and radius
-         ! assumes no nuclear burning and constant entropy. ignores radiation pressure.
+         ! This is an alternative to `create_pre_main_sequence_model`.
+         ! If true, creates an adiabatic, contracting model for given mass and radius
+         ! assumes no nuclear burning and constant entropy. Ignores radiation pressure.
 
       create_initial_model = .false.
 
 
          !### radius_in_cm_for_create_initial_model
          !### mass_in_gm_for_create_initial_model
-         ! radius in cm and mass in grams
+         ! Radius in cm and mass in grams.
 
       radius_in_cm_for_create_initial_model = 0
       mass_in_gm_for_create_initial_model = 0
 
 
          !### initial_model_relax_num_steps
-         ! let initial model settle in for this many steps before changing anything else
+         ! Let initial model settle in for this many steps before changing anything else.
 
       initial_model_relax_num_steps = 10
 
 
          !### initial_model_eps
-         ! integration accuracy
+         ! Integration accuracy.
 
       initial_model_eps = 0.05
 
@@ -363,17 +363,17 @@
 
 
          !### steps_to_take_before_terminate
-         ! if > 0, stop after taking this many steps
-         ! sets `max_model_number` = `model_number` + `steps_to_take_before_terminate`
-         ! ignore if <= 0
+         ! If > 0, stop after taking this many steps.
+         ! Sets `max_model_number` = `model_number` + `steps_to_take_before_terminate`.
+         ! Ignore if <= 0.
 
       steps_to_take_before_terminate = -1
 
 
          !### stop_if_this_file_exists
-         ! at each step, the code will try to open this file
-         ! if the file exists, it will terminate the run
-         ! if the file doesn't exist, it will keep going.
+         ! At each step, the code will try to open this file.
+         ! If the file exists, it will terminate the run.
+         ! If the file doesn't exist, it will keep going.
 
       stop_if_this_file_exists = ''
 
@@ -1094,7 +1094,7 @@
          !### eos_file_prefix
          !### eosDT_Z1_suffix
          !### eosPT_Z1_suffix
-         ! modify this to select a different set of EoS tables
+         ! Modify this to select a different set of EoS tables.
 
       eos_file_prefix = 'mesa'
       eosDT_Z1_suffix = '_CO_1'
@@ -1103,9 +1103,9 @@
 
          !### set_Z_all_HELM
          !### Z_all_HELM
-         ! max Z for using tables instead of switching to HELM
-         ! if `set_Z_all_HELM` false, just use the eos default
-         ! otherwise switch to HELM for Z > `Z_all_HELM`
+         ! Max Z for using tables instead of switching to HELM.
+         ! If `set_Z_all_HELM` false, just use the eos default.
+         ! Otherwise switch to HELM for Z > `Z_all_HELM`.
 
       set_Z_all_HELM = .false.
       Z_all_HELM = 1d99
@@ -1114,10 +1114,11 @@
          !### set_HELM_SCVH_lgTs
          !### logT_low_all_HELM
          !### logT_low_all_SCVH
-         ! transition temperature zone for SCVH to HELM at low T
-         ! if `set_HELM_SCVH_lgTs` true, change limits
-         ! `logT_low_all_HELM` use HELM for lgT <= this
-         ! `logT_low_all_SCVH` use SCVH for lgT >= this
+         ! Transition temperature zone for SCVH to HELM at low T.
+         ! If `set_HELM_SCVH_lgTs` true, change limits.
+
+         ! + `logT_low_all_HELM` : use HELM for lgT <= this
+         ! + `logT_low_all_SCVH` : use SCVH for lgT >= this
 
       set_HELM_SCVH_lgTs = .false.
       logT_low_all_HELM = 2.2d0
@@ -1127,10 +1128,11 @@
          !### set_HELM_OPAL_lgTs
          !### logT_all_HELM
          !### logT_all_OPAL
-         ! transition temperature zone for OPAL to HELM at high T
-         ! if `set_HELM_OPAL_lgTs` true, change limits
-         ! `logT_all_HELM` use HELM for lgT >= this
-         ! `logT_all_OPAL` use OPAL/SCVH for lgT <= this
+         ! Transition temperature zone for OPAL to HELM at high T.
+         ! If `set_HELM_OPAL_lgTs` true, change limits.
+
+         ! + `logT_all_HELM` :  use HELM for lgT >= this
+         ! + `logT_all_OPAL` : use OPAL/SCVH for lgT <= this
 
       set_HELM_OPAL_lgTs = .false.
       logT_all_HELM = 7.7d0
@@ -1140,11 +1142,13 @@
          !### set_logRho_OPAL_SCVH_limits
          !### logRho1_OPAL_SCVH_limit
          !### logRho2_OPAL_SCVH_limit
-         ! transition density zone for OPAL/SCVH to HELM/PC
-         ! if `set_logRho_OPAL_SCVH_limits` true, change limits
-         ! `logRho1_OPAL_SCVH_limit` don't use `OPAL_SCVH` for logRho > this
-         ! `logRho2_OPAL_SCVH_limit` full `OPAL_SCVH` okay for logRho < this
-         ! blend OPAL/SCVH with HELM/PC for logRho between these
+         ! Transition density zone for OPAL/SCVH to HELM/PC.
+         ! If `set_logRho_OPAL_SCVH_limits` true, change limits.
+
+         ! + `logRho1_OPAL_SCVH_limit` : don't use `OPAL_SCVH` for logRho > this
+         ! + `logRho2_OPAL_SCVH_limit` : full `OPAL_SCVH` okay for logRho < this
+
+         ! Blend OPAL/SCVH with HELM/PC for logRho between these.
 
       set_logRho_OPAL_SCVH_limits = .false.
       logRho1_OPAL_SCVH_limit = 2.6d0
@@ -1159,14 +1163,15 @@
          !### log_Gamma_all_PC
          !### PC_min_Z
 
-         ! change HELM PC limits
-         ! if `set_eos_PC_parameters` true, change limits
-         ! `mass_fraction_limit_for_PC`  skips species if abundance < this
-         ! `logRho1_PC_limit` use pure PC for logRho > this
-         ! `logRho2_PC_limit` don't use PC for logRho < this (>= 2.8 or so because of PPT)
-         ! `log_Gamma_all_HELM` =HELM for `log_Gamma` <= this (1.60206 = log10(40))
-         ! `log_Gamma_all_PC` PC for `log_Gamma` >= this (1.90309 = log10(80))
-         ! `PC_min_Z` don't use PC for Z < this
+         ! Change HELM PC limits.
+         ! If `set_eos_PC_parameters` true, change limits.
+
+         ! + `mass_fraction_limit_for_PC` : skips species if abundance < this
+         ! + `logRho1_PC_limit` : use pure PC for logRho > this
+         ! + `logRho2_PC_limit` : don't use PC for logRho < this (>= 2.8 or so because of PPT)
+         ! + `log_Gamma_all_HELM` : HELM for `log_Gamma` <= this (1.60206 = log10(40))
+         ! + `log_Gamma_all_PC` : PC for `log_Gamma` >= this (1.90309 = log10(80))
+         ! + `PC_min_Z` : don't use PC for Z < this
 
       set_eos_PC_parameters = .false.
       mass_fraction_limit_for_PC = 1d-2
@@ -1181,10 +1186,10 @@
          !### HELM_include_radiation
          !### HELM_always_skip_elec_pos
 
-         ! flags for controlling parts of HELM
-         ! if HELM skips electron-positron, it also skips coulomb.
-         ! together, this reduces HELM to doing an ideal gas eos.
-         ! if you'd like to see what happens using an ideal gas for all cases, then
+         ! Flags for controlling parts of HELM.
+         ! If HELM skips electron-positron, it also skips coulomb.
+         ! Together, this reduces HELM to doing an ideal gas eos.
+         ! If you'd like to see what happens using an ideal gas for all cases, then
          ! set these controls:
 
          !     set_other_HELM_flags = .true.
@@ -1207,8 +1212,8 @@
          !### change_net
          !### new_net_name
          !### change_initial_net
-         ! for switching reaction networks
-         ! `new_net_name` only used if `change_net` if true
+         ! For switching reaction networks.
+         ! `new_net_name` only used if `change_net` if true.
 
       change_net = .false.
       new_net_name = ''
@@ -1216,14 +1221,14 @@
 
 
          !### adjust_abundances_for_new_isos
-         ! if false, new isos initial abundance set to 0
+         ! If false, new isos initial abundance set to 0.
 
       adjust_abundances_for_new_isos = .true.
 
 
          !### set_rates_preference
          !### new_rates_preference
-         ! only used if `set_rates_preference` is true
+         ! Only used if `set_rates_preference` is true.
 
          ! + 1 = NACRE rates
          ! + 2 = jina reaclib rates
@@ -1233,23 +1238,39 @@
 
 
          !### set_rate_c12ag
-         ! empty string means ignore this control
-         ! one of 'NACRE', 'jina reaclib', 'Kunz', or 'CF88'
+         ! Empty string means ignore this control.
+         ! Can be one of:
+
+         ! + 'NACRE'
+         ! + 'jina reaclib'
+         ! + 'Kunz'
+         ! + 'CF88'
+
          ! (note: our CF88 is larger than the original by a factor of 1.7)
 
       set_rate_c12ag = ''
 
 
          !### set_rate_n14pg
-         ! empty string means ignore this control
-         ! one of 'NACRE', 'jina reaclib', or 'CF88'
+         ! Empty string means ignore this control.
+         ! Can be one of 
+
+         ! + 'NACRE'
+         ! + 'jina reaclib'
+         ! + 'CF88'
 
       set_rate_n14pg = ''
 
 
          !### set_rate_3a
-         ! empty string means ignore this control
-         ! one of 'NACRE', 'jina reaclib', 'CF88', or 'FL87'
+         ! Empty string means ignore this control.
+         ! Can be one of
+
+         ! + 'NACRE'
+         ! + 'jina reaclib'
+         ! + 'CF88'
+         ! + 'FL87'
+
          ! FL87 is Fushiki and Lamb, Apj, 317, 368-388, 1987
          ! and includes both strong screening and pyconuclear
 
@@ -1257,13 +1278,14 @@
 
 
          !### set_rate_1212
-         ! empty string means ignore this control
-         ! one of 'CF88_basic_1212', 'CF88_multi_1212', or 'G05'
-         ! `CF88_basic_1212` is the single rate approximation from CF88.
-         ! `CF88_multi_1212` combines the rates for the n, p, and a channels.
-         ! c12(c12,n)mg23, c12(c12,p)na23, and c12(c12,a)ne20
+         ! Empty string means ignore this control.
+         ! Can be one of: 
+
+         ! + `'CF88_basic_1212'` : the single rate approximation from CF88.
+         ! + `'CF88_multi_1212'` : combines the rates for the n, p, and a channels.
+         ! c12(c12,n)mg23, c12(c12,p)na23, and c12(c12,a)ne20 and
          ! uses neutron branching from dayras, switkowski, and woosley, 1976.
-         ! G05 is based on Gasques, et al. Phys Review C, 72, 025806 (2005)
+         ! + `'G05'` : based on Gasques, et al. Phys Review C, 72, 025806 (2005)
 
       set_rate_1212 = ''
 
@@ -1271,8 +1293,8 @@
          !### num_special_rate_factors
          !### reaction_for_special_factor
          !### special_rate_factor
-         ! for using other special rate factors
-         ! `num_special_rate_factors` must be <= `max_num_special_rate_factors`
+         ! For using other special rate factors.
+         ! `num_special_rate_factors` must be <= `max_num_special_rate_factors`.
 
       num_special_rate_factors = 0
       reaction_for_special_factor(:) = ''
@@ -1283,8 +1305,8 @@
          !### h_he_net
          !### co_net
          !### adv_net
-         ! if `auto_extend_net` true, then automatically extend the net as needed
-         ! from `h_he_net` to `co_net` and then to `adv_net`
+         ! If `auto_extend_net` true, then automatically extend the net as needed
+         ! from `h_he_net` to `co_net` and then to `adv_net`.
 
       auto_extend_net = .true.
       h_he_net = 'basic.net'
@@ -1297,8 +1319,8 @@
          !### min_x_for_n
          !### min_x_for_add
 
-         ! Heger-style adaptive network (Woosley, Heger, et al, ApJSS, 151:75-102, 2004)
-         ! if `enable_adaptive_network` is true, then
+         ! Heger-style adaptive network (Woosley, Heger, et al, ApJSS, 151:75-102, 2004).
+         ! If `enable_adaptive_network` is true, then
          ! at each step, the system calculates a new set of isos according to the following rules:
 
          !     for each iso in the current net:
@@ -1315,11 +1337,11 @@
          !         (Z+1,N-1) (Z-1,N+1)   -- exchange proton/neutron
          !         (Z+4,N+4) (Z+3,N+4)   -- extend alpha chain
 
-         ! isos in the previous net can be dropped if they have x < `min_x_for_keep` and
+         ! Isos in the previous net can be dropped if they have x < `min_x_for_keep` and
          ! no other iso in the previous net causes them to be included in the new net.
-         ! the new net has the included isos and all relevant reactions.
-         ! the definition for the new net is saved to a text file in your local "nets" directory.
-         ! the file name is composed of the model number and the number of species.
+         ! The new net has the included isos and all relevant reactions.
+         ! The definition for the new net is saved to a text file in your local "nets" directory.
+         ! The file name is composed of the model number and the number of species.
 
       enable_adaptive_network = .false.
       min_x_for_keep = 1d-23
@@ -1329,60 +1351,63 @@
 
 
          !### net_reaction_filename
-         ! looks first in current directory, then in `mesa_data_dir/net_data`
+         ! Looks first in current directory, then in `mesa_data_dir/net_data`.
 
       net_reaction_filename = 'reactions.list'
 
 
          !### jina_reaclib_filename
-         ! empty string means use current standard version
-         ! else give name of file in directory `mesa/data/rates_data`
-         ! e.g., `jina_reaclib_results_20130213default2`  --- 18.8 MB file of rates data
-         ! to use previous version, set to `jina_reaclib_results05301331`
+         ! Empty string means use current standard version.
+         ! Else give name of file in directory `mesa/data/rates_data`,
+         ! e.g., `jina_reaclib_results_20130213default2`
+         ! (which is an 18.8 MB file of rates data).
+         ! To use previous version, set to `jina_reaclib_results05301331`.
       jina_reaclib_filename = ''
 
 
          !### rate_tables_dir
-         ! it will look for a local directory of this name first.
-         ! if doesn't find one, it will use the one in `data/rates_data`.
+         ! It will look for a local directory of this name first.
+         ! If doesn't find one, it will use the one in `data/rates_data`.
 
       rate_tables_dir = 'rate_tables'
 
 
 
          !### rate_cache_suffix
-         ! if this not empty, then use it when creating names
+         ! If this not empty, then use it when creating names
          ! for cache files for reaction rates from `rate_tables_dir`.
-         ! if empty, the suffix will be '0'.
+         ! If empty, the suffix will be '0'.
 
       rate_cache_suffix = ''
 
 
          !### T9_weaklib_full_off
          !### T9_weaklib_full_on
-         ! weak rates blend weaklib and reaclib according to temperature
-         ! these can be used to overwrite the defaults in mesa/rates/public/rates_def
-         ! `T9_weaklib_full_off`  use pure reaclib for T <= this (ignore if <= 0)
-         ! `T9_weaklib_full_on` use pure weaklib for T >= this (ignore if <= 0)
+         ! Weak rates blend weaklib and reaclib according to temperature.
+         ! These can be used to overwrite the defaults in `mesa/rates/public/rates_def`
+
+         ! + `T9_weaklib_full_off` : use pure reaclib for T <= this (ignore if <= 0)
+         ! + `T9_weaklib_full_on` : use pure weaklib for T >= this (ignore if <= 0)
 
       T9_weaklib_full_off = 0.01d0
       T9_weaklib_full_on = 0.02d0
 
 
          !### weaklib_blend_hi_Z
-         ! ignore if <= 0
-         ! blend for intermediate temperatures
-         ! for high Z elements, switch to reaclib at temp where no longer fully ionized
-         ! as rough approximation for this, we switch at Fe to higher values of T9
+         ! Ignore if <= 0.
+         ! Blend for intermediate temperatures.
+         ! For high Z elements, switch to reaclib at temp where no longer fully ionized.
+         ! As rough approximation for this, we switch at Fe to higher values of T9.
 
       weaklib_blend_hi_Z = 26
 
 
          !### T9_weaklib_full_off_hi_Z
          !### T9_weaklib_full_on_hi_Z
-         ! if input element has Z >= `weaklib_blend_hi_Z`, then use the following T9 limits
-         ! `T9_weaklib_full_off_hi_Z` use pure reaclib for T <= this (ignore if <= 0)
-         ! `T9_weaklib_full_on_hi_Z` use pure weaklib for T >= this (ignore if <= 0)
+         ! If input element has Z >= `weaklib_blend_hi_Z`, then use the following T9 limits:
+
+         ! + `T9_weaklib_full_off_hi_Z` : use pure reaclib for T <= this (ignore if <= 0)
+         ! + `T9_weaklib_full_on_hi_Z` : use pure weaklib for T >= this (ignore if <= 0)
 
       T9_weaklib_full_off_hi_Z = 0.063d0
       T9_weaklib_full_on_hi_Z = 0.073d0
@@ -1393,7 +1418,7 @@
    !# kap controls
 
          !### kappa_file_prefix
-         ! modify this to select a different set of opacity tables
+         ! Modify this to select a different set of opacity tables.
          ! alternatives: 
 
          ! + `'gn93'`
@@ -1406,7 +1431,7 @@
 
 
          !### kappa_lowT_prefix
-         ! for lower temperatures.
+         ! For lower temperatures.
          ! alternatives:
 
          ! + `'lowT_Freedman11'`
@@ -1419,29 +1444,32 @@
 
 
          !### kappa_blend_logT_upper_bdy
-         ! <= 0 means use default
-         ! actual upper boundary will be min of this and max logT for lowT tables
+         ! <= 0 means use default.
+         ! Actual upper boundary will be min of this and max logT for lowT tables.
 
       kappa_blend_logT_upper_bdy = 4.1d0
 
 
          !### kappa_blend_logT_lower_bdy
          ! <= 0 means use default
-         ! actual lower boundary will be max of this and min logT for highT tables
+         ! Actual lower boundary will be max of this and min logT for highT tables.
 
       kappa_blend_logT_lower_bdy = 4.0d0
 
 
          !### kappa_type2_logT_lower_bdy
          ! <= 0 means use default
-         ! only use type2 opacities at temperatures above this limit
+         ! Only use type2 opacities at temperatures above this limit.
 
       kappa_type2_logT_lower_bdy = 3.8d0
 
 
          !### kappa_CO_prefix
-         ! for C/O enhanced (Type 2 OPAL opacities)
-         ! alternatives: 'gn93_co', 'a09_co'
+         ! For C/O enhanced (Type 2 OPAL opacities).
+         ! alternatives:
+
+         ! + 'gn93_co'
+         ! + 'a09_co'
 
       kappa_CO_prefix = 'gn93_co'
 
@@ -1452,18 +1480,20 @@
 
          !### ionization_file_prefix
          !### ionization_Z1_suffix
-         ! prefix and suffix of ionization files
+         ! Prefix and suffix of ionization files.
 
       ionization_file_prefix = 'ion'
       ionization_Z1_suffix = ''
 
 
-         ! "extra" parameters -- for use by your `run_star_extras` routines
+         !# "extra" parameters
+
+         ! For use by your `run_star_extras` routines.
 
          !### extras_lipar
          !### extras_ipar
-         ! `extras_lipar` number of integer parameters in `extras_ipar`
-         ! must be <= `max_extras_params` (defined in `run_star_support`)
+         ! `extras_lipar` number of integer parameters in `extras_ipar`.
+         ! Must be <= `max_extras_params` (defined in `run_star_support`)
 
       extras_lipar = 0
       extras_ipar(:) = 0
@@ -1471,8 +1501,8 @@
 
          !### extras_lrpar
          !### extras_rpar
-         ! `extras_lrpar` number of real(dp) parameters in `extras_rpar`
-         ! must be <= `max_extras_params` (defined in `run_star_support`)
+         ! `extras_lrpar` number of real(dp) parameters in `extras_rpar`.
+         ! Must be <= `max_extras_params` (defined in `run_star_support`)
 
       extras_lrpar = 0
       extras_rpar(:) = 0d0
@@ -1480,8 +1510,8 @@
 
          !### extras_lcpar
          !### extras_cpar
-         ! `extras_lcpar` number of string parameters in `extras_cpar`
-         ! must be <= `max_extras_params` (defined in `run_star_support`)
+         ! `extras_lcpar` number of string parameters in `extras_cpar`.
+         ! Must be <= `max_extras_params` (defined in `run_star_support`).
 
       extras_lcpar = 0
       extras_cpar(:) = ''
@@ -1489,8 +1519,8 @@
 
          !### extras_llpar
          !### extras_lpar
-         ! `extras_llpar`  number of logical parameters in `extras_lpar`
-         ! must be <= `max_extras_params` (defined in `run_star_support`)
+         ! `extras_llpar`  number of logical parameters in `extras_lpar`.
+         ! Must be <= `max_extras_params` (defined in `run_star_support`).
 
       extras_llpar = 0
       extras_lpar(:) = .false.
@@ -1498,9 +1528,9 @@
 
 
          !### first_model_for_timing
-         ! to get a breakdown of where the time is going
-         ! set `first_model_for_timing` to determine when the clocks start
-         ! at the end of the run, there will be some output to the terminal showing times
+         ! To get a breakdown of where the time is going
+         ! set `first_model_for_timing` to determine when the clocks start.
+         ! At the end of the run, there will be some output to the terminal showing times.
 
       first_model_for_timing = -1
 
@@ -1509,17 +1539,17 @@
 
          !### set_max_dt_to_frac_lifetime
          !### max_frac_of_lifetime_per_step
-         ! limit max timestep
-         ! if true, set `max_timestep` according to expected lifetime as a function of mass
-         ! use the Iben & Laughlin (1989) formula to estimate lifetime
-         ! multiply that times the value of `max_frac_of_lifetime_per_step` to get `max_timestep`.
+         ! limit max timestep.
+         ! If true, set `max_timestep` according to expected lifetime as a function of mass.
+         ! Use the Iben & Laughlin (1989) formula to estimate lifetime.
+         ! Multiply that times the value of `max_frac_of_lifetime_per_step` to get `max_timestep`.
 
       set_max_dt_to_frac_lifetime = .false.
       max_frac_of_lifetime_per_step = -1
 
 
          !### astero_just_call_my_extras_check_model
-         ! communications flag for astero and star
+         ! Communications flag for astero and star.
 
       astero_just_call_my_extras_check_model = .false.
 
@@ -1529,7 +1559,7 @@
 
    !# include other inlists
 
-         ! you can split your `star_job` inlist into pieces using the following controls.
+         ! You can split your `star_job` inlist into pieces using the following controls.
          ! BTW: it works recursively, so the extras can read extras too.
 
          !### read_extra_star_job_inlist{1..5}
