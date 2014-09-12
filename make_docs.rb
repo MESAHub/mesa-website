@@ -7,7 +7,7 @@ require_relative 'markdownTransformer.rb'
 FILE_PATH=File.expand_path(File.dirname(__FILE__))
 
 DEFAULTS_PATH=File.join(FILE_PATH,"_includes/")
-DEFAULTS_FILES=["FORMAT", "star_job.defaults", "controls.defaults", "pgstar.defaults"]
+DEFAULTS_FILES=["FORMAT", "star_job.defaults", "controls.defaults", "pgstar.defaults", "binary_controls.defaults"]
 
 OUTPUT_PATH=File.join(FILE_PATH,"_includes/")
 
