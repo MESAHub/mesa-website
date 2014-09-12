@@ -13,7 +13,11 @@ OUTPUT_PATH=File.join(FILE_PATH,"_includes/")
 
 def convert_file(filename)
   contents = File.open(filename).read
-  tree = DefaultsParser.new.parse(contents)
+  begin
+    tree = DefaultsParser.new.parse(contents)
+  rescue Parslet::ParseFailed => error
+    puts error.cause.ascii_tree
+  end
   MarkdownTransformer.new.apply(tree)
 end
 
