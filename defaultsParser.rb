@@ -63,6 +63,8 @@ class DefaultsParser < Parslet::Parser
   rule(:text) { match('[^\r\n]').repeat(1) }
   rule(:comment) { space? >> bang >> space1 >> text.as(:text) >> empty }
 
+  # an empty comment looks like
+  rule(:emptycomment) { space? >> bang >> newline }
 
   # the whole file comes in blocks
 
@@ -73,7 +75,7 @@ class DefaultsParser < Parslet::Parser
 
   rule(:block) { empty.repeat >> ( anchor |
                                    comment.repeat(1).as(:comment) |
-                                   default.repeat(1).as(:default) ) >> empty.repeat }
+                                   default.repeat(1).as(:default) ) >> (emptycomment | empty).repeat }
 
   # a section is composed of multiple blocks
   rule(:section) { divider >> block.repeat(1).as(:section) >> empty? }
