@@ -88,6 +88,15 @@ section of your input file. Also, if you're not using the SDK, make
 sure you enabled PGPLOT in your utils/makefile_header file (when using
 the SDK, PGPLOT is enabled by default).
 
+## How can I make a movie from my pgstar output?
+
+As of the 20140713 release, the MESA SDK includes the ffmpeg encoder
+and a simple script, images\_to\_movie.sh, which uses ffmpeg to create
+movies from PNG files produced by MESA.
+
+To make use of this capability, consult [Rich's instructions][movie-making].
+
+[movie-making]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Making_Movies
 
 # Programming
 
