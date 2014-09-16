@@ -22,10 +22,10 @@ installation, you should also consult the [MESA SDK FAQ][sdkfaq].
 
 ## Search the mesa-users mailing list archive
 
-Check the [mailing list archives][mla] to see if someone has had a similar
+Search the [mailing list archives][mla] to see if someone has had a similar
 problem in the past.
 
-[mla]:http://sourceforge.net/p/mesa/mailman/mesa-users/
+[mla]:http://sourceforge.net/p/mesa/mailman/search/?mail_list=mesa-users
 
 ## Post a question to mesa-users
 

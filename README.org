@@ -13,6 +13,27 @@ If you subscribe to the mesa-users mailing list, you should have no
 trouble finding my email address.
 *** Contribute on GitHub
 Clone this repo and send me a pull request.
+** Branching and Merging
+There are two branches.
+*** maint
+This branch contains the public version of the site.  Pull requests
+which fix problems spotted at mesa.sourceforge.net should be made
+against this branch.  maint is merged into master at least as often as
+MESA is released.
+#+BEGIN_EXAMPLE
+git checkout master
+git merge maint
+#+END_EXAMPLE
+*** master
+This branch contains changes which should be published in the next
+MESA release.  master is merged into maint at the time of a new MESA
+release.
+#+BEGIN_EXAMPLE
+git checkout maint
+git merge --ff-only master
+#+END_EXAMPLE
+There has not yet been a need for development on a longer timescale
+than that, so there is not a separate dev branch.
 ** Repository Layout
 This site uses the [[http://jekyllrb.com/][jekyll]] static site generator.  (The old site used
 webgen.) 

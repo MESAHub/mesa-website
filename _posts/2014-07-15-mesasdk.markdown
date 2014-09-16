@@ -1,0 +1,17 @@
+---
+layout: post
+title:  New MESA SDK Version
+date:   2014-07-15
+categories: mesasdk
+---
+
+Version 20140715 is now available for 64-bit Linux and OS X from the
+[SDK website][mesasdk].  The ffmpeg encoder is now bundled with the
+SDK, allowing users to easily make movies from the PNG files that MESA
+can create.
+
+For the full release notes, see [this mailing list post][notes].
+
+
+[mesasdk]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk
+[notes]:http://sourceforge.net/p/mesa/mailman/message/32602143/

@@ -48,6 +48,14 @@ it work yourself.
 
 {% include releases.html %}
 
+## Why is my MESA zipfile download taking forever?
+
+The MESA zipfiles are large (~1GB), so if you're on a slow connection,
+there's nothing to be done.  However, users have reported substantial
+variations in download speed from the sourceforge site.  If you are
+experiencing slow download speeds, you may want to change which mirror
+you are using.  (After you select a zipfile to download, click the
+"try another mirror" link near the top of the page.)
 
 ## Why am I getting "wrong module version" errors?
 
@@ -60,6 +68,16 @@ you last built MESA.  (Sometimes a changed gfortran version is an
 indication that you forgot to activate the MESA SDK.)  To fix, run
 ./clean in the MESA directory, and then try building again.
 
+<a id="svn-error"></a>
+## When I install MESA from a zipfile, why do I get svn errors?
+
+Older versions of MESA (r6794 or earlier) assumed that they would be
+installed from the subversion repository.  Therefore, if you install
+these versions from a zipfile, you will see messages like
+
+    svn: E155007: '/Users/fxt/mesa/mesa-r6794' is not a working copy
+
+when you run MESA.  These messages are safe to ignore.
 
 # PGPLOT and pgstar
 
@@ -70,6 +88,15 @@ section of your input file. Also, if you're not using the SDK, make
 sure you enabled PGPLOT in your utils/makefile_header file (when using
 the SDK, PGPLOT is enabled by default).
 
+## How can I make a movie from my pgstar output?
+
+As of the 20140713 release, the MESA SDK includes the ffmpeg encoder
+and a simple script, images\_to\_movie.sh, which uses ffmpeg to create
+movies from PNG files produced by MESA.
+
+To make use of this capability, consult [Rich's instructions][movie-making].
+
+[movie-making]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Making_Movies
 
 # Programming
 
@@ -135,4 +162,3 @@ MESA directory you will find a subdirectory called “sample”. Make a
 copy of the sample directory anywhere you’d like and give it whatever
 name you want. Follow the instructions in the README file to make and
 test the sample.
-

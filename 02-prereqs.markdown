@@ -41,12 +41,14 @@ user is to join the
 mesa-users" section of the form.)
 
 If you have requests for help, you should post your questions to
-mesa-users.  And once you begin to know how to use MESA, please help
-by responding to posts on the list.  You should also visit the
+mesa-users.  You should also
+[search the mailing list archives](http://sourceforge.net/p/mesa/mailman/search/?mail_list=mesa-users)
+to look for similar questions that may have been asked in the past.
+And once you begin to know how to use MESA, please help by responding
+to posts on the list.  You should also visit the
 [MESA Forum](http://mesastar.org/).  Registration (upper right corner)
 is not mandatory to view pages, but is required to post material on
 pages.
-
 
 ## Check the MESA map
 
@@ -110,8 +112,13 @@ the [latest MESA release][release].
 [release]:http://sourceforge.net/projects/mesa/files/releases/mesa-r{{site.version}}.zip/download
 
 The compressed file is about 1GB, so don't worry if it takes a little
-while to download.  The installed package will be large, so make sure
-you have at least 10 GB free on your disk.
+while to download.  If you are experiencing slow download speeds, you
+may want to change which mirror you are using.  (After you select a
+zipfile to download, click the "try another mirror" link near the top
+of the page.)
+
+The unzipped and installed package will be large, so make sure you
+have at least 10 GB free on your disk.
 
 When you unzip the file, it will create a directory named
 mesa-r{{site.version}}.  This will be your main MESA directory.  You
@@ -119,7 +126,10 @@ are free to rename it, just make sure to set MESA\_DIR accordingly
 (see the next section).
 
 You can also download zip files of [older MESA releases][releases].
+If you plan to do so, please read [this FAQ entry][svnerror].
+
 [releases]:http://sourceforge.net/projects/mesa/files/releases/
+[svnerror]:faq.html#svn-error
 
 If you'd prefer, you can instead checkout a copy of MESA from its
 subversion repository, using the command:
