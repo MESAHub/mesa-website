@@ -166,7 +166,7 @@ source $MESASDK_ROOT/bin/mesasdk_init.csh
 {% endhighlight %}
 
 One caveat is that if you put the MESA SDK in your shell profile,
-you'll always be using gcc 4.9 which may be a compatibility issue if
+you'll always be using the MESA SDK supplied version of gcc which may be a compatibility issue if
 you work with other other codes.  Alternative (unsupported)
 initialization scripts are available [here][mesasdk-init].
 
