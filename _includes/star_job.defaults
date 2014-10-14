@@ -278,7 +278,8 @@
 
          ! The mass is `initial_mass` from the controls namelist.
 
-         ! If `initial_y` is < 0 in the controls, then code uses `0.24 + 2*initial_z` for `initial_y`.
+         ! if `initial_y` is < 0 in the controls,
+         ! then code uses `0.24 + 2*initial_z` for `initial_y`.
 
          ! The h1 mass fraction is set to `1 - (initial_y + initial_z)`.
          ! The he3 and he4 mass fractions are set according to `initial_y`
@@ -314,7 +315,8 @@
 
          !### pre_ms_logT_surf_limit
          !### pre_ms_logP_surf_limit
-         ! Model contruction is from inside out and stops when reaches either of the following limits.
+         ! Model contruction is from inside out
+         ! and stops when reaches either of the following limits.
 
       pre_ms_logT_surf_limit = 3.7
       pre_ms_logP_surf_limit = 3.5
@@ -328,9 +330,17 @@
 
 
          !### create_initial_model
+
          ! This is an alternative to `create_pre_main_sequence_model`.
-         ! If true, creates an adiabatic, contracting model for given mass and radius
-         ! assumes no nuclear burning and constant entropy. Ignores radiation pressure.
+         ! If true, creates an adiabatic, contracting model for given mass and radius.
+         ! Assumes no nuclear burning and constant entropy. Ignores radiation pressure.
+         ! Uses star controls `initial_y` and `initial_z` to set X, Y, and Z.
+         ! Uses `initial_zfracs` to set abundances of metals.
+         
+         ! Note: if you'd like to do-it-yourself, then you can use `other_build_initial_model`.
+         ! In that case, in addition to setting `create_initial_model`, also set
+         ! star controls `use_other_build_initial_model`.
+         ! Then your `run_star_extras` routine will be called instead of the standard one.
 
       create_initial_model = .false.
 
@@ -342,6 +352,18 @@
       radius_in_cm_for_create_initial_model = 0
       mass_in_gm_for_create_initial_model = 0
 
+
+         !### center_logP_1st_try_for_create_initial_model
+         !### entropy_1st_try_for_create_initial_model
+         !### max_tries_for_create_initial_model
+         !### abs_e01_tolerance_for_create_initial_model
+         !### abs_e02_tolerance_for_create_initial_model
+
+      center_logP_1st_try_for_create_initial_model = 10.9d0
+      entropy_1st_try_for_create_initial_model = 11.5d0 ! (units boltzm/mp)
+      max_tries_for_create_initial_model = 100
+      abs_e01_tolerance_for_create_initial_model = 1d-4
+      abs_e02_tolerance_for_create_initial_model = 1d-4
 
          !### initial_model_relax_num_steps
          ! Let initial model settle in for this many steps before changing anything else.
@@ -463,6 +485,17 @@
       initial_zfracs = 3
 
 
+         !### dump_missing_metals_into_heaviest
+
+         ! this controls the treatment metals that are not included in the current net.
+         ! if this flag is true, then the mass fractions of missing metals are added 
+         ! to the mass fraction of the most massive metal included in the net.
+         ! if this flag is false, then the mass fractions of the metals in the net
+         ! are renormalized to make up for the total mass fraction of missing metals.
+
+      dump_missing_metals_into_heaviest = .true.
+
+
 
          !### file_for_uniform_xa
          !### set_uniform_initial_xa_from_file
@@ -529,7 +562,7 @@
          ! `relax_composition_filename` holds the desired composition profile information
          ! file format for relax composition
 
-         !     1st line: num_species  num_points
+         !     1st line: num_points  num_species  
          !     then 1 line for for each point where define desired composition
          !     xq xa(1) ... xa(num_species)
          !     xq = fraction of xmstar exterior to the point
@@ -567,7 +600,7 @@
          !### new_Y
          ! `relax_Y = .true.` gradually changes average Y, reconverging at each step.
          ! `change_Y = .true.` changes abundances; doesn't reconverge the model.
-         ! note: `relax_dY` in &controls determines the rate of change
+         ! note: `relax_dY` in the controls inlist determines the rate of change
 
       relax_Y = .false.
       change_Y = .false.
@@ -583,7 +616,7 @@
          !### new_Z
          ! `relax_Z = .true.` gradually changes average Z, reconverging at each step.
          ! `change_Z = .true.` simply changes abundances; doesn't reconverge the model.
-         ! note: `relax_dlnZ` in &controls determines the rate of change
+         ! note: `relax_dlnZ` in the controls inlist determines the rate of change
 
       relax_Z = .false.
       change_Z = .false.
@@ -675,18 +708,6 @@
       max_surf_dq_multiplier = 0
 
 
-         !### relax_surf_bc_offset_factor
-         !### relax_initial_surf_bc_offset_factor
-         !### new_bc_offset_factor
-         !### dlnbc_offset_factor
-         ! Gradually change `surf_bc_offset_factor`.
-
-      relax_surf_bc_offset_factor = .false.
-      relax_initial_surf_bc_offset_factor = .false.
-      new_bc_offset_factor = 0
-      dlnbc_offset_factor = 0
-
-
          !### relax_to_this_tau_factor
          !### dlogtau_factor
          !### relax_tau_factor
@@ -702,10 +723,12 @@
          ! `relax_tau_factor` true gradually changes `tau_factor`, reconverging at each step.
 
          ! `relax_tau_factor_after_core_He_burn` ignored if <= 0;
-         ! change `tau_factor` when center H1 < 1e-4 and center He4 < `relax_tau_factor_after_core_He_burn`.
+         ! change `tau_factor` when center H1 < 1e-4 and
+         ! center He4 < `relax_tau_factor_after_core_He_burn`.
 
          ! `relax_tau_factor_after_core_C_burn` ignored if <= 0;
-         ! change `tau_factor` when center H1 < 1e-4, He4 < 1e-4, and center C12 < `relax_tau_factor_after_core_C_burn`.
+         ! change `tau_factor` when center H1 < 1e-4,
+         ! He4 < 1e-4, and center C12 < `relax_tau_factor_after_core_C_burn`.
 
 
       relax_to_this_tau_factor = -1
@@ -752,6 +775,7 @@
          !### relax_initial_irradiation
          !### relax_to_this_irrad_flux
          !### relax_irradiation_min_steps
+         !### relax_irradiation_max_yrs_dt
          !### irrad_col_depth
 
          ! extra heat near surface to model irradiation.
@@ -764,6 +788,7 @@
       relax_initial_irradiation = .false.
       relax_to_this_irrad_flux = 0
       relax_irradiation_min_steps = 0
+      relax_irradiation_max_yrs_dt = -1
       irrad_col_depth = -1
 
 
@@ -842,7 +867,8 @@
          !### set_initial_omega
          ! `new_omega` in rad/sec
          ! `set_omega` applies when do ./rn or ./re; if true, sets uniform omega = `new_omega`
-         ! `set_initial_omega` only applies at start of run, not for restarts; if true, sets uniform omega = `new_omega`
+         ! `set_initial_omega` only applies at start of run, not for restarts
+         ! if true, sets uniform omega = `new_omega`
 
       new_omega = 0
       set_omega = .false.
@@ -902,8 +928,9 @@
          ! You might want to start a run at pre-ms but only turn on rotation when near zams
          ! rather than force you to stop the run near zams, change the inlist, and restart.
          ! The following will turn on rotation automatically.
-         ! The working definition of "near zams" is `L_nuc_burn_total/L_phot >= Lnuc_div_L_upper_limit`
-         ! `Lnuc_div_L_upper_limit` is in star &controls part of inlist.
+         ! The working definition of "near zams" is
+         ! `L_nuc_burn_total/L_phot >= Lnuc_div_L_upper_limit`
+         ! `Lnuc_div_L_upper_limit` is in the controls part of the inlist.
 
          ! The following apply when rotation is off and model satisfies the "near zams" test.
          ! Each turns on rotation and sets a step limit
@@ -916,10 +943,10 @@
 
          ! only applies if > 0
 
-         !     set_omega_div_omega_crit_step_limit = model_number + set_near_zams_omega_div_omega_crit_steps - 1
+         !     set_omega_div_omega_crit_step_limit =
+         !         model_number + set_near_zams_omega_div_omega_crit_steps - 1
 
       set_near_zams_omega_div_omega_crit_steps = -1
-
 
          ! only applies if > 0
 
@@ -929,9 +956,16 @@
 
 
          !### num_steps_to_relax_rotation
-         ! use this many steps to relax omega to new value
-
+         ! use `num_steps_to_relax_rotation` steps to relax omega to new value
+         
       num_steps_to_relax_rotation = 100
+         
+         !### relax_omega_max_yrs_dt
+         ! `relax_omega_max_yrs_dt` sets a maximum time step used during the relaxation process
+         ! < 0 implies MESA chooses the step. Useful number is 1d4 if 
+         ! `num_steps_to_relax_rotation` > ~150
+
+      relax_omega_max_yrs_dt=-1
 
          !### relax_omega
          !### relax_initial_omega
@@ -939,8 +973,9 @@
          ! if `relax_omega` true, relax to value of `new_omega`. applies when do ./rn or ./re
          ! `relax_initial_omega` only applies at start of run, not for restarts.
          ! `near_zams_relax`+omega applies when "near zams".
-         ! The working definition of "near zams" is `L_nuc_burn_total/L_phot >= Lnuc_div_L_upper_limit`
-         ! `Lnuc_div_L_upper_limit` is in star &controls part of inlist.
+         ! The working definition of "near zams" is
+         ! `L_nuc_burn_total/L_phot >= Lnuc_div_L_upper_limit`
+         ! `Lnuc_div_L_upper_limit` is in the controls part of the inlist.
 
 
       relax_omega = .false.
@@ -979,7 +1014,8 @@
          ! controls for nonzero center M (mass), R (radius), L (luminoisty)
          ! (e.g., to model neutron star envelope or rocky core planet)
          ! `new_core_mass` in Msun units.
-         ! If you have convergence problems, you'll need to reduce the mass/step `dlg_core_mass_per_step`
+         ! If you have convergence problems,
+         ! you'll need to reduce the mass/step `dlg_core_mass_per_step`
          ! and timestep `relax_core_years_for_dt` values.
          ! `core_avg_rho` in g/cm^3 and `core_avg_eps` in ergs/g/sec are just examples.
          ! Adjust them to values appropriate for your application.
@@ -997,7 +1033,6 @@
          !### relax_initial_M_center
          !### relax_M_center_dt
 
-         ! The following let you make separate changes to M, R, L for core.
          ! Like `relax_mass_scale`, but all change in mass goes into `M_center`.
          ! NOTE: `new_mass` is new total mass for star, not the new `M_center` value.
          ! uses `dlgm_per_step` in same way as `relax_mass_scale`.
@@ -1032,6 +1067,54 @@
       relax_R_center_dt = 3.1558149984d1
 
 
+         !### set_free_fall_from_cell_k
+         !### set_free_fall_R_cm
+         !### set_free_fall_entropy
+         !### set_free_fall_mdot_Bondi
+         ! allows converting envelope to free fall conditions. ignored if <= 0
+
+      set_free_fall_from_cell_k = 0
+      set_free_fall_R_cm = 0 ! (Rsun)
+      set_free_fall_entropy = 0 ! (avo*kerg)
+      set_free_fall_mdot_Bondi = 0 ! (Msun/year)
+
+
+         !### set_initial_free_fall_from_cell_k
+         !### set_initial_free_fall_R_cm
+         !### set_initial_free_fall_entropy
+         !### set_initial_free_fall_mdot_Bondi
+         ! allows converting envelope to free fall conditions. ignored if <= 0
+
+      set_initial_free_fall_from_cell_k = 0
+      set_initial_free_fall_R_cm = 0 ! (Rsun)
+      set_initial_free_fall_entropy = 0 ! (avo*kerg)
+      set_initial_free_fall_mdot_Bondi = 0 ! (Msun/year)
+
+
+
+         !### set_v_center
+         !### set_initial_v_center
+
+      set_v_center = .false.
+      set_initial_v_center = .false.
+
+
+
+         !### relax_v_center
+         !### relax_initial_v_center
+         !### new_v_center
+         !### dv_per_step
+         !### relax_v_center_dt
+         ! `new_v_center` in cm/s.  
+         ! `relax_v_center_dt` in seconds.  
+
+      relax_v_center = .false.
+      relax_initial_v_center = .false.
+      new_v_center = 0
+      dv_per_step = 0
+      relax_v_center_dt = 0
+
+
          !### relax_L_center
          !### relax_initial_L_center
          !### new_L_center
@@ -1048,12 +1131,94 @@
       relax_L_center_dt = 3.1558149984d1
 
 
+         !### set_free_fall_from_cell_k
+         !### set_free_fall_R_cm
+         !### set_free_fall_entropy
+         !### set_free_fall_mdot_Bondi
+         ! allows converting envelope to free fall conditions. ignored if <= 0
+
+      set_free_fall_from_cell_k = 0
+      set_free_fall_R_cm = 0
+      set_free_fall_entropy = 0 ! (avo*kerg)
+      set_free_fall_mdot_Bondi = 0 ! (Msun/year)
+
+
+         !### set_initial_free_fall_from_cell_k
+         !### set_initial_free_fall_R_cm
+         !### set_initial_free_fall_entropy
+         !### set_initial_free_fall_mdot_Bondi
+         ! allows converting envelope to free fall conditions. ignored if <= 0
+
+      set_initial_free_fall_from_cell_k = 0
+      set_initial_free_fall_R_cm = 0
+      set_initial_free_fall_entropy = 0 ! (avo*kerg)
+      set_initial_free_fall_mdot_Bondi = 0 ! (Msun/year)
+
+
+
          !### remove_center_at_cell_k
-         !### remove_inner_fraction_q
+         !### remove_center_by_temperature
+         !### remove_center_by_mass_gm
+         !### remove_center_by_mass_Msun
+         !### remove_center_by_radius_cm
+         !### remove_center_by_radius_Rsun
          ! allows the core to be removed. ignored if <= 0
 
       remove_center_at_cell_k = 0
-      remove_inner_fraction_q = 0
+      remove_center_by_temperature = 0
+      remove_center_by_mass_gm = 0
+      remove_center_by_mass_Msun = 0
+      remove_center_by_radius_cm = 0
+      remove_center_by_radius_Rsun = 0
+
+
+         !### remove_initial_center_at_cell_k
+         !### remove_initial_center_by_temperature
+         !### remove_initial_center_by_mass_gm
+         !### remove_initial_center_by_mass_msun
+         !### remove_initial_center_by_radius_cm
+         !### remove_initial_center_by_radius_Rsun
+         ! allows the core to be removed. ignored if <= 0
+
+      remove_initial_center_at_cell_k = 0
+      remove_initial_center_by_temperature = 0
+      remove_initial_center_by_mass_gm = 0
+      remove_initial_center_by_mass_Msun = 0
+      remove_initial_center_by_radius_cm = 0
+      remove_initial_center_by_radius_Rsun = 0
+
+
+
+         !### remove_envelope_at_cell_k
+         !### remove_envelope_beyond_temperature
+         !### remove_envelope_beyond_mass_gm
+         !### remove_envelope_beyond_mass_Msun
+         !### remove_envelope_beyond_radius_cm
+         !### remove_envelope_beyond_radius_Rsun
+         ! allows the envelope to be removed. ignored if <= 0
+
+      remove_envelope_at_cell_k = 0
+      remove_envelope_beyond_temperature = 0
+      remove_envelope_beyond_mass_gm = 0
+      remove_envelope_beyond_mass_Msun = 0
+      remove_envelope_beyond_radius_cm = 0
+      remove_envelope_beyond_radius_Rsun = 0
+
+
+         !### remove_initial_envelope_at_cell_k
+         !### remove_initial_envelope_beyond_temperature
+         !### remove_initial_envelope_beyond_mass_gm
+         !### remove_initial_envelope_beyond_mass_msun
+         !### remove_initial_envelope_beyond_radius_cm
+         !### remove_initial_envelope_beyond_radius_Rsun
+         ! allows the envelope to be removed. ignored if <= 0
+
+      remove_initial_envelope_at_cell_k = 0
+      remove_initial_envelope_beyond_temperature = 0
+      remove_initial_envelope_beyond_mass_gm = 0
+      remove_initial_envelope_beyond_mass_Msun = 0
+      remove_initial_envelope_beyond_radius_cm = 0
+      remove_initial_envelope_beyond_radius_Rsun = 0
 
 
          !### report_mass_not_fe56
@@ -1063,7 +1228,8 @@
 
 
          !### report_cell_for_xm
-         ! in grams. if > 0 then write smallest k s.t. mass in cells 1 to k is >= `report_cell_for_xm`
+         ! in grams. if > 0 then write smallest k s.t.
+         ! mass in cells 1 to k is >= `report_cell_for_xm`
 
       report_cell_for_xm = -1
 
@@ -1289,6 +1455,19 @@
 
       set_rate_1212 = ''
 
+   
+      ! use can also provide tabulated rates for any of the reactions  
+      ! tabulated rates automatically take priority over any other options for the reaction.
+      ! e.g., if you provide a rate table for c12ag, those rates will be used
+      ! if preference to the other options given in `set_rate_c12ag`.
+      
+      ! to provide tabulated rates:
+      ! create a file of (T8, rate) pairs as in data/rates_data/rates
+      ! you can give as many pairs as you want with any spacing in T8
+      ! add the file name to reactions.list 
+      ! you can have a local copy of reactions.list as well as rates directory
+         
+         
 
          !### num_special_rate_factors
          !### reaction_for_special_factor
@@ -1564,7 +1743,8 @@
 
          !### read_extra_star_job_inlist{1..5}
          !### extra_star_job_inlist{1..5}_name
-         ! if `read_extra_star_job_inlist{1..5}` is true, then read &star_job from this namelist file
+         ! if `read_extra_star_job_inlist{1..5}` is true,
+         ! then read &star_job from this namelist file
 
       read_extra_star_job_inlist1 = .false.
       extra_star_job_inlist1_name = 'undefined'

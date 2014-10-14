@@ -78,7 +78,7 @@
 
       append_to_star_history = .true.
 
-         !### history_name
+         !### log_directory
 
          ! Directory for binary output
 
@@ -343,15 +343,22 @@
 
          starting_mdot = 1d-12
 
-            !### implicit_min_mdot
+            !### roche_min_mdot
 
-            ! When using the `roche_lobe` scheme, if mass transfer rate is below `implicit_min_mdot`
-            ! (in Msun/secyer) and the donor is not overflowing its `roche_lobe`, assume detachment
+            ! When using the `roche_lobe` scheme, if mass transfer rate is below `roche_min_mdot`
+            ! (in Msun/secyer) and the donor is not overflowing its roche lobe, assume detachment
             ! and stop mass transfer.
 
-            ! If mtransfer_rate goes below this without overflow, assume no mass transfer.
+         roche_min_mdot = 1d-16
 
-         implicit_min_mdot = 1d-16
+            !### min_mdot_for_implicit
+
+            ! For any choice except for the `roche_lobe` scheme mass transfer will be computed explicitly
+            ! until the explicit computation of mdot is > `min_mdot_for_implicit` (in Msun/secyer),
+            ! even if `max_tries_to_achieve` > 0. This is to avoid spending many iterations when the stars
+            ! are detached and the explicit calculation gives very low values of mdot.
+
+         min_mdot_for_implicit = 1d-16
 
       !## Tidal wind enhancement
       
@@ -363,6 +370,7 @@
             !     Mdot_w = Mdot_w * ( 1 + B_wind * min( (R/RL)^6, 0.5^6 ) )
             !
             ! Tout & Eggleton 1988,MNRAS,231,823 (eq. 2)
+            !
             ! "\_1" refers to first star, "\_2" to the second one.
             
          do_enhance_wind_1 = .false.
@@ -372,10 +380,40 @@
             
             ! The `B_wind` parameter from the previous equation. Default value is
             ! taken from Tout & Eggleton 1988,MNRAS,231,823
+            !
             ! "\_1" refers to first star, "\_2" to the second one.
             
          tout_B_wind_1 = 1d4
          tout_B_wind_2 = 1d4
+
+      !## Wind mass accretion
+      
+            !### do_wind_mass_transfer_*
+            
+            ! transfer part of the mass lost due to stellar winds from the mass losing
+            ! component to its companion. Using the Bondy-Hoyle mechanism.
+            ! "\_1" refers to first star, "\_2" to the second one.
+            
+         do_wind_mass_transfer_1 = .false.
+         do_wind_mass_transfer_2 = .false.
+      
+            !### wind_BH_alpha_*
+            
+            ! Bondy-Hoyle accretion parameter for each star. The default is 3/2 taken
+            ! from Hurley et al. 2002, MNRAS, 329, 897, in agreement with
+            ! Boffin & Jorissen 1988, A&A, 205, 155
+            ! "\_1" refers to first star, "\_2" to the second one.
+            
+         wind_BH_alpha_1 = 1.5d0
+         wind_BH_alpha_2 = 1.5d0
+      
+            !### max_wind_transfer_fraction_*
+            
+            ! Upper limit on the wind transfer fraction for star *
+            ! "\_1" refers to first star, "\_2" to the second one.
+            
+         max_wind_transfer_fraction_1 = 0.5d0
+         max_wind_transfer_fraction_2 = 0.5d0
       
 
 !----------------------------------------------------------------------------------------------
@@ -497,7 +535,7 @@
 
          !### Ftid_*
 
-         ! Tidal strength factor. Synchronisation timescale is divided by this.
+         ! Tidal strength factor. Synchronisation and circularisation timescales are divided by this.
          ! "\_1" refers to first star, "\_2" to the second one.
 
       Ftid_1 = 1d0
@@ -513,7 +551,13 @@
 
          !### tidal_reduction
 
-         ! ADD DESCRIPTION!
+         ! `tidal_reduction` accounts for the reduction in the effectiveness of convective
+         ! damping of the equilibrium tide when the tidal forcing period is less than the
+         ! convective turnover period of the largest eddies. It corresponds to the exponent
+         ! in eq. (32) of Hurley et al. 2002, MNRAS, 329, 897
+
+         ! `tidal_reduction` = 1 follows Zahn(1966, 1989), while `tidal_reduction` = 2 follows
+         ! Goldreich & Nicholson (1977).
 
       tidal_reduction = 2.0d0
 
@@ -550,14 +594,14 @@
 
          !### max_abs_edot_tidal
 
-         ! Maximum absolute value for tidal edot. If the computed tidal edot goes
+         ! Maximum absolute value for tidal edot (in 1/s). If the computed tidal edot goes
          ! above this, then it is fixed at this maximum
 
       max_abs_edot_tidal = 1d-6
 
          !### max_abs_edot_enhance
 
-         ! Maximum absolute value for ecc enhancement. If the computed edot goes
+         ! Maximum absolute value for eccentricity enhancement (in 1/s). If the computed edot goes
          ! above this, then it is fixed at this maximum
 
       max_abs_edot_enhance = 1d-6
@@ -570,8 +614,7 @@
 
          !### max_eccentricity
 
-         ! If after a step `eccentricity > min_eccentricity`, then fix it at this value
-         ! Force maximal eccentricity on the system.
+         ! If after a step `eccentricity > max_eccentricity`, then fix it at this value
 
       max_eccentricity = 0.99
 
@@ -638,10 +681,12 @@
 
          ! Logicals to deploy the use_other routines.
 
+      use_other_rlo_mdot = .false.
       use_other_jdot_gr = .false.
       use_other_jdot_ml = .false.
       use_other_jdot_ls = .false.
       use_other_jdot_missing_wind = .false.
       use_other_jdot_mb = .false.
       use_other_extra_jdot = .false.
+      use_other_binary_wind_transfer = .false.
    

@@ -67,7 +67,7 @@
 
          !### file_digits
          ! number of digits for `model_number` in filenames
-         file_digits = 5
+         file_digits = 6
          
          !### delta_HR_limit_for_file_output
          ! trigger file output by distance travelled on HR diagram
@@ -79,6 +79,9 @@
                ! dlgTeff = log10(Teff/Teff_prev)
 
          delta_HR_limit_for_file_output = -1
+         
+         pgstar_report_writing_files = .true. 
+            ! for terminal output report when write plot file
       
 
       !## title, age, and model number
@@ -213,6 +216,8 @@
          show_TRho_Profile_annotation1 = .false.
          show_TRho_Profile_annotation2 = .false.
          show_TRho_Profile_annotation3 = .false.
+         
+         TRho_Profile_fname = '' ! file name for extra TRho profile data
       
          ! axis limits
          TRho_Profile_xmin = -11.1
@@ -391,7 +396,7 @@
          Mixing_txt_scale = 1.0
          Mixing_title = 'Mixing'      
 
-         Mixing_legend_txt_scale_factor = 0.7 ! relative to other text
+         Mixing_legend_txt_scale_factor = 1 ! relative to other text
 
          show_Mixing_annotation1 = .false.
          show_Mixing_annotation2 = .false.
@@ -678,6 +683,16 @@
 
    !# "Kippenhahn" window
       ! history of convection and more.
+         ! your history_columns.list needs to include
+         !        star_mass
+         !        mixing_regions 40    -- 40 can be changed if you wish
+         !        burning_regions 80    -- 80 can be changed if you wish
+         ! and if you have set M_center > 0, then also include
+         !        log_xmstar
+         ! if you want to show luminosities, include some or all of
+         !        log_L, log_Lneu, log_LH, log_LHe
+         ! if you want to show mass boundaries, then include some or all of
+         !        he_core_mass, c_core_mass, o_core_mass, si_core_mass, fe_core_mass
       
          Kipp_win_flag = .false.
       
@@ -691,10 +706,26 @@
          Kipp_txt_scale = 1.0
          Kipp_title = 'Kipp'      
       
-         ! step number xaxis limits
-         Kipp_xmax = -1 ! step number.  negative means use default.
-         Kipp_xmin = -1 ! step number.  negative means use default.
-         Kipp_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         ! Set xaxis
+	      Kipp_step_xmin = -1 ! Min model number to plot. Negative means start from the first model
+         Kipp_step_xmax = -1 ! Max model number to plot. Negative means use max model_number
+										! These can be combined with Kipp_{xmin,xmax} options
+         Kipp_max_width = -1 ! Maximum number of steps to show at once. 
+										! Negative implies show all steps. This overrides Kipp_step_xmin
+         
+         Kipp_xaxis_name = 'model_number' ! xaxis coordinates. Sensible choices 
+													  ! are model_number or star_age
+         Kipp_xaxis_log=.false. ! Whether xaxis should be reported as a log10 value
+         Kipp_xmin=-101d0 ! Min of x value to plot. -101d0 means use min(x)
+         Kipp_xmax=-101d0 ! Max of x value to plot. -101d0 means use max(x)
+         Kipp_xmargin=0.0
+         Kipp_xaxis_reversed=.false. ! Whether to reverse the direction of the xaxis
+         Kipp_xaxis_in_seconds=.false. ! Whether to plot time in seconds
+													 ! Requires Kipp_xaxis_name='star_age'
+         Kipp_xaxis_time_from_present=.false. ! Whether to plot time since present. 
+															  ! plots star_age-max(star_age)
+															  ! Requires Kipp_xaxis_name='star_age'
+         
          
          ! bounds for mass yaxis
          Kipp_mass_max = -1 ! (Msun units) negative means use default
@@ -775,6 +806,8 @@
          show_TRho_annotation2 = .false.
          show_TRho_annotation3 = .false.
          
+         TRho_fname = '' ! file name for extra TRho data
+         
          ! file output
          TRho_file_flag = .false.
          TRho_file_dir = 'png'
@@ -815,6 +848,9 @@
          HR_step_min = -1 ! only plot models with model number >= this
          HR_step_max = 999999 ! only plot models with model number <= this
          
+         show_HR_classical_instability_strip = .false.
+         show_HR_Mira_instability_region = .false.
+         
          show_HR_target_box = .false.
          HR_target_n_sigma = -3 ! -n means show sig 1..n
          HR_target_logL = 0
@@ -825,6 +861,8 @@
          show_HR_annotation1 = .false.
          show_HR_annotation2 = .false.
          show_HR_annotation3 = .false.
+         
+         HR_fname = '' ! file name for extra HR data
          
          ! file output
          HR_file_flag = .false.
@@ -876,6 +914,8 @@
          show_logL_Teff_annotation1 = .false.
          show_logL_Teff_annotation2 = .false.
          show_logL_Teff_annotation3 = .false.
+         
+         logL_Teff_fname = '' ! file name for extra logL-Teff data
          
          ! file output
          logL_Teff_file_flag = .false.
@@ -929,6 +969,8 @@
          show_logg_Teff_annotation2 = .false.
          show_logg_Teff_annotation3 = .false.
          
+         logg_Teff_fname = '' ! file name for extra logg-Teff data
+         
          ! file output
          logg_Teff_file_flag = .false.
          logg_Teff_file_dir = 'png'
@@ -980,6 +1022,8 @@
          show_logg_logT_annotation2 = .false.
          show_logg_logT_annotation3 = .false.
          
+         logg_logT_fname = '' ! file name for extra logg-logT data
+         
          ! file output
          logg_logT_file_flag = .false.
          logg_logT_file_dir = 'png'
@@ -1024,6 +1068,8 @@
          show_dPg_dnu_annotation2 = .false.
          show_dPg_dnu_annotation3 = .false.
          
+         dPg_dnu_fname = '' ! file name for extra dPg-dnu data
+         
          ! file output
          dPg_dnu_file_flag = .false.
          dPg_dnu_file_dir = 'png'
@@ -1036,6 +1082,18 @@
 !-----------------------------------------------------------------------
 
    !# Profile Panels
+         
+         ! for tracking shocks
+         Profile_Panels_show_Mach_1_location = .false.
+         Profile_Panels_xwidth_left_of_shock = -1
+         Profile_Panels_xwidth_right_of_shock = -1
+         Profile_Panels_xwidth_left_div_shock_value = -1
+         Profile_Panels_xwidth_right_div_shock_value = -1
+            ! these apply to all Profile_Panels
+            ! don't use if value is <= 0
+            ! else put location of shock at center of xaxis, and
+            ! set xmin and xmax so that (xmax - xmin)/center_value = this.
+            
 
       !### Profile_Panels1
        
@@ -1056,16 +1114,19 @@
          Profile_Panels1_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels1_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels1_xmargin = 0d0
+         Profile_Panels1_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels1_yaxis_name(:) = ''
          Profile_Panels1_yaxis_reversed(:) = .false.
-         Profile_Panels1_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels1_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels1_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels1_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels1_ymargin(:) = 0.1 
          Profile_Panels1_dymin(:) = -1 
          
          Profile_Panels1_other_yaxis_name(:) = '' 
          Profile_Panels1_other_yaxis_reversed(:) = .false.
+         Profile_Panels1_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels1_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels1_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels1_other_ymargin(:) = 0.1 
@@ -1108,18 +1169,21 @@
          Profile_Panels2_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels2_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels2_xmargin = 0d0
+         Profile_Panels2_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels2_num_panels = 0
          
          Profile_Panels2_yaxis_name(:) = ''
          Profile_Panels2_yaxis_reversed(:) = .false.
-         Profile_Panels2_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels2_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels2_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels2_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels2_ymargin(:) = 0.1 
          Profile_Panels2_dymin(:) = -1 
          
          Profile_Panels2_other_yaxis_name(:) = '' 
          Profile_Panels2_other_yaxis_reversed(:) = .false.
+         Profile_Panels2_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels2_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels2_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels2_other_ymargin(:) = 0.1 
@@ -1169,18 +1233,21 @@
          Profile_Panels3_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels3_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels3_xmargin = 0d0
-         
+         Profile_Panels3_show_mix_regions_on_xaxis = .false.
+
          Profile_Panels3_num_panels = 0
          
          Profile_Panels3_yaxis_name(:) = ''
          Profile_Panels3_yaxis_reversed(:) = .false.
-         Profile_Panels3_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels3_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels3_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels3_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels3_ymargin(:) = 0.1 
          Profile_Panels3_dymin(:) = -1 
          
          Profile_Panels3_other_yaxis_name(:) = '' 
          Profile_Panels3_other_yaxis_reversed(:) = .false.
+         Profile_Panels3_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels3_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels3_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels3_other_ymargin(:) = 0.1 
@@ -1231,18 +1298,21 @@
          Profile_Panels4_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels4_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels4_xmargin = 0d0
+         Profile_Panels4_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels4_num_panels = 0
          
          Profile_Panels4_yaxis_name(:) = ''
          Profile_Panels4_yaxis_reversed(:) = .false.
-         Profile_Panels4_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels4_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels4_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels4_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels4_ymargin(:) = 0.1 
          Profile_Panels4_dymin(:) = -1 
          
          Profile_Panels4_other_yaxis_name(:) = '' 
          Profile_Panels4_other_yaxis_reversed(:) = .false.
+         Profile_Panels4_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels4_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels4_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels4_other_ymargin(:) = 0.1 
@@ -1294,18 +1364,21 @@
          Profile_Panels5_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels5_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels5_xmargin = 0d0
+         Profile_Panels5_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels5_num_panels = 0
          
          Profile_Panels5_yaxis_name(:) = ''
          Profile_Panels5_yaxis_reversed(:) = .false.
-         Profile_Panels5_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels5_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels5_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels5_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels5_ymargin(:) = 0.1 
          Profile_Panels5_dymin(:) = -1 
          
          Profile_Panels5_other_yaxis_name(:) = '' 
          Profile_Panels5_other_yaxis_reversed(:) = .false.
+         Profile_Panels5_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels5_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels5_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels5_other_ymargin(:) = 0.1 
@@ -1356,18 +1429,21 @@
          Profile_Panels6_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels6_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels6_xmargin = 0d0
+         Profile_Panels6_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels6_num_panels = 0
          
          Profile_Panels6_yaxis_name(:) = ''
          Profile_Panels6_yaxis_reversed(:) = .false.
-         Profile_Panels6_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels6_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels6_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels6_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels6_ymargin(:) = 0.1 
          Profile_Panels6_dymin(:) = -1 
          
          Profile_Panels6_other_yaxis_name(:) = '' 
          Profile_Panels6_other_yaxis_reversed(:) = .false.
+         Profile_Panels6_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels6_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels6_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels6_other_ymargin(:) = 0.1 
@@ -1403,18 +1479,21 @@
          Profile_Panels7_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels7_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels7_xmargin = 0d0
+         Profile_Panels7_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels7_num_panels = 0
          
          Profile_Panels7_yaxis_name(:) = ''
          Profile_Panels7_yaxis_reversed(:) = .false.
-         Profile_Panels7_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels7_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels7_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels7_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels7_ymargin(:) = 0.1 
          Profile_Panels7_dymin(:) = -1 
          
          Profile_Panels7_other_yaxis_name(:) = '' 
          Profile_Panels7_other_yaxis_reversed(:) = .false.
+         Profile_Panels7_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels7_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels7_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels7_other_ymargin(:) = 0.1 
@@ -1450,18 +1529,21 @@
          Profile_Panels8_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels8_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels8_xmargin = 0d0
+         Profile_Panels8_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels8_num_panels = 0
          
          Profile_Panels8_yaxis_name(:) = ''
          Profile_Panels8_yaxis_reversed(:) = .false.
-         Profile_Panels8_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels8_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels8_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels8_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels8_ymargin(:) = 0.1 
          Profile_Panels8_dymin(:) = -1 
          
          Profile_Panels8_other_yaxis_name(:) = '' 
          Profile_Panels8_other_yaxis_reversed(:) = .false.
+         Profile_Panels8_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels8_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels8_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels8_other_ymargin(:) = 0.1 
@@ -1497,18 +1579,21 @@
          Profile_Panels9_xmin = -101d0 ! only used if /= -101d0
          Profile_Panels9_xmax = -101d0 ! only used if /= -101d0
          Profile_Panels9_xmargin = 0d0
+         Profile_Panels9_show_mix_regions_on_xaxis = .false.
          
          Profile_Panels9_num_panels = 0
          
          Profile_Panels9_yaxis_name(:) = ''
          Profile_Panels9_yaxis_reversed(:) = .false.
-         Profile_Panels9_ymin(:) = -101d0! only used if /= -101d0
+         Profile_Panels9_yaxis_log(:) = .false. ! show log10 of abs value
+         Profile_Panels9_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels9_ymax(:) = -101d0 ! only used if /= -101d0        
          Profile_Panels9_ymargin(:) = 0.1 
          Profile_Panels9_dymin(:) = -1 
          
          Profile_Panels9_other_yaxis_name(:) = '' 
          Profile_Panels9_other_yaxis_reversed(:) = .false.
+         Profile_Panels9_other_yaxis_log(:) = .false. ! show log10 of abs value
          Profile_Panels9_other_ymin(:) = -101d0 ! only used if /= -101d0
          Profile_Panels9_other_ymax(:) = -101d0 ! only used if /= -101d0
          Profile_Panels9_other_ymargin(:) = 0.1 
@@ -1549,6 +1634,8 @@
          History_Track1_yaxis_label = 'log L/L\d\(2281)'
          History_Track1_reverse_xaxis = .true.
          History_Track1_reverse_yaxis = .false.
+         History_Track1_log_xaxis = .false. ! show log10 of abs value
+         History_Track1_log_yaxis = .false. ! show log10 of abs value
       
          History_Track1_xmin = -101d0 ! only used if /= -101d0
          History_Track1_xmax = -101d0 ! only used if /= -101d0
@@ -1573,6 +1660,8 @@
          show_History_Track1_annotation1 = .false.
          show_History_Track1_annotation2 = .false.
          show_History_Track1_annotation3 = .false.
+         
+         History_Track1_fname = '' ! file name for extra track data
          
          ! file output
          History_Track1_file_flag = .false.
@@ -1602,6 +1691,8 @@
          History_Track2_yaxis_label = ''
          History_Track2_reverse_xaxis = .false.
          History_Track2_reverse_yaxis = .false.
+         History_Track2_log_xaxis = .false. ! show log10 of abs value
+         History_Track2_log_yaxis = .false. ! show log10 of abs value
       
          History_Track2_xmin = -101d0 ! only used if /= -101d0
          History_Track2_xmax = -101d0 ! only used if /= -101d0
@@ -1626,6 +1717,8 @@
          show_History_Track2_annotation1 = .false.
          show_History_Track2_annotation2 = .false.
          show_History_Track2_annotation3 = .false.
+         
+         History_Track2_fname = '' ! file name for extra track data
          
          ! file output
          History_Track2_file_flag = .false.
@@ -1655,6 +1748,8 @@
          History_Track3_yaxis_label = ''
          History_Track3_reverse_xaxis = .false.
          History_Track3_reverse_yaxis = .false.
+         History_Track3_log_xaxis = .false. ! show log10 of abs value
+         History_Track3_log_yaxis = .false. ! show log10 of abs value
       
          History_Track3_xmin = -101d0 ! only used if /= -101d0
          History_Track3_xmax = -101d0 ! only used if /= -101d0
@@ -1679,6 +1774,8 @@
          show_History_Track3_annotation1 = .false.
          show_History_Track3_annotation2 = .false.
          show_History_Track3_annotation3 = .false.
+         
+         History_Track3_fname = '' ! file name for extra track data
          
          ! file output
          History_Track3_file_flag = .false.
@@ -1708,6 +1805,8 @@
          History_Track4_yaxis_label = ''
          History_Track4_reverse_xaxis = .false.
          History_Track4_reverse_yaxis = .false.
+         History_Track4_log_xaxis = .false. ! show log10 of abs value
+         History_Track4_log_yaxis = .false. ! show log10 of abs value
       
          History_Track4_xmin = -101d0 ! only used if /= -101d0
          History_Track4_xmax = -101d0 ! only used if /= -101d0
@@ -1732,6 +1831,8 @@
          show_History_Track4_annotation1 = .false.
          show_History_Track4_annotation2 = .false.
          show_History_Track4_annotation3 = .false.
+         
+         History_Track4_fname = '' ! file name for extra track data
          
          ! file output
          History_Track4_file_flag = .false.
@@ -1760,6 +1861,8 @@
          History_Track5_yaxis_label = ''
          History_Track5_reverse_xaxis = .false.
          History_Track5_reverse_yaxis = .false.
+         History_Track5_log_xaxis = .false. ! show log10 of abs value
+         History_Track5_log_yaxis = .false. ! show log10 of abs value
       
          History_Track5_xmin = -101d0 ! only used if /= -101d0
          History_Track5_xmax = -101d0 ! only used if /= -101d0
@@ -1784,6 +1887,8 @@
          show_History_Track5_annotation1 = .false.
          show_History_Track5_annotation2 = .false.
          show_History_Track5_annotation3 = .false.
+         
+         History_Track5_fname = '' ! file name for extra track data
          
          ! file output
          History_Track5_file_flag = .false.
@@ -1812,6 +1917,8 @@
          History_Track6_yaxis_label = ''
          History_Track6_reverse_xaxis = .false.
          History_Track6_reverse_yaxis = .false.
+         History_Track6_log_xaxis = .false. ! show log10 of abs value
+         History_Track6_log_yaxis = .false. ! show log10 of abs value
       
          History_Track6_xmin = -101d0 ! only used if /= -101d0
          History_Track6_xmax = -101d0 ! only used if /= -101d0
@@ -1836,6 +1943,8 @@
          show_History_Track6_annotation1 = .false.
          show_History_Track6_annotation2 = .false.
          show_History_Track6_annotation3 = .false.
+         
+         History_Track6_fname = '' ! file name for extra track data
          
          ! file output
          History_Track6_file_flag = .false.
@@ -1864,6 +1973,8 @@
          History_Track7_yaxis_label = ''
          History_Track7_reverse_xaxis = .false.
          History_Track7_reverse_yaxis = .false.
+         History_Track7_log_xaxis = .false. ! show log10 of abs value
+         History_Track7_log_yaxis = .false. ! show log10 of abs value
       
          History_Track7_xmin = -101d0 ! only used if /= -101d0
          History_Track7_xmax = -101d0 ! only used if /= -101d0
@@ -1888,6 +1999,8 @@
          show_History_Track7_annotation1 = .false.
          show_History_Track7_annotation2 = .false.
          show_History_Track7_annotation3 = .false.
+         
+         History_Track7_fname = '' ! file name for extra track data
          
          ! file output
          History_Track7_file_flag = .false.
@@ -1916,6 +2029,8 @@
          History_Track8_yaxis_label = ''
          History_Track8_reverse_xaxis = .false.
          History_Track8_reverse_yaxis = .false.
+         History_Track8_log_xaxis = .false. ! show log10 of abs value
+         History_Track8_log_yaxis = .false. ! show log10 of abs value
       
          History_Track8_xmin = -101d0 ! only used if /= -101d0
          History_Track8_xmax = -101d0 ! only used if /= -101d0
@@ -1940,6 +2055,8 @@
          show_History_Track8_annotation1 = .false.
          show_History_Track8_annotation2 = .false.
          show_History_Track8_annotation3 = .false.
+         
+         History_Track8_fname = '' ! file name for extra track data
          
          ! file output
          History_Track8_file_flag = .false.
@@ -1968,6 +2085,8 @@
          History_Track9_yaxis_label = ''
          History_Track9_reverse_xaxis = .false.
          History_Track9_reverse_yaxis = .false.
+         History_Track9_log_xaxis = .false. ! show log10 of abs value
+         History_Track9_log_yaxis = .false. ! show log10 of abs value
       
          History_Track9_xmin = -101d0 ! only used if /= -101d0
          History_Track9_xmax = -101d0 ! only used if /= -101d0
@@ -1992,6 +2111,8 @@
          show_History_Track9_annotation1 = .false.
          show_History_Track9_annotation2 = .false.
          show_History_Track9_annotation3 = .false.
+         
+         History_Track9_fname = '' ! file name for extra track data
          
          ! file output
          History_Track9_file_flag = .false.
@@ -2020,12 +2141,17 @@
          History_Panels1_txt_scale = 1.0         
          History_Panels1_title = 'History_Panels1'      
          
-         History_Panels1_xmax = -1 ! model number.
-         History_Panels1_xmin = -1 ! model number.
+         History_Panels1_xaxis_name = 'model_number'
+         History_Panels1_xmin = -101d0 
+         History_Panels1_xmax = -101d0 
          History_Panels1_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
-         
+         History_Panels1_dxmin = -1
+         History_Panels1_xaxis_reversed = .false.
+         History_Panels1_xaxis_log = .false. ! show log10 of abs value
+
          History_Panels1_yaxis_name(:) = '' 
          History_Panels1_yaxis_reversed(:) = .false.
+         History_Panels1_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels1_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels1_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels1_ymargin(:) = 0.1 
@@ -2033,6 +2159,7 @@
          
          History_Panels1_other_yaxis_name(:) = '' 
          History_Panels1_other_yaxis_reversed(:) = .false.
+         History_Panels1_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels1_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels1_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels1_other_ymargin(:) = 0.1 
@@ -2100,14 +2227,19 @@
          History_Panels2_txt_scale = 1.0         
          History_Panels2_title = 'History_Panels2'      
          
-         History_Panels2_xmax = -1 ! model number.
-         History_Panels2_xmin = -1 ! model number.
+         History_Panels2_xaxis_name = 'model_number'
+         History_Panels2_xmin = -101d0 
+         History_Panels2_xmax = -101d0 
          History_Panels2_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels2_dxmin = -1
+         History_Panels2_xaxis_reversed = .false.
+         History_Panels2_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels2_num_panels = 0
          
          History_Panels2_yaxis_name(:) = '' 
          History_Panels2_yaxis_reversed(:) = .false.
+         History_Panels2_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels2_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels2_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels2_ymargin(:) = 0.1 
@@ -2115,10 +2247,12 @@
          
          History_Panels2_other_yaxis_name(:) = '' 
          History_Panels2_other_yaxis_reversed(:) = .false.
+         History_Panels2_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels2_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels2_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels2_other_ymargin(:) = 0.1 
          History_Panels2_other_dymin(:) = -1 
+         
          
          ! file output
          History_Panels2_file_flag = .false.
@@ -2128,7 +2262,6 @@
          History_Panels2_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels2_file_aspect_ratio = -1 ! negative means use same value as for window
          
-
       !### History_Panels3
       
          History_Panels3_win_flag = .false.
@@ -2143,14 +2276,19 @@
          History_Panels3_txt_scale = 1.0         
          History_Panels3_title = 'History_Panels3'      
          
-         History_Panels3_xmax = -1 ! model number.
-         History_Panels3_xmin = -1 ! model number.
+         History_Panels3_xaxis_name = 'model_number'
+         History_Panels3_xmin = -101d0 
+         History_Panels3_xmax = -101d0 
          History_Panels3_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels3_dxmin = -1
+         History_Panels3_xaxis_reversed = .false.
+         History_Panels3_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels3_num_panels = 0
          
          History_Panels3_yaxis_name(:) = '' 
          History_Panels3_yaxis_reversed(:) = .false.
+         History_Panels3_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels3_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels3_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels3_ymargin(:) = 0.1 
@@ -2158,10 +2296,12 @@
          
          History_Panels3_other_yaxis_name(:) = '' 
          History_Panels3_other_yaxis_reversed(:) = .false.
+         History_Panels3_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels3_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels3_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels3_other_ymargin(:) = 0.1 
          History_Panels3_other_dymin(:) = -1 
+         
          
          ! file output
          History_Panels3_file_flag = .false.
@@ -2186,14 +2326,19 @@
          History_Panels4_txt_scale = 1.0         
          History_Panels4_title = 'History_Panels4'      
          
-         History_Panels4_xmax = -1 ! model number.
-         History_Panels4_xmin = -1 ! model number.
+         History_Panels4_xaxis_name = 'model_number'
+         History_Panels4_xmin = -101d0 
+         History_Panels4_xmax = -101d0 
          History_Panels4_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels4_dxmin = -1
+         History_Panels4_xaxis_reversed = .false.
+         History_Panels4_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels4_num_panels = 0
          
          History_Panels4_yaxis_name(:) = '' 
          History_Panels4_yaxis_reversed(:) = .false.
+         History_Panels4_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels4_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels4_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels4_ymargin(:) = 0.1 
@@ -2201,10 +2346,12 @@
          
          History_Panels4_other_yaxis_name(:) = '' 
          History_Panels4_other_yaxis_reversed(:) = .false.
+         History_Panels4_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels4_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels4_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels4_other_ymargin(:) = 0.1 
          History_Panels4_other_dymin(:) = -1 
+         
          
          ! file output
          History_Panels4_file_flag = .false.
@@ -2228,9 +2375,13 @@
          History_Panels5_txt_scale = 1.0         
          History_Panels5_title = 'History_Panels5'      
          
-         History_Panels5_xmax = -1 ! model number.
-         History_Panels5_xmin = -1 ! model number.
+         History_Panels5_xaxis_name = 'model_number'
+         History_Panels5_xmin = -101d0 
+         History_Panels5_xmax = -101d0 
          History_Panels5_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels5_dxmin = -1
+         History_Panels5_xaxis_reversed = .false.
+         History_Panels5_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels5_num_panels = 0
          
@@ -2242,6 +2393,7 @@
          
          History_Panels5_yaxis_name(:) = '' 
          History_Panels5_yaxis_reversed(:) = .false.
+         History_Panels5_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels5_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels5_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels5_ymargin(:) = 0.1 
@@ -2249,10 +2401,19 @@
          
          History_Panels5_other_yaxis_name(:) = '' 
          History_Panels5_other_yaxis_reversed(:) = .false.
+         History_Panels6_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels5_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels5_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels5_other_ymargin(:) = 0.1 
          History_Panels5_other_dymin(:) = -1 
+         
+         ! file output
+         History_Panels5_file_flag = .false.
+         History_Panels5_file_dir = 'png'
+         History_Panels5_file_prefix = 'History_Panels5_'
+         History_Panels5_file_cnt = 5 ! output when mod(model_number,History_Panels5_file_cnt)==0
+         History_Panels5_file_width = -1 ! (inches) negative means use same value as for window
+         History_Panels5_file_aspect_ratio = -1 ! negative means use same value as for window
 
       ! History_Panels6
       
@@ -2268,14 +2429,19 @@
          History_Panels6_txt_scale = 1.0         
          History_Panels6_title = 'History_Panels6'      
          
-         History_Panels6_xmax = -1 ! model number.
-         History_Panels6_xmin = -1 ! model number.
+         History_Panels6_xaxis_name = 'model_number'
+         History_Panels6_xmin = -101d0 
+         History_Panels6_xmax = -101d0 
          History_Panels6_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels6_dxmin = -1
+         History_Panels6_xaxis_reversed = .false.
+         History_Panels6_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels6_num_panels = 0
          
          History_Panels6_yaxis_name(:) = '' 
          History_Panels6_yaxis_reversed(:) = .false.
+         History_Panels6_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels6_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels6_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels6_ymargin(:) = 0.1 
@@ -2283,6 +2449,7 @@
          
          History_Panels6_other_yaxis_name(:) = '' 
          History_Panels6_other_yaxis_reversed(:) = .false.
+         History_Panels6_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels6_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels6_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels6_other_ymargin(:) = 0.1 
@@ -2310,14 +2477,19 @@
          History_Panels7_txt_scale = 1.0         
          History_Panels7_title = 'History_Panels7'      
          
-         History_Panels7_xmax = -1 ! model number.
-         History_Panels7_xmin = -1 ! model number.
+         History_Panels7_xaxis_name = 'model_number'
+         History_Panels7_xmin = -101d0 
+         History_Panels7_xmax = -101d0 
          History_Panels7_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels7_dxmin = -1
+         History_Panels7_xaxis_reversed = .false.
+         History_Panels7_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels7_num_panels = 0
          
          History_Panels7_yaxis_name(:) = '' 
          History_Panels7_yaxis_reversed(:) = .false.
+         History_Panels7_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels7_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels7_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels7_ymargin(:) = 0.1 
@@ -2325,6 +2497,7 @@
          
          History_Panels7_other_yaxis_name(:) = '' 
          History_Panels7_other_yaxis_reversed(:) = .false.
+         History_Panels7_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels7_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels7_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels7_other_ymargin(:) = 0.1 
@@ -2352,14 +2525,19 @@
          History_Panels8_txt_scale = 1.0         
          History_Panels8_title = 'History_Panels8'      
          
-         History_Panels8_xmax = -1 ! model number.
-         History_Panels8_xmin = -1 ! model number.
+         History_Panels8_xaxis_name = 'model_number'
+         History_Panels8_xmin = -101d0 
+         History_Panels8_xmax = -101d0 
          History_Panels8_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels8_dxmin = -1
+         History_Panels8_xaxis_reversed = .false.
+         History_Panels8_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels8_num_panels = 0
          
          History_Panels8_yaxis_name(:) = '' 
          History_Panels8_yaxis_reversed(:) = .false.
+         History_Panels8_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels8_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels8_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels8_ymargin(:) = 0.1 
@@ -2367,6 +2545,7 @@
          
          History_Panels8_other_yaxis_name(:) = '' 
          History_Panels8_other_yaxis_reversed(:) = .false.
+         History_Panels8_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels8_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels8_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels8_other_ymargin(:) = 0.1 
@@ -2394,9 +2573,13 @@
          History_Panels9_txt_scale = 1.0         
          History_Panels9_title = 'History_Panels9'      
          
-         History_Panels9_xmax = -1 ! model number.
-         History_Panels9_xmin = -1 ! model number.
+         History_Panels9_xaxis_name = 'model_number'
+         History_Panels9_xmin = -101d0 
+         History_Panels9_xmax = -101d0 
          History_Panels9_max_width = 100 ! only used if > 0.  causes xmin to move with xmax.
+         History_Panels9_dxmin = -1
+         History_Panels9_xaxis_reversed = .false.
+         History_Panels9_xaxis_log = .false. ! show log10 of abs value
          
          History_Panels9_num_panels = 0
          
@@ -2408,6 +2591,7 @@
          
          History_Panels9_yaxis_name(:) = '' 
          History_Panels9_yaxis_reversed(:) = .false.
+         History_Panels9_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels9_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels9_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels9_ymargin(:) = 0.1 
@@ -2415,11 +2599,19 @@
          
          History_Panels9_other_yaxis_name(:) = '' 
          History_Panels9_other_yaxis_reversed(:) = .false.
+         History_Panels9_other_yaxis_log(:) = .false. ! show log10 of abs value
          History_Panels9_other_ymin(:) = -101d0 ! only used if /= -101d0
          History_Panels9_other_ymax(:) = -101d0 ! only used if /= -101d0        
          History_Panels9_other_ymargin(:) = 0.1 
          History_Panels9_other_dymin(:) = -1 
-      
+  
+           ! file output
+         History_Panels9_file_flag = .false.
+         History_Panels9_file_dir = 'png'
+         History_Panels9_file_prefix = 'History_Panels9_'
+         History_Panels9_file_cnt = 5 ! output when mod(model_number,History_Panels9_file_cnt)==0
+         History_Panels9_file_width = -1 ! (inches) negative means use same value as for window
+         History_Panels9_file_aspect_ratio = -1 ! negative means use same value as for window
       
 !-----------------------------------------------------------------------
 
@@ -2760,8 +2952,8 @@
          Grid1_plot_pad_left(4) = -0.08 ! fraction of full window width for padding on left
          Grid1_plot_pad_right(4) = 0.0 ! fraction of full window width for padding on right
          Grid1_plot_pad_top(4) = 0.08 ! fraction of full window height for padding at top
-         Grid1_plot_pad_bot(4) = 0.0 ! fraction of full window height for padding at bottom
-         Grid1_txt_scale_factor(4) = 0.18 ! multiply txt_scale for subplot by this
+         Grid1_plot_pad_bot(4) = -0.05 ! fraction of full window height for padding at bottom
+         Grid1_txt_scale_factor(4) = 0.2 ! multiply txt_scale for subplot by this
          
          ! file output
          Grid1_file_flag = .false.
@@ -3436,6 +3628,7 @@
          Grid9_plot_pad_top(:) = 0.0 ! fraction of full window height for padding at top
          Grid9_plot_pad_bot(:) = 0.0 ! fraction of full window height for padding at bottom
          Grid9_txt_scale_factor(:) = 0.7 ! multiply txt_scale for subplot by this
+         
          ! set default
          Grid9_num_cols = 3 ! divide plotting region into this many equal width cols
          Grid9_num_rows = 11 ! divide plotting region into this many equal height rows

@@ -66,8 +66,8 @@
    !# Comments
 
       ! Comment lines begin with a bang, followed by a single space,
-      ! and then have at least one non-whitespace character.  (Empty
-      ! comments are not allowed.)
+      ! and then have at least one non-whitespace character.  Empty
+      ! comments are treated like blank lines.
 
       ! Comments should be formatted using
       ! [Markdown](http://daringfireball.net/projects/markdown/syntax).
