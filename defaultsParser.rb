@@ -64,7 +64,7 @@ class DefaultsParser < Parslet::Parser
   rule(:comment) { space? >> bang >> space1 >> text.as(:text) >> empty }
 
   # an empty comment looks like
-  rule(:emptycomment) { space? >> bang >> newline }
+  rule(:emptycomment) { space? >> bang >> space1.maybe >> newline }
 
   # the whole file comes in blocks
 
