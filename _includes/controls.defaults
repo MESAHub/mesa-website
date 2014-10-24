@@ -1441,7 +1441,7 @@
          !### alpha_semiconvection
 
          ! Determines efficiency of semiconvective mixing.
-         ! Semiconvection only applies if `allow_semiconvective_mixing` is true.
+         ! Semiconvection only applies if `use_Ledoux_criterion` is true.
 
       alpha_semiconvection = 0
 
@@ -1467,7 +1467,7 @@
 
          ! Determines efficiency of thermohaline mixing.
          ! was previously named "thermo_haline_coeff".
-         ! thermohaline mixing only applies if `allow_thermohaline_mixing` is true.
+         ! thermohaline mixing only applies if `use_Ledoux_criterion` is true.
 
       thermohaline_coeff = 0
 
