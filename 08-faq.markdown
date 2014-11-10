@@ -79,6 +79,29 @@ these versions from a zipfile, you will see messages like
 
 when you run MESA.  These messages are safe to ignore.
 
+<a id="yosemite"></a>
+## What do I need to do to run MESA on OS X 10.10 (Yosemite)?
+
+It is necessary to take the following actions after you upgrade to
+Yosemite, even if you had a working version of MESA on your previous
+version of OS X.
+
+* Install or reinstall the current version of [Xquartz][xquartz].
+
+* Install the [command line tools][clt], using the command
+
+{% highlight bash %}
+xcode-select --install
+{% endhighlight %}
+
+* Install the latest version of the [MESA SDK][sdkosx] appropriate for
+OS X 10.10.  Support for Yosemite was not added until October 23,
+2014.
+
+[xquartz]:http://xquartz.macosforge.org/landing/
+[clt]:https://developer.apple.com/library/ios/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_
+[sdkosx]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Mac_OS_X
+
 # PGPLOT and pgstar
 
 ## Why don't I see any PGPLOT output when I run MESA?
