@@ -227,19 +227,19 @@
 
          ! format for writing reals to `star_history_name` file
 
-      star_history_dbl_format = '(1pes32.16e3, 1x)'
+      star_history_dbl_format = '(1pes40.16e3, 1x)' ! was  '(1pes32.16e3, 1x)'
 
          !### star_history_int_format
 
          ! format for writing integer to `star_history_name` file
 
-      star_history_int_format = '(i32, 1x)'
+      star_history_int_format = '(i40, 1x)' ! was  '(i32, 1x)'
 
          !### star_history_txt_format
 
          ! format for writing characters to `star_history_name` file
 
-      star_history_txt_format = '(a32, 1x)'
+      star_history_txt_format = '(a40, 1x)' ! was  '(a32, 1x)'
 
 
          !### write_profiles_flag
@@ -296,20 +296,21 @@
 
          ! format for writing reals to profile file
 
-      profile_dbl_format = '(1pes27.16e3, 1x)'
+      profile_dbl_format = '(1pes40.16e3, 1x)' ! was '(1pes27.16e3, 1x)'
 
 
          !### profile_int_format
 
          ! format for writing integers to profile file
 
-      profile_int_format = '(i27, 1x)'
+      profile_int_format = '(i40, 1x)' ! was  '(i27, 1x)'
+
 
          !### profile_txt_format
 
          ! format for writing characters to profile file
 
-      profile_txt_format = '(a27, 1x)'
+      profile_txt_format = '(a40, 1x)' ! was  '(a27, 1x)'
 
 
          !### max_num_profile_zones
@@ -683,8 +684,16 @@
 
          !### max_age
          ! Stop when the age of the star exceeds this value (in years).         
+         ! only applies when > 0.     
 
       max_age = 1d36
+
+
+         !### max_age_in_seconds
+         ! Stop when the age of the star exceeds this value (in seconds).    
+         ! only applies when > 0.     
+
+      max_age_in_seconds = -1
 
          !### num_adjusted_dt_steps_before_max_age
 
@@ -1380,6 +1389,11 @@
       delta_Pg_upper_limit = 0
 
 
+         !### stop_when_done_with_center_flash
+
+      stop_when_done_with_center_flash = .false.
+
+
          !### stop_when_done_with_piston
 
       stop_when_done_with_piston = .false.
@@ -1441,7 +1455,7 @@
          !### alpha_semiconvection
 
          ! Determines efficiency of semiconvective mixing.
-         ! Semiconvection only applies if `use_Ledoux_criterion` is true.
+         ! Semiconvection only applies if `allow_semiconvective_mixing` is true.
 
       alpha_semiconvection = 0
 
@@ -1467,7 +1481,7 @@
 
          ! Determines efficiency of thermohaline mixing.
          ! was previously named "thermo_haline_coeff".
-         ! thermohaline mixing only applies if `use_Ledoux_criterion` is true.
+         ! thermohaline mixing only applies if `allow_thermohaline_mixing` is true.
 
       thermohaline_coeff = 0
 
@@ -1544,6 +1558,7 @@
          !### conv_dP_term_factor
 
          ! Set to 0 to turn off effect of pressure from convective turbulence.
+         ! The convective turbulence factor is based on Cox&Giuli (14.69)
          ! Multiplier for `conv_dP_term`
          ! P is increased by factor `(1 + conv_dP_term)` by inclusion of convective turbulence.
 
@@ -1653,6 +1668,17 @@
             ! coefficient to this level.
 
          D_mix_ov_limit = 1d2
+
+
+            !### max_brunt_B_for_overshoot
+
+            ! Terminate overshoot region when encounter stabilizing composition gradient
+            ! where (unsmoothed) brunt_B is greater than this limit. (<= 0 means ignore this limit)
+            ! note: both brunt_B and gradL_composition_term come from unsmoothed_brunt_B
+            ! and differ only in optional smoothing.
+            ! (see num_cells_for_smooth_brunt_B and num_cells_for_smooth_gradL_composition_term).
+
+         max_brunt_B_for_overshoot = 0
 
 
             ! Parameters for exponential diffusive overshoot are described in the paper by Falk Herwig,
@@ -1933,6 +1959,9 @@
             ! setting this value = 1 implements the restriction that near a convective boundary,
             ! the mixing length doesn't exceed the distance to the boundary.
             ! Peter Eggleton, "Composition Changes during Stellar Evolution", MNRAS 156, 361-376, 1972.
+            
+            ! WARNING: I've seen problems with 25M before He core burn when using this.  bp.
+            
 
          limit_mixing_length_by_dist_to_bdy = 0 ! 1 
 
@@ -1985,9 +2014,18 @@
          smooth_convective_bdy = .true.
 
 
+            !### max_dR_div_Hp_for_smooth
+
+            ! Don't smooth across a newly nonconvective region larger than this limit
+            ! where dR is radial thickness of region and Hp is min pressure scale height in region.
+
+         max_dR_div_Hp_for_smooth = 10
+
+
             !### max_delta_limit_for_smooth
 
-            ! Don't smooth across a region where any mass fraction changes by more than this limit.
+            ! Don't smooth across a newly nonconvective region where any mass
+            ! fraction changes by more than this limit.
 
          max_delta_limit_for_smooth = 0.1
 
@@ -2634,6 +2672,22 @@
       use_atm_PT_at_center_of_surface_cell = .false.
 
 
+         !### use_hydrodynamic_surface_BCs
+         
+         ! 1) gradient of compression vanishes at surface
+            ! d_dm(d_dm(r^2*v)) = 0 at surface
+            ! by continuity, this is d_dm(d_dt(1/rho)) = 0 at surface
+            ! finite volume form is
+            ! (1/rho(1) - 1/rho_start(1)) = (1/rho(2) - 1/rho_start(2))
+            ! this BC determines the density for surface cell
+         
+         ! 2) black body radiation at surface
+            ! L = 4*pi*R^2*boltz_sig*T^4
+            ! this BC determines the temperature for the surface cell given R and L.
+                  
+      use_hydrodynamic_surface_BCs = .false.
+
+
 
 
 !----------------------------------------------------------------------------------------------
@@ -2748,7 +2802,8 @@
          ! + 'Kudritzki'
          ! + 'Vink'
          ! + 'Dutch'
-         ! + 'Stern51'  <<<<<< NOT READY FOR USE
+         ! + 'Stern51'
+         ! + 'Grafener'
          ! + 'other'  --- experimental
 
 
@@ -2822,6 +2877,14 @@
          ! "Mass-loss predictions for O and B stars as a function of metallicity"
 
       Vink_wind_eta = 0d0
+
+
+         !### Grafener_wind_eta
+
+         ! Grafener, G. & Hamann, W.-R. 2008, A&A 482, 945
+         ! contributed to mesa by Nilou Afsari
+
+      Grafener_wind_eta = 0d0
 
 
          !### Dutch_wind_eta
@@ -2944,7 +3007,7 @@
 
          !### trace_super_eddington_wind_boost
 
-         ! Send super eddington to terminal.
+         ! Send super eddington wind information to terminal.
 
       trace_super_eddington_wind_boost = .false.
 
@@ -2960,8 +3023,6 @@
       mass_change_full_off_dt = 1d-99
 
          !### trace_dt_control_mass_change
-
-         ! send super eddington to terminal
 
       trace_dt_control_mass_change = .false.
 
@@ -3493,18 +3554,6 @@
          ! If false, just use average temperature based on reconstruction polynomials.
 
       mesh_adjust_get_T_from_E = .true.
-
-
-         !### mesh_interpolate_xa
-
-         ! Applies during remeshing when we calculate composition for a new cell based on composition
-         ! of the cells it comes from the prior meshing.  The overlap between new cell and old cells
-         ! is arbitrary -- new may be a subset of a single old cell, or it might include all or part
-         ! of several adjacent old cells. There is no "right" way to do it beyond the requirement
-         ! to conserve species.  This parameter selects between alternative methods.  If a user is
-         ! sophisticated enough to care, then they should read the code in mesa/private/mesh_adjust.
-
-      mesh_interpolate_xa = .false.
 
 
 
@@ -4062,6 +4111,14 @@
       convective_bdy_min_dt_yrs = 1d-3
 
 
+         !### trace_mesh_adjust_error_in_conservation
+
+         ! If true, report relative errors for total PE, KE, and IE.
+         ! (potential, kinetic, internal).
+
+      trace_mesh_adjust_error_in_conservation = .false.
+
+
          !### okay_to_remesh
 
          ! If false, then no remeshing.
@@ -4156,14 +4213,6 @@
          ! without changing the rates or `eps_nuc` (rate of energy generation).
 
       dxdt_nuc_factor = 1
-
-
-         !### net_rate_factor
-
-         ! all rates are multiplied by this factor
-
-      net_rate_factor = 1
-
 
          !### weak_rate_factor
 
@@ -4414,12 +4463,14 @@
 
 
 
+         !### diffusion_min_T_for_radaccel
          !### diffusion_max_T_for_radaccel
 
-         ! If T <= this limit, then include radiative levitation at that location.
+         ! If T between these limits, then include radiative levitation at that location.
          ! Calculation of radiative levitation is costly, so only use it where necessary.
          ! Note: change `diffusion_v_max` to at least 1d-2 when using radiative levitation.
 
+      diffusion_min_T_for_radaccel = 0
       diffusion_max_T_for_radaccel = 0
 
 
@@ -4582,6 +4633,14 @@
          ! if `use_fixed_XZ_for_eos`, then pass this value to eos instead of actual Z.
 
       fixed_Z_for_eos = -1
+
+
+         !### use_eosDE_get
+         
+         ! if `use_eosDE_get`, then call eosDE_get in mesa/eos lib.
+         ! else call eosDT_get_T to search for T to give desired E.
+         
+      use_eosDE_get = .true.
 
 
 
@@ -4883,6 +4942,30 @@
       use_gr_factors = .false.
 
 
+         !### use_dlnddt_form_of_density_eqn
+
+         ! if true, use continuity equation, d(1/rho)/dt = 4*pi*d(v*r^2)/dm
+         ! else use default rho = cell_mass/cell_volume
+
+      use_dlnddt_form_of_density_eqn = .false.
+
+
+         !### use_dvdt_form_of_momentum_eqn
+
+         ! if true, use dv/dt = ... form of momentum equation.
+         ! this replaces the default pressure gradient form.
+
+      use_dvdt_form_of_momentum_eqn = .false.
+
+
+         !### use_dedt_form_of_energy_eqn
+
+         ! if true, use de/dt = ... form of energy equation.
+         ! this replaces the default dL/dm and eps_grav form.
+
+      use_dedt_form_of_energy_eqn = .false.
+
+
          !### non_nuc_neu_factor
 
          ! Multiplies power from non-nuclear reaction neutrinos.
@@ -4899,6 +4982,13 @@
       eps_nuc_factor = 1
 
 
+         !### max_abs_eps_nuc
+
+         ! Limit magnitude of eps_nuc to this.
+
+      max_abs_eps_nuc = 1d99
+
+
          !### fe56ec_fake_factor
 
          ! Multiplier on ni56 electron capture rate to take isotopes in hardwired networks
@@ -4913,11 +5003,54 @@
          ! In mesa, "`eps_grav`" means `-T*dS/dt` which is equivalent to `-(dE/dt + P*dV/dt)`
          ! where S is specific entropy, E is specific internal energy, and `V = 1/rho`.
          ! There are several options for how `eps_grav` is calculated.
+         ! These alternatives are equivalently from the "ideal" physics viewpoint,
+         ! but they can be very different numerically depending on the situation.
+         
+         ! The standard default forms are used if you don't set any of the following flags.
+         ! The default when using lnd instead of lnPgas as primary variable is
+         
+         ! eps_grav = -T*cp*((1-grada)*chiT*dlnT_dt - grada*chiRho*dlnd_dt)
+         
+         ! When using lnPgas instead of lnd, the default is
+         
+         ! eps_grav = -T*cp((1-grada*4*Prad/P)*dlnT_dt - grada*Pgas/P*dlnPgas_dt)
+         
+         
+
+
+
+         !### use_dEdRho_form_for_eps_grav
+
+         ! If true, use `eps_grav` = -(cv*T*dlnT_dt + (rho*dE_dRho - P/rho)*dlnd_dt)
+
+      use_dEdRho_form_for_eps_grav = .false.
+
+
+         !### use_dlnd_dt_form_for_eps_grav
+
+         ! If true, use `eps_grav` = -dedt + P/rho*dlnd_dt.
+
+      use_dlnd_dt_form_for_eps_grav = .false.
+
+
+         !### use_dlnd_dt_form_for_eps_grav
+
+         ! If true, use `eps_grav` = -dedt + P/rho*dlnd_dt.
+
+      use_dlnd_dt_form_for_eps_grav = .false.
+
+
+         !### use_PdVdt_form_for_eps_grav
+
+         ! If true, use `eps_grav` = -(dedt + P*d(1/rho)/dt). [1/rho = V,specific vol.]
+         ! With time centering for 1/rho, P*d(1/rho)/dt becomes P*(1/rho - 1/rho_start)/dt
+
+      use_PdVdt_form_for_eps_grav = .false.
 
 
          !### use_lnS_for_eps_grav
 
-         ! If true, then we calculate `eps_grav` as -T*DS/Dt.
+         ! If true, use `eps_grav` = -T*DS/Dt.
          ! Note: while this seems like the obvious way to go, it has problems numerically.
          ! lnS is not a basic variable in the way that lnT and lnd (or lnPgas) are.
          ! I.e., we get lnT and lnd from the newton solver directly,
@@ -5137,37 +5270,96 @@
       mass_for_inject_extra_ergs_sec = 0
                
 
-         !### use_intrinsic_conservation_form
+         !### theta_P
+         
+         ! for time weighting P in energy and momentum equations
+         ! <P> = theta_P*P + (1 - theta_P)*P_start
+
+      theta_P = 1d0
+               
+
+         !### use_time_centering
          
          ! if true, then use time centered velocity and time weighted area.
-         ! in the dark ages, we did not provide this, so we make it optional now.
 
-      use_intrinsic_conservation_form = .false.
+      use_time_centering = .false.
+         
 
+         !### max_ebdf_order
+         !### min_ebdf_order
+         !### steps_before_try_higher_ebdf_order
+         !### factor_for_ebdf_order_tests
+         !### use_bdf_instead_of_ebdf
+         !### use_sdirk_instead_of_ebdf
+         !### use_symplectic_instead_of_ebdf
+         ! EXPERIMENTAL -- not ready for use.
+         
+      max_ebdf_order = -1
+      min_ebdf_order = -1
+      steps_before_try_higher_ebdf_order = -1
+      factor_for_ebdf_order_tests = 5
+      
+      use_bdf_instead_of_ebdf = .false.
+      use_sdirk_instead_of_ebdf = .false.
+      use_symplectic_instead_of_ebdf = .false.
 
-         !### use_dPrad_dm_for_T_eqn
+         !### ebdf_redo_mix_for_final_stage
+         ! EXPERIMENTAL -- not ready for use.
+         
+      ebdf_redo_mix_for_final_stage = .false.
 
-         ! if true, then use L_conv instead of gradT*dlnP/dm to get dlnT/dm
+         !### ebdf_redo_mix_for_comparison_stage
+         ! EXPERIMENTAL -- not ready for use.
+         
+      ebdf_redo_mix_for_comparison_stage = .false.
 
-      use_dPrad_dm_for_T_eqn = .false.
+         !### ebdf_redo_mix_coeffs_other_stages
+         ! EXPERIMENTAL -- not ready for use.
+         
+      ebdf_redo_mix_coeffs_other_stages = .false.
+      
+      
+         !### trace_truncation_ratio
 
+      trace_truncation_ratio = .false.
+               
 
-         !### qmin_freeze_non_radiative_luminosity
+         !### use_ODE_var_eqn_pairing
 
-         ! keep constant non-radiative L for cells k s.t. q(k) > this.
-         ! i.e., changes in L must only be in L_rad
-         ! and therefore match changes in temperature gradient.
+      use_ODE_var_eqn_pairing = .false.
 
-      qmin_freeze_non_radiative_luminosity = 1d0 ! 1 => all off.  0 => all on
 
 
          !### qmax_zero_non_radiative_luminosity
+         !### qmin_freeze_non_radiative_luminosity
+         !### use_dPrad_dm_form_of_T_gradient_eqn
+         
+         ! These are for alternatives ways to determine the T gradient.
+         ! The standard form of the equation is
+         !   dT/dm = dP/dm * T/P * grad_T, grad_T = dlnT/dlnP from MLT.
+         ! use hydrostatic value for dP/dm in this.
+         ! this is because of limitations of MLT for calculating grad_T.
+         ! (MLT assumes hydrostatic equilibrium)
+         ! see comment in K&W chpt 9.1.
+         
+         ! The alternatives forms are for dynamic situations where
+         ! the use of hydrostatic dP/dm is inappropriate.
+         ! In order of priority,
+         ! if q(k) > qmin_freeze_non_radiative_luminosity then
+         !     use L_conv from start of step to get L_rad = L - L_conv_start
+         ! else if q(k) <= qmax_zero_non_radiative_luminosity then
+         !     simply use L_rad = L
+         ! else if (use_dPrad_dm_form_of_T_gradient_eqn) 
+         !     if (gradT < gradr) then
+         !        use L_rad = L*gradT/gradr (see, e.g., Cox&Giuli 14.109)
+         !     else
+         !        use L_rad = L
+         ! With the resulting L_rad, determine the expected dT/dm by
+         ! d_Prad/dm = -kap*L_rad/(clight*area^2) -- see, e.g., K&W (5.12)
 
-         ! keep zero non-radiative L for cells k s.t. q(k) <= this.
-         ! i.e., L must only be L_rad
-         ! and therefore changes in L match changes in temperature gradient.
-
-      qmax_zero_non_radiative_luminosity = 0d0 ! 0 => all off.  1 => all on
+      qmax_zero_non_radiative_luminosity = 0d0 ! 1 => L_conv = 0 everywhere
+      qmin_freeze_non_radiative_luminosity = 1d0 ! 1 => all off.  0 => all on
+      use_dPrad_dm_form_of_T_gradient_eqn = .false.
 
 
          !### eps_visc_factor
@@ -5190,6 +5382,21 @@
          ! artificial viscosity -- only applies when using velocity variables
 
       use_artificial_viscosity = .false.
+         
+
+         !### hold_artificial_viscosity_const_during_step
+
+      hold_artificial_viscosity_const_during_step = .false.
+         
+
+         !### artificial_viscosity_cutoff
+
+         ! no artificial viscosity in cell k if v(k+1) - v(k) < this times csound(k).
+         ! i.e., no AV in k if collapse time(k) > sound crossing time/this.
+         ! this provides a way to eliminate the use of artificial viscosity
+         ! in all but extreme cases where it is really needed.
+
+      artificial_viscosity_cutoff = -1 ! ignore if <= 0
          
 
 
@@ -5223,7 +5430,8 @@
 
          ! the artificial viscosity coefficient includes a quadratic term that is
          ! proportional to `(shock_spread_quadratic * r)^2`
-         ! where r is the local radius.
+         ! where r is the local radius,
+         ! or, if shock_spread_relative_to_cell_width is true, the cell width.
 
       shock_spread_quadratic = 1d-3
 
@@ -5232,9 +5440,33 @@
 
          ! the artificial viscosity coefficient includes a linear term that is
          ! proportional to `(shock_spread_linear * r * cs)`
-         ! where r is the local radius and cs is local sound speed.
+         ! wherecs is local sound speed and  r is the local radius,
+         ! or, if shock_spread_relative_to_cell_width is true, the cell width.
 
       shock_spread_linear = 0
+      
+      
+         !### shock_spread_relative_to_cell_width
+
+         ! used with shock_spread_quadratic and shock_spread_linear
+      
+      shock_spread_relative_to_cell_width = .false.
+
+
+         !### center_flash_total_time
+         !### center_flash_ramp_up_time
+         !### center_flash_ramp_down_time
+         !### center_flash_total_ergs
+         
+         ! inject energy by temporarily increasing L_center at start of run
+         ! center_flash_total_time includes ramp_up and ramp_down times (sec)
+         ! center_flash_ramp_up_duration = duration of initial linear increase (sec)
+         ! center_flash_ramp_down_duration = duration of final linear decrease (sec)
+
+      center_flash_total_time = -1d99
+      center_flash_ramp_up_duration = -1d99
+      center_flash_ramp_down_duration = -1d99
+      center_flash_total_ergs = 0d0
       
       
          !### use_piston
@@ -5266,6 +5498,15 @@
       periodic_piston_number_of_cycles = 0 ! not limited to integers
       
       
+         !### periodic_piston_done_delay
+         
+         ! wait this long after piston stops before setting done_with_piston = .true.
+         ! this give a settle down time before turning on certain time limits and residuals
+         
+   
+      periodic_piston_done_delay = 0 ! measured in units of piston_period
+      
+      
          !### piston_inward_time
          
          ! non-periodic piston moves inward for this amount of time starting at t=0
@@ -5295,6 +5536,13 @@
       piston_v0 = 1.45e9 
       
       
+         !### reset_total_energy_initial_when_done_with_piston
+
+         ! for use when keeping track of energy balance.
+      
+      reset_total_energy_initial_when_done_with_piston = .true.
+      
+      
       
 
 
@@ -5303,12 +5551,41 @@
 
 
    !# solver controls
+      
+      
+         
+         ! the following is from a response on mesa-users to a question about controls 
+         ! for solver tolerances:
+         
+         ! The "residual" is the left over difference between the left and right hand sides 
+         ! of the equation we are trying to solve.  We do iterations to reduce that, but we 
+         ! are limited by the non-linearity of the problem and the quality of the estimates 
+         ! for the derivatives.  
 
-         !### trace_newton_damping
+         ! The "correction" is the change in the primary variable that is calculated using 
+         ! good-old Newton's rule in multiple dimensions --- so Jacobian and residuals give 
+         ! a correction that would make the next residual vanish if the problem were linear 
+         ! and the Jacobian was exact, neither of which are true.  So the best we can hope 
+         ! for is that the corrections will get smaller next time.
 
-         ! Send newton damping data to screen.
+         ! The "norm" is the average; the "max" is the max.  Sometimes you mainly care about 
+         ! the norm and will accept a few outliers.  But sometimes you don't want any really 
+         ! bad outliers, so you want to set a low limit for the max residual or correction 
+         ! as well as the norm.
 
-      trace_newton_damping = .false.
+         ! You might want to try for several iterations with strict tolerances, and then 
+         ! relax them if things are still not converged.  For example, you might be willing 
+         ! to live with the larger tolerances, but you'd like to give it a good try at the 
+         ! smaller ones before switching.  Also, you might be willing to settle for any-old 
+         ! residual if the corrections have become small enough.  You can do that too by 
+         ! relaxing the residual tolerances after a few iterations.
+
+         ! Hope that at least helps with the nomenclature.
+
+         ! I agree with Frank that you should consider the effects of smaller timesteps and 
+         ! more grid points as your main technique --- tightening up the tolerances for the 
+         ! solver won't help if you are taking timesteps that are too large or if you have 
+         ! inadequate grid resolution.  
 
 
          !### tol_correction_norm
@@ -5353,6 +5630,14 @@
 
       tol_correction_norm_extreme_T = 8d-3
       tol_max_correction_extreme_T = 8d-1
+
+
+
+         !### just_use_energy_resid
+
+         ! for calculation of residual norm and max.
+
+      just_use_energy_resid = .false.
 
 
 
@@ -5408,47 +5693,37 @@
 
          !### tol_residual_norm1
          !### tol_max_residual1
-         !### max_iter_for_residual1
+         !### iter_for_resid_tol2
 
          ! "residual" for equation is the difference between left and right sides
          ! use `tol_residual_norm1` & `tol_max_residual1`
-         ! for iters from 1 to `max_iter_for_residual1`.
+         ! at iteration number `iter_for_resid_tol2`, switch to next tolerances.
 
-      max_iter_for_resid_tol1 = 4
       tol_residual_norm1 = 1d-4
       tol_max_residual1 = 1d-2
-
+      iter_for_resid_tol2 = 4
 
          !### tol_residual_norm2
          !### tol_max_residual2
-         !### max_iter_for_residual2
+         !### iter_for_resid_tol3
 
          ! Use `tol_residual_norm2` & `tol_max_residual2`
-         ! for iters from `max_iter_for_residual1` + 1 to `max_iter_for_residual2`.
+         ! these apply starting at iteration number `iter_for_resid_tol2`.
+         ! at iteration number `iter_for_resid_tol3`, switch to next tolerances.
 
-      max_iter_for_resid_tol2 = 12
       tol_residual_norm2 = 1d99
       tol_max_residual2 = 1d99
+      iter_for_resid_tol3 = 12
 
 
          !### tol_residual_norm3
          !### tol_max_residual3
-         !### max_iter_for_residual3
 
          ! Use `tol_residual_norm3` & `tol_max_residual3`
-         ! for iters from `max_iter_for_residual2` + 1 to `max_iter_for_residual3`.
-         ! For iters > `max_iter_for_resid_tol3`, ignore residuals for convergence decision.
+         ! these apply starting at iteration number `iter_for_resid_tol3`.
 
-      max_iter_for_resid_tol3 = 17
       tol_residual_norm3 = 1d99
       tol_max_residual3 = 1d99
-
-
-         !### check_continuity_residual
-         !### check_energy_balance_residual
-
-      check_continuity_residual = .true.
-      check_energy_balance_residual = .true.
 
 
          ! If things get worse from one iteration to next, give up.
@@ -5482,7 +5757,8 @@
 
 
          !### max_iterations_for_jacobian
-
+         
+         ! EXPERIEMENTAL: not working at present.  leave at 1.
          ! Jacobian is always created fresh for 1st iteration.
          ! If this param > 1, then will try to reuse jacobian.
          ! After use jacobian this many times, remake it.
@@ -5490,6 +5766,12 @@
          ! This is automatically = 1 immediately following a backup.
 
       max_iterations_for_jacobian = 1
+
+         !### trace_newton_damping
+
+         ! Send newton damping data to screen.
+
+      trace_newton_damping = .false.
 
 
 
@@ -5613,6 +5895,20 @@
       newton_itermin = 2
 
 
+         !### newton_itermin_until_reduce_min_corr_coeff
+
+         ! Use at least this many iterations in newton 
+         ! before try using small min_corr_coeff
+
+      newton_itermin_until_reduce_min_corr_coeff = 8
+
+         !### newton_reduced_min_corr_coeff
+
+         ! For use with newton_itermin_for_reduce_min_corr_coeff.
+
+      newton_reduced_min_corr_coeff = 0.1
+
+
          !### do_newton_damping_for_neg_xa
 
          ! If true, uniformly reduce newton corrections if necessary to avoid neg abundances.
@@ -5632,13 +5928,6 @@
       hydro_mtx_max_allowed_logT = 99
       hydro_mtx_max_allowed_logRho = 99
       hydro_mtx_max_allowed_logPgas = 99
-
-
-         !### do_implicit_D_mix
-
-         ! If true, revise D_mix at each iteration.   EXPERIMENTAL.  DO NOT USE FOR NOW.
-
-      do_implicit_D_mix = .false.
 
 
 !----------------------------------------------------------------------------------------------
@@ -5746,6 +6035,7 @@
       ! Here's a dictionary mapping those terminal strings to the corresponding control parameters.
       
             !           terminal output       related parameter
+            !          'avg E resid'          limit_for_avg_E_residual
             !          'CpT_absMdot_div_L'    CpT_absMdot_div_L_limit
             !          'Lnuc'                 delta_lgL_nuc_limit
             !          'Lnuc_cat'             delta_lgL_nuc_cat_limit
@@ -5782,6 +6072,8 @@
             !          'dt_mass_loss'         dt_div_dt_mass_loss_limit
             !          'dt_thermal'           dt_div_dt_thermal_limit
             !          'eps_nuc_cntr'         delta_log_eps_nuc_cntr_limit
+            !          'error enrg'           limit_for_rel_error_in_energy_conservation
+            !          'error rate'           limit_for_log_rel_rate_in_energy_conservation
             !          'highT del Ye'         delta_Ye_highT_limit
             !          'hold'                 (recent backup, so no increase in dt)
             !          'lgL'                  delta_lgL_limit
@@ -5801,12 +6093,14 @@
             !          'lg_XO_cntr'           delta_lg_XO_cntr_limit
             !          'lg_XSi_cntr'          delta_lg_XSi_cntr_limit
             !          'log_eps_nuc'          delta_log_eps_nuc_limit
+            !          'max E resid'          limit_for_max_E_residual
             !          'max_dt'               max_years_for_timestep
             !          'max dt change'        max_timestep_factor
             !          'min dt change'        min_timestep_factor
             !          'mix fixup'            max_fixup_for_mix_limit
             !          'neg_mass_frac'        (solver found neg mass frac)
             !          'newton iters'         newton_iterations_limit
+            !          'trnc err'             truncation_ratio_limit
             !          'v/v_crit'             v_div_v_crit_limit
             !          'varcontrol'           varcontrol_target
       
@@ -5991,6 +6285,37 @@
          ! If use a total number of iters > this, retry.
 
       diffusion_iters_hard_limit = 800
+
+
+         !### truncation_ratio_xh_atol
+         !### truncation_ratio_xh_rtol
+         !### truncation_ratio_xa_atol
+         !### truncation_ratio_xa_rtol
+         !### eval_truncation_ratio_do_max
+
+      truncation_ratio_xh_atol = 1d-4
+      truncation_ratio_xh_rtol = 1d-4
+      truncation_ratio_xa_atol = 1d-4
+      truncation_ratio_xa_rtol = 1d-4
+      eval_truncation_ratio_do_max = .true.
+
+         !### use_truncation_ratio_limit
+
+         ! if false, then skip test of truncation ratio and use varcontrol instead.
+
+      use_truncation_ratio_limit = .true.
+
+         !### truncation_ratio_limit
+
+         ! If estimated local truncation error > this, reduce the next timestep.
+
+      truncation_ratio_limit = 1d99
+
+         !### truncation_ratio_hard_limit
+
+         ! If estimated local truncation error > this, retry.
+
+      truncation_ratio_hard_limit = 1d99
 
 
       ! limits based on max decrease in mass fraction at any location in star
@@ -6401,6 +6726,30 @@
          ! `delta_lgT_limit` limits only apply where `log10_T(k) >= delta_lgT_limit_min_lgT`.
 
       delta_lgT_limit_min_lgT = 1d99
+
+
+         !### delta_lgE_limit
+
+         ! Limit for magnitude of max change in log10 internal energy in any cell.
+
+      delta_lgE_limit = 0.1
+
+
+         !### delta_lgE_hard_limit
+
+         ! If max `delta_lgE` is greater than `delta_lgE_hard_limit`,
+         ! retry with smaller timestep.
+
+      delta_lgE_hard_limit = -1
+
+
+         !### delta_lgE_limit_min_lgE
+
+         ! `delta_lgE_limit` limits only apply where `log10(E(k)) >= delta_lgE_limit_min_lgE`.
+
+      delta_lgE_limit_min_lgE = 1d99
+
+
 
 
          !### delta_lgR_limit
@@ -6993,7 +7342,7 @@
          
          !### delta_lg_XH_cntr_hard_limit
 
-         ! If max delta is greater than `delta_lgL_nuc_hard_limit`,
+         ! If max delta is greater than `delta_lg_XH_cntr_hard_limit`,
          ! retry with smaller timestep.
 
       delta_lg_XH_cntr_hard_limit = -1
@@ -7254,46 +7603,43 @@
          ! retry with smaller timestep.
 
       delta_lg_total_J_hard_limit = 0.5
-         
-         
-         !### limit_for_max_continuity_residual
-         !### hard_limit_for_max_continuity_residual
-         !### min_k_for_max_continuity_residual
-
-         ! If max continuity error is greater
-         ! than `limit_for_max_continuity_residual`,
-         ! reduce the next timestep by `limit`/`max_error`.
-
-         ! If max continuity error is greater
-         ! than `hard_limit_for_max_continuity_residual`,
-         ! retry with smaller timestep.
-
-         ! max continuity error = max over cells of
-         !  abs(dt*rho(k)*(1/rho(k) - 1/rho_start(k))/dt - 4*pi/dm(k)*(R2(k)*vc(k) - R2(k+1)*vc(k+1)))
-
-      limit_for_max_continuity_residual = 1d99 ! 1d-8
-      hard_limit_for_max_continuity_residual = 1d99 ! 1d-7
-      min_k_for_max_continuity_residual = 10 ! ignore cells with k < this
 
          
-         !### limit_for_max_energy_balance_residual
-         !### hard_limit_for_max_energy_balance_residual
-         !### min_k_for_max_energy_balance_residual
+         !### limit_for_rel_error_in_energy_conservation
+         !### hard_limit_for_rel_error_in_energy_conservation
+         
+         ! rel_error_in_energy_conservation = abs(error_in_energy_conservation/total_energy)
 
-         ! If max energy balance error is greater
-         ! than `limit_for_max_energy_balance_residual`,
-         ! reduce the next timestep by `limit`/`max_error`.
+      limit_for_rel_error_in_energy_conservation = 1d99 ! 1d-7
+      hard_limit_for_rel_error_in_energy_conservation = 1d99 ! 1d-5
 
-         ! If max energy balance error is greater
-         ! than `hard_limit_for_max_energy_balance_residual`,
-         ! retry with smaller timestep.
+         
+         !### limit_for_rel_rate_in_energy_conservation
+         !### hard_limit_for_rel_rate_in_energy_conservation
+         
+         ! rel_rate_in_energy_conservation = abs(error_in_energy_conservation/total_energy)/dt
+         ! with dt in seconds.
 
-         ! max energy balance error = max over cells of
-         !    abs(dt/e(k)*((L(k) - L(k+1))/dm - dL_dm_expected(k)))
+      limit_for_rel_rate_in_energy_conservation = 1d99 ! 1d-7
+      hard_limit_for_rel_rate_in_energy_conservation = 1d99 ! 1d-5
 
-      limit_for_max_energy_balance_residual = 1d99 ! 1d-8      
-      hard_limit_for_max_energy_balance_residual = 1d99 ! 1d-7
-      min_k_for_max_energy_balance_residual = 10 ! ignore cells with k < this
+         
+         !### limit_for_avg_E_residual
+         !### hard_limit_for_avg_E_residual
+         
+         ! avg_E_residual = abs(dot_product(s% dq(1:s% nz),s% E_residual(1:s% nz)))
+
+      limit_for_avg_E_residual = 1d99 ! 1d-7
+      hard_limit_for_avg_E_residual = 1d99 ! 1d-5
+
+         
+         !### limit_for_max_E_residual
+         !### hard_limit_for_max_E_residual
+         
+         ! max_E_residual = maxval(abs(s% E_residual(1:s% nz)))
+
+      limit_for_max_E_residual = 1d99 ! 1d-7
+      hard_limit_for_max_E_residual = 1d99 ! 1d-5
 
 
          !### report_why_dt_limits
@@ -7588,6 +7934,7 @@
 
       use_other_energy_implicit = .false.
       use_other_energy = .false.
+      use_other_momentum = .false.
       use_other_eps_grav = .false.
       use_other_mesh_functions = .false.
       use_other_D_mix = .false.
@@ -7635,6 +7982,12 @@
          ! Number of cells on either side to use in weighted smoothing of `brunt_B`.
 
       num_cells_for_smooth_brunt_B = 2
+
+         !### use_other_brunt_smoothing
+
+         ! Call user defined "other_brunt_smoothing" routine if this is true.
+
+      use_other_brunt_smoothing = .false.
 
 
 

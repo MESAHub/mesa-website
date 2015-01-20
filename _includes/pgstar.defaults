@@ -164,6 +164,11 @@
          pgstar_right_yaxis_label_disp = 4.3
 
 
+         !### relative scale of axis numbers
+
+         pgstar_num_scale = 0.9
+
+
          !### line width for data
 
          pgstar_lw = 8 ! integer

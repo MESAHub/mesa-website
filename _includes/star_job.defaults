@@ -50,6 +50,7 @@
 
          !### eosDT_cache_dir
          !### eosPT_cache_dir
+         !### eosDE_cache_dir
          !### ionization_cache_dir
          !### kap_cache_dir
          !### rates_cache_dir
@@ -73,6 +74,7 @@
 
          !     eosDT_cache_dir = '/Users/bpaxton/mesa_caches/eosDT_cache'
          !     eosPT_cache_dir = '/Users/bpaxton/mesa_caches/eosPT_cache'
+         !     eosDE_cache_dir = '/Users/bpaxton/mesa_caches/eosDE_cache'
          !     ionization_cache_dir = '/Users/bpaxton/mesa_caches/ionization_cache'
          !     kap_cache_dir = '/Users/bpaxton/mesa_caches/kap_cache'
          !     rates_cache_dir = '/Users/bpaxton/mesa_caches/rates_cache'
@@ -90,6 +92,7 @@
 
       eosDT_cache_dir = ''
       eosPT_cache_dir = ''
+      eosDE_cache_dir = ''
       ionization_cache_dir = ''
       kap_cache_dir = ''
       rates_cache_dir = ''
@@ -812,14 +815,36 @@
       change_initial_lnPgas_flag = .false.
       new_lnPgas_flag = .false.
 
+
+         !### change_E_flag
+         !### change_initial_E_flag
+         !### new_E_flag
+         ! E variables
+         ! `E_flag` is true if we are using internal energy variables in place of lnT
+
+      change_E_flag = .false.
+      change_initial_E_flag = .false.
+      new_E_flag = .false.
+
+
+      !## luminosity variables
+
+         !### change_L_flag
+         !### change_initial_L_flag
+         !### new_L_flag
+         ! change whether MESA evolves a luminosity variable.
+
+      change_L_flag = .false.
+      change_initial_L_flag = .false.
+      new_L_flag = .false.
+      
+
       !## velocity variables
 
          !### change_v_flag
          !### change_initial_v_flag
          !### new_v_flag
          ! change whether MESA evolves a (radial) velocity variable.
-         ! NOTE: at present, mesa/star can deal with large velocities,
-         ! but not with shocks or other "violent" hydrodynamic events.
 
       change_v_flag = .false.
       change_initial_v_flag = .false.
@@ -1115,6 +1140,14 @@
       relax_v_center_dt = 0
 
 
+
+         !### set_L_center
+         !### set_initial_L_center
+
+      set_L_center = .false.
+      set_initial_L_center = .false.
+
+
          !### relax_L_center
          !### relax_initial_L_center
          !### new_L_center
@@ -1158,6 +1191,7 @@
 
          !### remove_center_at_cell_k
          !### remove_center_by_temperature
+         !### remove_center_by_mass_fraction_q
          !### remove_center_by_mass_gm
          !### remove_center_by_mass_Msun
          !### remove_center_by_radius_cm
@@ -1166,6 +1200,7 @@
 
       remove_center_at_cell_k = 0
       remove_center_by_temperature = 0
+      remove_center_by_mass_fraction_q = 0
       remove_center_by_mass_gm = 0
       remove_center_by_mass_Msun = 0
       remove_center_by_radius_cm = 0
@@ -1174,6 +1209,7 @@
 
          !### remove_initial_center_at_cell_k
          !### remove_initial_center_by_temperature
+         !### remove_initial_center_by_mass_fraction_q
          !### remove_initial_center_by_mass_gm
          !### remove_initial_center_by_mass_msun
          !### remove_initial_center_by_radius_cm
@@ -1182,6 +1218,7 @@
 
       remove_initial_center_at_cell_k = 0
       remove_initial_center_by_temperature = 0
+      remove_initial_center_by_mass_fraction_q = 0
       remove_initial_center_by_mass_gm = 0
       remove_initial_center_by_mass_Msun = 0
       remove_initial_center_by_radius_cm = 0
