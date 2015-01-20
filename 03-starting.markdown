@@ -242,7 +242,7 @@ If you scroll back in the terminal output from the run, you should
 find a line that looks like (though the number may differ slightly
 between MESA versions):
 
-    save photos/x941 for model 941
+    save photos/x945 for model 945
 
 indicating that one of these snapshots was automatically saved when
 the run terminated.
@@ -272,9 +272,9 @@ and save the inlist file.
 
 Now we can restart using the photo and our new settings.  Try it.
 
-    ./re x941
+    ./re x945
 
-This resumes the run from model 941, but this time the run will stop
+This resumes the run from model 945, but this time the run will stop
 when our other condition is satisfied, when the central hydrogen
 drops below 1e-3.  This will happen at about model number 1050.
 
@@ -304,7 +304,7 @@ your inlist and changing save\_model\_when\_terminate to true.
 
 Save the file and then restart MESA from the same point as before.
 
-    ./re x941
+    ./re x945
 
 This time when the run terminates MESA will save a model named
 15M\_at\_TAMS.mod.  Take a look and see.
