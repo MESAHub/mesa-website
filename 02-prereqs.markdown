@@ -183,9 +183,9 @@ source $MESASDK_ROOT/bin/mesasdk_init.csh
 One caveat is that if you put the MESA SDK in your shell profile,
 you'll always be using the MESA SDK supplied version of gcc which may be a compatibility issue if
 you work with other other codes.  Alternative (unsupported)
-initialization scripts are available [here][mesasdk-init].
+initialization scripts are available [here][mesa-init].
 
-[mesasdk-init]:https://github.com/jschwab/mesasdk-init
+[mesa-init]:https://github.com/jschwab/mesa-init
 
 ## Compile MESA
 
