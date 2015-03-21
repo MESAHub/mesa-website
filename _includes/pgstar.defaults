@@ -155,7 +155,13 @@
          pgstar_grid_title_disp = 2.0
          pgstar_grid_title_coord = 0.5
          pgstar_grid_title_fjust = 0.5
-
+         
+         
+         !### scale for axis labels
+         pgstar_xaxis_label_scale = 1.1
+         pgstar_left_yaxis_label_scale = 1.1
+         pgstar_right_yaxis_label_scale = 1.1
+         
 
          !### displacements for axis labels
 
@@ -727,6 +733,8 @@
          Kipp_xaxis_reversed=.false. ! Whether to reverse the direction of the xaxis
          Kipp_xaxis_in_seconds=.false. ! Whether to plot time in seconds
 													 ! Requires Kipp_xaxis_name='star_age'
+         Kipp_xaxis_in_Myr=.false. ! Whether to plot time in units of 10^6 years
+													 ! Requires Kipp_xaxis_name='star_age'
          Kipp_xaxis_time_from_present=.false. ! Whether to plot time since present. 
 															  ! plots star_age-max(star_age)
 															  ! Requires Kipp_xaxis_name='star_age'
@@ -931,7 +939,383 @@
          logL_Teff_file_aspect_ratio = -1 ! negative means use same value as for window
      
             
+!-----------------------------------------------------------------------
+
+   !# logL_R window
+      ! history of logL vs. R
       
+         logL_R_win_flag = .false.
+      
+         logL_R_win_width = 6
+         logL_R_win_aspect_ratio = 0.75 ! aspect_ratio = height/width
+         
+         logL_R_xleft = 0.15
+         logL_R_xright = 0.85
+         logL_R_ybot = 0.15
+         logL_R_ytop = 0.85
+         logL_R_txt_scale = 1.0
+         logL_R_title = 'logL_R'      
+
+         show_logL_R_target_box = .false.
+         logL_R_target_n_sigma = -3 ! -n means show sig 1..n
+         logL_R_target_logL = 4.00d0
+         logL_R_target_logL_sigma = 0.06d0
+         logL_R_target_R = 6095d0
+         logL_R_target_R_sigma = 65  
+      
+         ! axis limits -- to override system default selections
+         logL_R_logL_min = -101d0 ! only used if /= -101d0
+         logL_R_logL_max = -101d0 ! only used if /= -101d0
+         logL_R_R_min = -101d0 ! only used if /= -101d0
+         logL_R_R_max = -101d0 ! only used if /= -101d0
+
+         logL_R_R_margin = 0.1
+         logL_R_logL_margin = 0.1
+         logL_R_dR_min = -1
+         logL_R_dlogL_min = -1
+      
+         logL_R_step_min = -1 ! only plot models with model number >= this
+         logL_R_step_max = 999999 ! only plot models with model number <= this
+
+         show_logL_R_annotation1 = .false.
+         show_logL_R_annotation2 = .false.
+         show_logL_R_annotation3 = .false.
+         
+         logL_R_fname = '' ! file name for extra logL-R data
+         
+         ! file output
+         logL_R_file_flag = .false.
+         logL_R_file_dir = 'png'
+         logL_R_file_prefix = 'logL_R_'
+         logL_R_file_cnt = 5 ! output when mod(model_number,logL_R_file_cnt)==0
+         logL_R_file_width = -1 ! (inches) negative means use same value as for window
+         logL_R_file_aspect_ratio = -1 ! negative means use same value as for window
+     
+            
+      
+!-----------------------------------------------------------------------
+
+   !# logL_v window
+      ! history of logL vs. v surface
+      
+         logL_v_win_flag = .false.
+      
+         logL_v_win_width = 6
+         logL_v_win_aspect_ratio = 0.75 ! aspect_ratio = height/width
+         
+         logL_v_xleft = 0.15
+         logL_v_xright = 0.85
+         logL_v_ybot = 0.15
+         logL_v_ytop = 0.85
+         logL_v_txt_scale = 1.0
+         logL_v_title = 'logL_v'      
+
+         show_logL_v_target_box = .false.
+         logL_v_target_n_sigma = -3 ! -n means show sig 1..n
+         logL_v_target_logL = 4.00d0
+         logL_v_target_logL_sigma = 0.06d0
+         logL_v_target_v = 6095d0
+         logL_v_target_v_sigma = 65  
+      
+         ! axis limits -- to override system default selections
+         logL_v_logL_min = -101d0 ! only used if /= -101d0
+         logL_v_logL_max = -101d0 ! only used if /= -101d0
+         logL_v_v_min = -101d0 ! only used if /= -101d0
+         logL_v_v_max = -101d0 ! only used if /= -101d0
+
+         logL_v_v_margin = 0.1
+         logL_v_logL_margin = 0.1
+         logL_v_dv_min = -1
+         logL_v_dlogL_min = -1
+      
+         logL_v_step_min = -1 ! only plot models with model number >= this
+         logL_v_step_max = 999999 ! only plot models with model number <= this
+
+         show_logL_v_annotation1 = .false.
+         show_logL_v_annotation2 = .false.
+         show_logL_v_annotation3 = .false.
+         
+         logL_v_fname = '' ! file name for extra logL-v data
+         
+         ! file output
+         logL_v_file_flag = .false.
+         logL_v_file_dir = 'png'
+         logL_v_file_prefix = 'logL_v_'
+         logL_v_file_cnt = 5 ! output when mod(model_number,logL_v_file_cnt)==0
+         logL_v_file_width = -1 ! (inches) negative means use same value as for window
+         logL_v_file_aspect_ratio = -1 ! negative means use same value as for window
+     
+            
+      
+      
+!-----------------------------------------------------------------------
+
+   !# L_Teff window
+      ! history of L vs. Teff
+      
+         L_Teff_win_flag = .false.
+      
+         L_Teff_win_width = 6
+         L_Teff_win_aspect_ratio = 0.75 ! aspect_ratio = height/width
+         
+         L_Teff_xleft = 0.15
+         L_Teff_xright = 0.85
+         L_Teff_ybot = 0.15
+         L_Teff_ytop = 0.85
+         L_Teff_txt_scale = 1.0
+         L_Teff_title = 'L_Teff'      
+
+         show_L_Teff_target_box = .false.
+         L_Teff_target_n_sigma = -3 ! -n means show sig 1..n
+         L_Teff_target_L = 4.00d0
+         L_Teff_target_L_sigma = 0.06d0
+         L_Teff_target_Teff = 6095d0
+         L_Teff_target_Teff_sigma = 65  
+      
+         ! axis limits -- to override system default selections
+         L_Teff_L_min = -101d0 ! only used if /= -101d0
+         L_Teff_L_max = -101d0 ! only used if /= -101d0
+         L_Teff_Teff_min = -101d0 ! only used if /= -101d0
+         L_Teff_Teff_max = -101d0 ! only used if /= -101d0
+
+         L_Teff_Teff_margin = 0.1
+         L_Teff_L_margin = 0.1
+         L_Teff_dTeff_min = -1
+         L_Teff_dL_min = -1
+      
+         L_Teff_step_min = -1 ! only plot models with model number >= this
+         L_Teff_step_max = 999999 ! only plot models with model number <= this
+
+         show_L_Teff_annotation1 = .false.
+         show_L_Teff_annotation2 = .false.
+         show_L_Teff_annotation3 = .false.
+         
+         L_Teff_fname = '' ! file name for extra L-Teff data
+         
+         ! file output
+         L_Teff_file_flag = .false.
+         L_Teff_file_dir = 'png'
+         L_Teff_file_prefix = 'L_Teff_'
+         L_Teff_file_cnt = 5 ! output when mod(model_number,L_Teff_file_cnt)==0
+         L_Teff_file_width = -1 ! (inches) negative means use same value as for window
+         L_Teff_file_aspect_ratio = -1 ! negative means use same value as for window
+     
+            
+      
+!-----------------------------------------------------------------------
+
+   !# L_v window
+      ! history of L vs. surface velocity
+      
+         L_v_win_flag = .false.
+      
+         L_v_win_width = 6
+         L_v_win_aspect_ratio = 0.75 ! aspect_ratio = height/width
+         
+         L_v_xleft = 0.15
+         L_v_xright = 0.85
+         L_v_ybot = 0.15
+         L_v_ytop = 0.85
+         L_v_txt_scale = 1.0
+         L_v_title = 'L_v'      
+
+         show_L_v_target_box = .false.
+         L_v_target_n_sigma = -3 ! -n means show sig 1..n
+         L_v_target_L = 4.00d0
+         L_v_target_L_sigma = 0.06d0
+         L_v_target_v = 6095d0
+         L_v_target_v_sigma = 65  
+      
+         ! axis limits -- to override system default selections
+         L_v_L_min = -101d0 ! only used if /= -101d0
+         L_v_L_max = -101d0 ! only used if /= -101d0
+         L_v_v_min = -101d0 ! only used if /= -101d0
+         L_v_v_max = -101d0 ! only used if /= -101d0
+
+         L_v_v_margin = 0.1
+         L_v_L_margin = 0.1
+         L_v_dv_min = -1
+         L_v_dL_min = -1
+      
+         L_v_step_min = -1 ! only plot models with model number >= this
+         L_v_step_max = 999999 ! only plot models with model number <= this
+
+         show_L_v_annotation1 = .false.
+         show_L_v_annotation2 = .false.
+         show_L_v_annotation3 = .false.
+         
+         L_v_fname = '' ! file name for extra L-v data
+         
+         ! file output
+         L_v_file_flag = .false.
+         L_v_file_dir = 'png'
+         L_v_file_prefix = 'L_v_'
+         L_v_file_cnt = 5 ! output when mod(model_number,L_v_file_cnt)==0
+         L_v_file_width = -1 ! (inches) negative means use same value as for window
+         L_v_file_aspect_ratio = -1 ! negative means use same value as for window
+            
+      
+!-----------------------------------------------------------------------
+
+   !# L_R window
+      ! history of L vs. R
+      
+         L_R_win_flag = .false.
+      
+         L_R_win_width = 6
+         L_R_win_aspect_ratio = 0.75 ! aspect_ratio = height/width
+         
+         L_R_xleft = 0.15
+         L_R_xright = 0.85
+         L_R_ybot = 0.15
+         L_R_ytop = 0.85
+         L_R_txt_scale = 1.0
+         L_R_title = 'L_R'      
+
+         show_L_R_target_box = .false.
+         L_R_target_n_sigma = -3 ! -n means show sig 1..n
+         L_R_target_L = 4.00d0
+         L_R_target_L_sigma = 0.06d0
+         L_R_target_R = 6095d0
+         L_R_target_R_sigma = 65  
+      
+         ! axis limits -- to oRerride system default selections
+         L_R_L_min = -101d0 ! only used if /= -101d0
+         L_R_L_max = -101d0 ! only used if /= -101d0
+         L_R_R_min = -101d0 ! only used if /= -101d0
+         L_R_R_max = -101d0 ! only used if /= -101d0
+
+         L_R_R_margin = 0.1
+         L_R_L_margin = 0.1
+         L_R_dR_min = -1
+         L_R_dL_min = -1
+      
+         L_R_step_min = -1 ! only plot models with model number >= this
+         L_R_step_max = 999999 ! only plot models with model number <= this
+
+         show_L_R_annotation1 = .false.
+         show_L_R_annotation2 = .false.
+         show_L_R_annotation3 = .false.
+         
+         L_R_fname = '' ! file name for extra L-R data
+         
+         ! file output
+         L_R_file_flag = .false.
+         L_R_file_dir = 'png'
+         L_R_file_prefix = 'L_R_'
+         L_R_file_cnt = 5 ! output when mod(model_number,L_R_file_cnt)==0
+         L_R_file_width = -1 ! (inches) negatiRe means use same Ralue as for window
+         L_R_file_aspect_ratio = -1 ! negatiRe means use same Ralue as for window
+     
+            
+
+!-----------------------------------------------------------------------
+
+   !# R_Teff window
+      ! history of R vs. Teff
+      
+         R_Teff_win_flag = .false.
+      
+         R_Teff_win_width = 6
+         R_Teff_win_aspect_ratio = 0.75 ! aspect_ratio = height/width
+         
+         R_Teff_xleft = 0.15
+         R_Teff_xright = 0.85
+         R_Teff_ybot = 0.15
+         R_Teff_ytop = 0.85
+         R_Teff_txt_scale = 1.0
+         R_Teff_title = 'R_Teff'      
+
+         show_R_Teff_target_box = .false.
+         R_Teff_target_n_sigma = -3 ! -n means show sig 1..n
+         R_Teff_target_R = 4.00d0
+         R_Teff_target_R_sigma = 0.06d0
+         R_Teff_target_Teff = 6095d0
+         R_Teff_target_Teff_sigma = 65  
+      
+         ! axis limits -- to override system default selections
+         R_Teff_R_min = -101d0 ! only used if /= -101d0
+         R_Teff_R_max = -101d0 ! only used if /= -101d0
+         R_Teff_Teff_min = -101d0 ! only used if /= -101d0
+         R_Teff_Teff_max = -101d0 ! only used if /= -101d0
+
+         R_Teff_Teff_margin = 0.1
+         R_Teff_R_margin = 0.1
+         R_Teff_dTeff_min = -1
+         R_Teff_dR_min = -1
+      
+         R_Teff_step_min = -1 ! only plot models with model number >= this
+         R_Teff_step_max = 999999 ! only plot models with model number <= this
+
+         show_R_Teff_annotation1 = .false.
+         show_R_Teff_annotation2 = .false.
+         show_R_Teff_annotation3 = .false.
+         
+         R_Teff_fname = '' ! file name for extra R-Teff data
+         
+         ! file output
+         R_Teff_file_flag = .false.
+         R_Teff_file_dir = 'png'
+         R_Teff_file_prefix = 'R_Teff_'
+         R_Teff_file_cnt = 5 ! output when mod(model_number,R_Teff_file_cnt)==0
+         R_Teff_file_width = -1 ! (inches) negative means use same value as for window
+         R_Teff_file_aspect_ratio = -1 ! negative means use same value as for window
+     
+            
+      
+!-----------------------------------------------------------------------
+
+   !# R_L window
+      ! history of R vs. L
+      
+         R_L_win_flag = .false.
+      
+         R_L_win_width = 6
+         R_L_win_aspect_ratio = 0.75 ! aspect_ratio = height/width
+         
+         R_L_xleft = 0.15
+         R_L_xright = 0.85
+         R_L_ybot = 0.15
+         R_L_ytop = 0.85
+         R_L_txt_scale = 1.0
+         R_L_title = 'R_L'      
+
+         show_R_L_target_box = .false.
+         R_L_target_n_sigma = -3 ! -n means show sig 1..n
+         R_L_target_R = 4.00d0
+         R_L_target_R_sigma = 0.06d0
+         R_L_target_L = 6095d0
+         R_L_target_L_sigma = 65  
+      
+         ! axis limits -- to override system default selections
+         R_L_R_min = -101d0 ! only used if /= -101d0
+         R_L_R_max = -101d0 ! only used if /= -101d0
+         R_L_L_min = -101d0 ! only used if /= -101d0
+         R_L_L_max = -101d0 ! only used if /= -101d0
+
+         R_L_L_margin = 0.1
+         R_L_R_margin = 0.1
+         R_L_dL_min = -1
+         R_L_dR_min = -1
+      
+         R_L_step_min = -1 ! only plot models with model number >= this
+         R_L_step_max = 999999 ! only plot models with model number <= this
+
+         show_R_L_annotation1 = .false.
+         show_R_L_annotation2 = .false.
+         show_R_L_annotation3 = .false.
+         
+         R_L_fname = '' ! file name for extra R-L data
+         
+         ! file output
+         R_L_file_flag = .false.
+         R_L_file_dir = 'png'
+         R_L_file_prefix = 'R_L_'
+         R_L_file_cnt = 5 ! output when mod(model_number,R_L_file_cnt)==0
+         R_L_file_width = -1 ! (inches) negative means use same value as for window
+         R_L_file_aspect_ratio = -1 ! negative means use same value as for window
+
+
 !-----------------------------------------------------------------------
 
    !# logg_Teff window

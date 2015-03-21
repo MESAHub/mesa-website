@@ -87,7 +87,7 @@
          !### initial_y
 
          ! initial helium mass fraction for create pre-ms and create initial
-         ! (< 0 means use default)
+         ! (< 0 means use default which is 0.24 + 2*initial_z)
 
          ! not used when loading a saved model or a zams model.
          ! however is reported in output as the initial Y of the star.
@@ -585,6 +585,20 @@
          ! offset minus_dr location by this factor times r
 
       mach1_minus_dr_factor = 2
+
+
+!----------------------------------------------------------------------------------------------
+
+
+
+   !# definition of core overshooting boundary for output
+   
+         !### alpha_bdy_core_overshooting
+            ! bdy = core_overshoot_r0 + core_overshoot_Hp* &
+               ! (alpha_bdy_core_overshooting*core_overshoot_f - core_overshoot_f0)
+         !### The values of core_overshoot_r0, core_overshoot_Hp, core_overshoot_f, and core_overshoot_f0 are the actual values used for this step to calculate the core overshooting.
+         
+      alpha_bdy_core_overshooting = 5
 
 
 !----------------------------------------------------------------------------------------------
@@ -1303,6 +1317,13 @@
       v_surf_div_v_kh_lower_limit = -1d99
 
 
+         !### v_surf_div_v_esc_limit
+
+         ! stop if `v_surf/v_esc` > this limit
+
+      v_surf_div_v_esc_limit = 1d99
+
+
 
          !### Lnuc_div_L_zams_limit
 
@@ -1425,7 +1446,7 @@
          ! If MLT diffusion coeff D (cm^2/sec) is less than this limit,
          ! then set D to zero and change the point to `mixing_type == no_mixing`.
 
-      remove_small_D_limit = 5
+      remove_small_D_limit = 1d-6
       
 
          !### use_Ledoux_criterion
@@ -1455,7 +1476,7 @@
          !### alpha_semiconvection
 
          ! Determines efficiency of semiconvective mixing.
-         ! Semiconvection only applies if `allow_semiconvective_mixing` is true.
+         ! Semiconvection only applies if `use_Ledoux_criterion` is true.
 
       alpha_semiconvection = 0
 
@@ -1481,7 +1502,7 @@
 
          ! Determines efficiency of thermohaline mixing.
          ! was previously named "thermo_haline_coeff".
-         ! thermohaline mixing only applies if `allow_thermohaline_mixing` is true.
+         ! thermohaline mixing only applies if `use_Ledoux_criterion` is true.
 
       thermohaline_coeff = 0
 
@@ -1643,7 +1664,14 @@
 
       gradT_excess_max_logT = 8
 
+         !### gradT_excess_min_log_tau_full_on
+         !### gradT_excess_max_log_tau_full_off
 
+         ! No local boost if local log tau < gradT_excess_max_log_tau_full_off.
+         ! Reduced local boost if local log tau < gradT_excess_min_log_tau_full_on.
+
+      gradT_excess_min_log_tau_full_on = -99 ! 3  full MLT++ for log tau >= this
+      gradT_excess_max_log_tau_full_off = -99 ! 2  no MLT++ for log tau < this
 
 
       !## overshooting
@@ -1687,97 +1715,134 @@
             ! NOTE: In addition to giving these 'f' parameters non-zero values, you should also
             ! check the settings for `mass_for_overshoot_full_on` and `mass_for_overshoot_full_off`.
 
-
-            !### overshoot_f_above_nonburn
-            !### overshoot_f_below_nonburn
-
-            ! For nonburning regions.
-
-         overshoot_f_above_nonburn = 0
-         overshoot_f_below_nonburn = 0
-
-
-            !### overshoot_f_above_burn_h
-            !### overshoot_f_below_burn_h
-
-            ! For hydrogen burning regions.
-
-         overshoot_f_above_burn_h = 0
-         overshoot_f_below_burn_h = 0
-
-
-            !### overshoot_f_above_burn_he
-            !### overshoot_f_below_burn_he
-
-            ! For helium burning regions.
-
-         overshoot_f_above_burn_he = 0
-         overshoot_f_below_burn_he = 0
-
-            !### overshoot_f_above_burn_z
-            !### overshoot_f_below_burn_z
-
-            ! For heavier than helium burning regions.
-
-         overshoot_f_above_burn_z = 0
-         overshoot_f_below_burn_z = 0
-
-
-            !### overshoot_below_noburn_factor
-
-            ! Multiply `overshoot_f_below_nonburn` by this factor
-            ! only during dredge up phase of AGB thermal pulse.
-
-         overshoot_below_noburn_factor = 1
-
-
-            !### max_DUP_counter
-
-            ! For deciding when to terminate use of `overshoot_below_noburn_factor`.
-
-         max_DUP_counter = 200
-
-            !### ovr_below_burn_he_factor
-
-            ! Multiply `overshoot_f_below_burn_he` by this factor
-            ! after the first AGB thermal pulse.
-
-         ovr_below_burn_he_factor = 1
-
             ! The switch from convective mixing to overshooting happens
             ! at a distance f0*Hp into the convection zone
             ! from the estimated location where `grad_ad == grad_rad`, 
             ! where Hp is the pressure scale height at that location.
-            ! A value < 0 tells the system to use the value of f for f0.
+            ! A value <= 0 for f0 is a mistake -- you are required to set f0 as well as f.
+            ! take a look at the following from an email concerning this:
+            
+               ! Overshooting works by taking the diffusion mixing coefficient at the edge 
+               ! of the convection zone and extending it beyond the zone. But -- and here's the issue -- 
+               ! at the exact edge of the zone the mixing coefficient goes to 0.  So we don't want that.
+               ! Instead we want the value of the mixing coeff NEAR the edge, but not AT the edge.  
+               ! The "f0" parameter determines the exact meaning of "near" for this.  It tells the code 
+               ! how far back into the zone to go in terms of scale height. The overshooting actually 
+               ! begins at the location determined by f0 back into the convection zone rather than at 
+               ! the edge where the diffusion coeff is ill-defined.  So, for example, if you want 
+               ! overshooting of 0.2 scale heights beyond the normal edge, you might want to back up 
+               ! 0.05 scale heights to get the diffusion coeff from near the edge and then go out 
+               ! by 0.25 scale heights from there to reach 0.2 Hp beyond the old boundary.  In the 
+               ! inlist this would mean setting the "f0" to 0.05 and the "f" to 0.25.
+            
+            ! There is no default value for f0; if you set f > 0 then you must get f0 > 0 as well.
+            
+            
+            !### overshoot_alpha
+               
+               ! The value of Hp for overshooting is limited to the radial thickness
+               ! of the convection zone divided by overshoot_alpha.
+               ! only used when > 0.  if <= 0, then use mixing_length_alpha instead.
+               
+               overshoot_alpha = -1
 
-         overshoot_f0_above_nonburn = -1
-         overshoot_f0_below_nonburn = -1
 
-         overshoot_f0_above_burn_h = -1
-         overshoot_f0_below_burn_h = -1
+            !### overshoot_f_above_nonburn_core
+            !### overshoot_f0_above_nonburn_core
+            !### overshoot_f_above_nonburn_shell
+            !### overshoot_f0_above_nonburn_shell
+            !### overshoot_f_below_nonburn_shell
+            !### overshoot_f0_below_nonburn_shellm
 
-         overshoot_f0_above_burn_he = -1
-         overshoot_f0_below_burn_he = -1
+            ! For nonburning regions.
 
-         overshoot_f0_above_burn_z = -1
-         overshoot_f0_below_burn_z = -1
+         overshoot_f_above_nonburn_core = 0
+         overshoot_f0_above_nonburn_core = -1
+         overshoot_f_above_nonburn_shell = 0
+         overshoot_f0_above_nonburn_shell = -1
+         overshoot_f_below_nonburn_shell = 0
+         overshoot_f0_below_nonburn_shell = -1
+
+
+            !### overshoot_f_above_burn_h_core
+            !### overshoot_f0_above_burn_h_core
+            !### overshoot_f_above_burn_h_shell
+            !### overshoot_f0_above_burn_h_shell
+            !### overshoot_f_below_burn_h_shell
+            !### overshoot_f0_below_burn_h_shell
+
+            ! For hydrogen burning regions.
+
+         overshoot_f_above_burn_h_core = 0
+         overshoot_f0_above_burn_h_core = -1
+         overshoot_f_above_burn_h_shell = 0
+         overshoot_f0_above_burn_h_shell = -1
+         overshoot_f_below_burn_h_shell = 0
+         overshoot_f0_below_burn_h_shell = -1
+
+
+            !### overshoot_f_above_burn_he_core
+            !### overshoot_f0_above_burn_he_core
+            !### overshoot_f_above_burn_he_shell
+            !### overshoot_f0_above_burn_he_shell
+            !### overshoot_f_below_burn_he_shell
+            !### overshoot_f0_below_burn_he_shell
+
+            ! For helium burning regions.
+
+         overshoot_f_above_burn_he_core = 0
+         overshoot_f0_above_burn_he_core = -1
+         overshoot_f_above_burn_he_shell = 0
+         overshoot_f0_above_burn_he_shell = -1
+         overshoot_f_below_burn_he_shell = 0
+         overshoot_f0_below_burn_he_shell = -1
+
+            !### overshoot_f_above_burn_z_core
+            !### overshoot_f0_above_burn_z_core
+            !### overshoot_f_above_burn_z_shell
+            !### overshoot_f0_above_burn_z_shell
+            !### overshoot_f_below_burn_z_shell
+            !### overshoot_f0_below_burn_z_shell
+
+            ! For metals burning regions.
+
+         overshoot_f_above_burn_z_core = 0
+         overshoot_f0_above_burn_z_core = -1
+         overshoot_f_above_burn_z_shell = 0
+         overshoot_f0_above_burn_z_shell = -1
+         overshoot_f_below_burn_z_shell = 0
+         overshoot_f0_below_burn_z_shell = -1
+
+
+            !### overshoot_below_noburn_shell_factor
+
+            ! Multiply `overshoot_f_below_nonburn_shell` by this factor
+            ! only during dredge up phase of AGB thermal pulse.
+
+         overshoot_below_noburn_shell_factor = 1
 
 
             ! Optional step function for overshooting.
             ! This can be used simultaneously with exponential overshooting.
-            ! When using step overshoot, you must set f0 as well as f.
+            ! When using step overshoot, you must set overshoot_f0 as well as f.
+            
+            ! A convective region is considered a shell if it doesn't reach the center.
 
-         step_overshoot_f_above_nonburn = 0
-         step_overshoot_f_below_nonburn = 0
+         step_overshoot_f_above_nonburn_core = 0
+         step_overshoot_f_above_nonburn_shell = 0
+         step_overshoot_f_below_nonburn_shell = 0
 
-         step_overshoot_f_above_burn_h = 0
-         step_overshoot_f_below_burn_h = 0
+         step_overshoot_f_above_burn_h_core = 0
+         step_overshoot_f_above_burn_h_shell = 0
+         step_overshoot_f_below_burn_h_shell = 0
 
-         step_overshoot_f_above_burn_he = 0
-         step_overshoot_f_below_burn_he = 0
+         step_overshoot_f_above_burn_he_core = 0
+         step_overshoot_f_above_burn_he_shell = 0
+         step_overshoot_f_below_burn_he_shell = 0
 
-         step_overshoot_f_above_burn_z = 0
-         step_overshoot_f_below_burn_z = 0
+         step_overshoot_f_above_burn_z_core = 0
+         step_overshoot_f_above_burn_z_shell = 0
+         step_overshoot_f_below_burn_z_shell = 0
 
 
             !### step_overshoot_D
@@ -1789,53 +1854,12 @@
             ! where D0 = diffusion coefficient D at point r0.
 
          step_overshoot_D = 0
-         step_overshoot_D0_coeff = 0
+         step_overshoot_D0_coeff = 1
 
 
             !### overshoot_D2
             !### overshoot_f2
 
-            ! optional 2nd scale length for exponential overshooting
-
-            ! `f0*Hp` determines location r0 where we switch from convection to overshooting.
-            ! Let D0 = diffusion coefficient D at point r0.
-            ! Let Hp0 = the scale height at r0.
-            ! In the standard version of exponential overshooting,
-            ! there is a single length scale = `f*Hp0`
-            ! and at a distance dr from r0, `D(dr) = D0*exp(-2*dr/(f*Hp0))`.
-
-            ! In the extended version there is a second length scale = `f2*Hp0`.
-            ! The second length scale takes effect for distances dr > dr2
-            ! where dr2 is defined by `D2 = D0*exp(-2*dr2/(f*Hp0))`.
-
-            ! + for dr <= dr2, D(dr) = `D0*exp(-2*dr/(f*Hp0))`  
-            ! + for dr > dr2, D(dr) = `D2*exp(-2*(dr-dr2)/(f2*Hp0))`  
-            !     = `D0*exp(-2*dr2/(f*Hp0))*exp(-2*(dr-dr2)/(f2*Hp0))`  
-            !     = `D0*exp(-2*(dr2/(f*Hp0) + (dr-dr2)/(f2*Hp0)))`  
-
-         overshoot_D2_above_nonburn = -1
-         overshoot_D2_below_nonburn = -1
-
-         overshoot_D2_above_burn_h = -1
-         overshoot_D2_below_burn_h = -1
-
-         overshoot_D2_above_burn_he = -1
-         overshoot_D2_below_burn_he = -1
-
-         overshoot_D2_above_burn_z = -1
-         overshoot_D2_below_burn_z = -1
-
-         overshoot_f2_above_nonburn = 1
-         overshoot_f2_below_nonburn = 1
-
-         overshoot_f2_above_burn_h = 1
-         overshoot_f2_below_burn_h = 1
-
-         overshoot_f2_above_burn_he = 1
-         overshoot_f2_below_burn_he = 1
-
-         overshoot_f2_above_burn_z = 1
-         overshoot_f2_below_burn_z = 1
 
 
             !### mass_for_overshoot_full_on
@@ -1853,6 +1877,20 @@
             ! No overshooting above H burning zone if `star_mass` <= this  (Msun).
 
          mass_for_overshoot_full_off = 0
+
+
+            !### max_DUP_counter
+
+            ! For deciding when to terminate use of `overshoot_below_noburn_shell_factor`.
+
+         max_DUP_counter = 200
+
+            !### ovr_below_burn_he_shell_factor
+
+            ! Multiply `overshoot_f_below_burn_he_shell` by this factor
+            ! after the first AGB thermal pulse.
+
+         ovr_below_burn_he_shell_factor = 1
 
 
 
@@ -1912,8 +1950,7 @@
 
          max_conv_vel_div_csound = 1d99
          
-         
-         
+                  
 
             !### min_T_for_acceleration_limited_conv_velocity
 
@@ -2028,6 +2065,13 @@
             ! fraction changes by more than this limit.
 
          max_delta_limit_for_smooth = 0.1
+      
+
+            !### redo_mlt_for_OPEC
+      
+            ! OPacity Extended Convection -- work in progess.
+         
+         redo_mlt_for_OPEC = .false.
 
 
             !### remove_mixing_glitches
@@ -2060,14 +2104,14 @@
             ! Close gap between convective regions if smaller than this (< 0 means skip this).
             ! Gap measured radially in units of pressure scale height.
 
-         min_convective_gap = -1
+         min_convective_gap = -1 ! 0.01
 
             !### min_thermohaline_gap
 
             ! Close gap between thermohaline mixing regions if smaller than this (< 0 means skip this).
             ! Gap measured radially in units of pressure scale height.
 
-         min_thermohaline_gap = -1
+         min_thermohaline_gap = -1 ! 0.01
 
 
             !### min_thermohaline_dropout
@@ -2088,7 +2132,7 @@
             ! Close gap between semiconvective mixing regions if smaller than this (< 0 means skip this).
             ! Gap measured radially in units of pressure scale height.
 
-         min_semiconvection_gap = -1
+         min_semiconvection_gap = -1 ! 0.01
 
             !### remove_embedded_semiconvection
 
@@ -2388,7 +2432,6 @@
 
          !### do_adjust_J_lost
          !### adjust_J_fraction
-         !### premix_omega
 
          ! adjust angular momentum
          ! EXPERIMENTAL
@@ -2399,6 +2442,16 @@
 
       do_adjust_J_lost = .false.
       adjust_J_fraction = 0.5d0
+      
+      
+      
+      
+         !### premix_omega
+         
+         ! if premix_omega is true, then do 1/2 of the transport of angular momentum
+         ! before updating the structure and 1/2 after.
+         ! otherwise, do all of the transport after updating the structure.
+      
       premix_omega = .false.
 
 
@@ -2499,6 +2552,13 @@
             ! set Tsurf from Eddington T-tau relation
             !     for current surface tau and Teff = `atm_fixed_Teff`.
             ! set Psurf = Radiation_Pressure(Tsurf)
+         ! + `'fixed_Tsurf'` :
+            ! set Teff from Eddington T-tau relation for given Tsurf and tau=2/3
+            ! set Psurf = Radiation_Pressure(Tsurf)
+         ! + `'fixed_Psurf'` :
+            ! get value of Psurf from control parameter use_this_fixed_Psurf.
+            ! set Tsurf from L and R using L = 4*pi*R^2*boltz_sigma*T^4.
+            ! set Teff using Eddington T-tau relation for tau=2/3 and T=Tsurf.
 
       which_atm_option = 'simple_photosphere'
 
@@ -2510,6 +2570,28 @@
          ! `'simple_photosphere'` or `'grey_and_kap'`.
 
       which_atm_off_table_option = 'simple_photosphere'
+
+
+
+         !### atm_fixed_Teff
+
+         ! Set this when using `atm_option = 'fixed_Teff'`
+
+      atm_fixed_Teff = 0
+
+
+         !### atm_fixed_Tsurf
+
+         ! Set this when using `atm_option = 'fixed_Tsurf'`
+
+      atm_fixed_Tsurf = 0
+      
+      
+         !### atm_fixed_Psurf
+         
+         ! Set this when using `which_atm_option = 'fixed_Psurf'`
+         
+      atm_fixed_Psurf = -1 
 
 
          !### atm_switch_to_grey_as_backup
@@ -2536,13 +2618,6 @@
          ! `Pextra_factor < 0` means use (incorrect) old form 1.6d-4*kap*(L/Lsun)/(M/Msun).
 
       Pextra_factor = 1
-
-
-         !### atm_fixed_Teff
-
-         ! Set this when using `atm_option = 'fixed_Teff'`
-
-      atm_fixed_Teff = 0
 
 
          !### atm_grey_and_kap_atol
@@ -2675,17 +2750,31 @@
          !### use_hydrodynamic_surface_BCs
          
          ! 1) gradient of compression vanishes at surface
+            ! see Grott, Chernigovski, Glatzel, 2005.
             ! d_dm(d_dm(r^2*v)) = 0 at surface
             ! by continuity, this is d_dm(d_dt(1/rho)) = 0 at surface
             ! finite volume form is
             ! (1/rho(1) - 1/rho_start(1)) = (1/rho(2) - 1/rho_start(2))
-            ! this BC determines the density for surface cell
+            ! this BC determines the density for surface cell.
          
          ! 2) black body radiation at surface
             ! L = 4*pi*R^2*boltz_sig*T^4
             ! this BC determines the temperature for the surface cell given R and L.
                   
       use_hydrodynamic_surface_BCs = .false.
+
+
+
+
+         !### use_momentum_eqn_outer_BC
+         
+         ! use P_surf to set pressure gradient at surface
+         ! calculate v(1) based on that pressure gradient
+         ! this replaces the usual equation extrapolating P(1) to surface for comparison to P_surf from the atm.
+                  
+      use_momentum_eqn_outer_BC = .false.
+
+
 
 
 
@@ -3476,7 +3565,7 @@
 
          ! Max size for cell as fraction of total mass.
 
-      max_dq = 0.01d0
+      max_dq = 1d-2
 
          !### min_dq
 
@@ -3557,13 +3646,6 @@
 
 
 
-         !### use_other_mesh_functions
-
-         ! Gradient controls for mesh adjustment.
-         ! "gradient" here means the difference in value from one grid point to the next.
-
-      use_other_mesh_functions = .false.
-
 
          !### P_function_weight
 
@@ -3587,7 +3669,7 @@
 
          !     T_function2 = T_function2_weight*log10(T / (T + T_function2_param))
 
-         ! Largest change in T_function2 happens around this temperature.
+         ! Largest change in T_function2 happens around T = T_function2_param.
          ! Default value puts this in the envelope ionization region.
 
       T_function2_weight = 0
@@ -3636,6 +3718,22 @@
          ! gradT gradient, `gradT_function = gradT_function_weight*gradT`
 
       gradT_function_weight = 0
+
+
+         !### log_tau_function_weight
+         ! log_tau gradient (optical depth)
+
+         !     log_tau_function = log_tau_function_weight*log10(tau)
+
+      log_tau_function_weight = 0
+
+
+         !### log_kap_function_weight
+         ! log_kap gradient (optical depth)
+
+         !     log_kap_function = log_kap_function_weight*log10(kap)
+
+      log_kap_function_weight = 0
 
 
          !### omega_function_weight
@@ -3761,220 +3859,62 @@
 
          !### xtra_coef_{above | below}_{lower | upper}_{nonburn | hburn | heburn | zburn}_czb
          ! Make these < 1 to increase resolution.
+         
+         !### xtra_dist_{above | below}_{lower | upper}_{nonburn | hburn | heburn | zburn}_czb
+         ! Increase resolution up to this distance away from the convective zone boundary,
+         ! with distance measured in units of the pressure scale height at the boundary.
 
-         ! Above lower nonburn convective boundary.
       xtra_coef_a_l_nb_czb = 1
-
-         ! Above lower h burn convective boundary.
-      xtra_coef_a_l_hb_czb = 1
-
-         ! Above lower he burn convective boundary.
-      xtra_coef_a_l_heb_czb = 1
-
-         ! Above lower z burn convective boundary.
-      xtra_coef_a_l_zb_czb = 1
-
-
-
-         ! Below lower nonburn convective boundary.
-      xtra_coef_b_l_nb_czb = 1
-
-         ! Below lower h burn convective boundary.
-      xtra_coef_b_l_hb_czb = 1
-
-         ! Below lower he burn convective boundary.
-      xtra_coef_b_l_heb_czb = 1
-
-         ! Below lower z burn convective boundary.
-      xtra_coef_b_l_zb_czb = 1
-
-
-
-         ! Above upper nonburn convective boundary.
-      xtra_coef_a_u_nb_czb = 1
-
-          ! Above upper h burn convective boundary.
-      xtra_coef_a_u_hb_czb = 1
-
-          ! Above upper he burn convective boundary.
-      xtra_coef_a_u_heb_czb = 1
-
-          ! Above upper z burn convective boundary.
-      xtra_coef_a_u_zb_czb = 1
-
-
-
-          ! Below upper nonburn convective boundary.
-      xtra_coef_b_u_nb_czb = 1
-
-          ! Below upper h burn convective boundary.
-      xtra_coef_b_u_hb_czb = 1
-
-          ! Below upper he burn convective boundary.
-      xtra_coef_b_u_heb_czb = 1
-
-          ! Below upper z burn convective boundary.
-      xtra_coef_b_u_zb_czb = 1
-
-
-
-      ! Increase resolution up to this distance away from the convective zone boundary,
-      ! with distance measured in units of the pressure scale height at the boundary.
-
-         ! Above lower nonburn convective boundary.
       xtra_dist_a_l_nb_czb = 0.2
-
-         ! Above lower h burn convective boundary.
-      xtra_dist_a_l_hb_czb = 0.2
-
-         ! Above lower he burn convective boundary.
-      xtra_dist_a_l_heb_czb = 0.2
-
-         ! Above lower z burn convective boundary.
-      xtra_dist_a_l_zb_czb = 0.2
-
-
-         ! Below lower nonburn convective boundary.
+      xtra_coef_b_l_nb_czb = 1
       xtra_dist_b_l_nb_czb = 0.2
 
-         ! Below lower h burn convective boundary.
-      xtra_dist_b_l_hb_czb = 0.2
-
-         ! Below lower he burn convective boundary.
-      xtra_dist_b_l_heb_czb = 0.2
-
-         ! Below lower z burn convective boundary.
-      xtra_dist_b_l_zb_czb = 0.2
-
-
-         ! Above upper nonburn convective boundary.
+      xtra_coef_a_u_nb_czb = 1
       xtra_dist_a_u_nb_czb = 0.2
-
-         ! Above upper h burn convective boundary.
-      xtra_dist_a_u_hb_czb = 0.2
-
-         ! Above upper he burn convective boundary.
-      xtra_dist_a_u_heb_czb = 0.2
-
-         ! Above upper z burn convective boundary.
-      xtra_dist_a_u_zb_czb = 0.2
-
-
-         ! Below upper nonburn convective boundary.
+      xtra_coef_b_u_nb_czb = 1
       xtra_dist_b_u_nb_czb = 0.2
 
-         ! Below upper h burn convective boundary.
+      xtra_coef_a_l_hb_czb = 1
+      xtra_dist_a_l_hb_czb = 0.2
+      xtra_coef_b_l_hb_czb = 1
+      xtra_dist_b_l_hb_czb = 0.2
+
+      xtra_coef_a_u_hb_czb = 1
+      xtra_dist_a_u_hb_czb = 0.2
+      xtra_coef_b_u_hb_czb = 1
       xtra_dist_b_u_hb_czb = 0.2
 
-         ! Below upper he burn convective boundary.
+      xtra_coef_a_l_heb_czb = 1
+      xtra_dist_a_l_heb_czb = 0.2
+      xtra_coef_b_l_heb_czb = 1
+      xtra_dist_b_l_heb_czb = 0.2
+
+      xtra_coef_a_u_heb_czb = 1
+      xtra_dist_a_u_heb_czb = 0.2
+      xtra_coef_b_u_heb_czb = 1
       xtra_dist_b_u_heb_czb = 0.2
 
-         ! Below upper z burn convective boundary.
+      xtra_coef_a_l_zb_czb = 1
+      xtra_dist_a_l_zb_czb = 0.2
+      xtra_coef_b_l_zb_czb = 1
+      xtra_dist_b_l_zb_czb = 0.2
+
+      xtra_coef_a_u_zb_czb = 1
+      xtra_dist_a_u_zb_czb = 0.2
+      xtra_coef_b_u_zb_czb = 1
       xtra_dist_b_u_zb_czb = 0.2
 
 
 
 
+         !### xtra_coef_scz_above_{nonburn | hburn | heburn | zburn}_cz
+         ! Make these < 1 to increase resolution in semiconvective region adjacent to convective region.
+         ! e.g., 'xtra_coef_scz_above_nb_cz' is extra coef for semiconvectize zone above a non-burn convective zone.
 
-
-      ! Make these < 1 to increase resolution near semiconvection boundary.
-
-         ! Above lower semiconvection boundary.
-      xtra_coef_a_l_sczb = 1
-
-         ! Below lower semiconvection boundary.
-      xtra_coef_b_l_sczb = 1
-
-         ! Above upper semiconvection boundary.
-      xtra_coef_a_u_sczb = 1
-
-          ! Below upper semiconvection boundary.
-      xtra_coef_b_u_sczb = 1
-
-
-      ! Increase resolution up to this distance away from the semiconvection boundary,
-      ! with distance measured in units of the pressure scale height at the boundary.
-
-         ! Above lower semiconvection boundary.
-      xtra_dist_a_l_sczb = 0.2
-
-         ! Below lower semiconvection boundary.
-      xtra_dist_b_l_sczb = 0.2
-
-         ! Above upper semiconvection boundary.
-      xtra_dist_a_u_sczb = 0.2
-
-          ! Below upper semiconvection boundary.
-      xtra_dist_b_u_sczb = 0.2
-
-
-      ! Make these < 1 to increase resolution near radiative (i.e., no mixing) boundary.
-
-         ! Above lower radiative boundary.
-      xtra_coef_a_l_rzb = 1
-
-         ! Below lower radiative boundary.
-      xtra_coef_b_l_rzb = 1
-
-         ! Above upper radiative boundary.
-      xtra_coef_a_u_rzb = 1
-
-          ! Below upper radiative boundary.
-      xtra_coef_b_u_rzb = 1
-
-
-      ! Increase resolution up to this distance away from the radiative boundary,
-      ! with distance measured in units of the pressure scale height at the boundary.
-
-         ! Above lower radiative boundary.
-      xtra_dist_a_l_rzb = 0.2
-
-         ! Below lower radiative boundary.
-      xtra_dist_b_l_rzb = 0.2
-
-         ! Above upper radiative boundary.
-      xtra_dist_a_u_rzb = 0.2
-
-          ! Below upper radiative boundary.
-      xtra_dist_b_u_rzb = 0.2
-
-
-
-      ! Make these < 1 to increase resolution near thermohaline boundary.
-
-         ! Above lower thermohaline boundary.
-      xtra_coef_a_l_thzb = 1
-
-         ! Below lower thermohaline boundary.
-      xtra_coef_b_l_thzb = 1
-
-         ! Above upper thermohaline boundary.
-      xtra_coef_a_u_thzb = 1
-
-          ! Below upper thermohaline boundary.
-      xtra_coef_b_u_thzb = 1
-
-
-      ! Increase resolution up to this distance away from the thermohaline boundary,
-      ! with distance measured in units of the pressure scale height at the boundary.
-
-         ! Above lower thermohaline boundary.
-      xtra_dist_a_l_thzb = 0.2
-
-         ! Below lower thermohaline boundary.
-      xtra_dist_b_l_thzb = 0.2
-
-         ! Above upper thermohaline boundary.
-      xtra_dist_a_u_thzb = 0.2
-
-          ! Below upper thermohaline boundary.
-      xtra_dist_b_u_thzb = 0.2
-
-
-
-
-
-
+      xtra_coef_scz_above_nb_cz = 1
+      xtra_coef_scz_above_hb_cz = 1
+      xtra_coef_scz_above_heb_cz = 1
+      xtra_coef_scz_above_zb_cz = 1
 
 
 
@@ -4581,7 +4521,7 @@
 !----------------------------------------------------------------------------------------------
 
    !# eos controls
-   ! most eos controls can be found in `star_job.defaults`
+   ! more eos controls can be found in `star_job.defaults`
 
 
          !### use_eosDT_ideal_gas
@@ -4648,6 +4588,8 @@
 
 
    !# opacity controls
+   ! more opacity controls can be found in `star_job.defaults`
+   
 
          !### cubic_interpolation_in_X
 
@@ -4890,7 +4832,74 @@
 
       delta_Pg_mode_freq = 0d0
 
+
+
+      !## Brunt controls
+
+         !### calculate_Brunt_N2
+
+         ! Only calculate `Brunt_N2` if this is true.
+
+      calculate_Brunt_N2 = .true.
+
+
+         !### brunt_N2_coefficient
+
+         ! Standard N2 is multiplied by this value.
+
+      brunt_N2_coefficient = 1
+
+         !### num_cells_for_smooth_brunt_B
+
+         ! Number of cells on either side to use in weighted smoothing of `brunt_B`.
+
+      num_cells_for_smooth_brunt_B = 2
+
+
+
+         !### use_brunt_dlnRho_form
+
+         ! If true, compare density for adiabatic displacement of fluid element.
+
+         !     N^2 = (g/r)*A, A = (1/gamma1)*(dlnP/dlnR) - (dlnRho/dlnR)
+
+         ! If false, use Brassard form as revised by Mike Montgomery.
+
+         !     N^2 = g^2*(rho/P)*(chiT/chiRho)*(grada + brunt_B - gradT)
+
+         ! This form is less vulnerable to numerical noise.
+
+      use_brunt_dlnRho_form = .false.
+
+
+         !### use_brunt_gradmuX_form
+
+         ! For comparison to older codes.
+         ! Assumes ideal gas plus radiation for `brunt_B`.
+         ! Uses hydrogren mass fraction to estimate dlnmu = dX/(X + 0.6).
+
+      use_brunt_gradmuX_form = .false.
+
+      
+      
+         !### interpolate_rho_for_pulsation_info
+         
+         ! If true, then get rho_face by interpolating rho at cell center.
+         ! If false, then calculate rho_face by dm/(4*pi*r^2*dr).
+         
+      interpolate_rho_for_pulsation_info = .true.
+
+
+
+         !### min_magnitude_brunt_B
+
+         ! If set `brunt_B` to 0 if absolute value is < this.
+
+      min_magnitude_brunt_B = -1d99
+
+
 !----------------------------------------------------------------------------------------------
+
 
    !# structure equations
 
@@ -5257,17 +5266,40 @@
 
          !### base_of_inject_extra_ergs_sec
 
-         ! (units: grams) sets bottom of region for `inject_extra_ergs_sec`
+         ! (units: Msun) sets bottom of region for `inject_extra_ergs_sec`
          ! note: actual base is at max of this and the center of the model
 
       base_of_inject_extra_ergs_sec = 0
 
 
-         !### mass_for_inject_extra_ergs_sec
+         !### total_mass_for_inject_extra_ergs_sec
 
-         ! (units: grams) sets size of region for `inject_extra_ergs_sec`
+         ! (units: Msun) sets size of region for `inject_extra_ergs_sec`
       
-      mass_for_inject_extra_ergs_sec = 0
+      total_mass_for_inject_extra_ergs_sec = 0
+
+
+         !### start_time_for_inject_extra_ergs_sec
+
+         ! (units: sec) start time for injecting extra ergs/s
+      
+      start_time_for_inject_extra_ergs_sec = -1d99
+
+
+         !### duration_for_inject_extra_ergs_sec
+
+         ! (units: sec) length of time for injecting extra ergs/s
+         ! set to large value to keep injecting indefinitely
+      
+      duration_for_inject_extra_ergs_sec = 1d99
+
+
+         !### inject_until_reach_delta_total_energy
+
+         ! (units: ergs) target for change in total energy
+         ! stop injecting when total_energy - total_energy_initial > this.
+      
+      inject_until_reach_delta_total_energy = 1d99
                
 
          !### theta_P
@@ -5384,19 +5416,13 @@
       use_artificial_viscosity = .false.
          
 
-         !### hold_artificial_viscosity_const_during_step
+         !### artificial_viscosity_Q_shift
 
-      hold_artificial_viscosity_const_during_step = .false.
-         
+         ! Qvisc = min(0d0, Qvisc + artificial_viscosity_Q_shift)
+         ! This serves to filter out use of artificial viscosity in low compression regions.
+         ! e.g., try artificial_viscosity_Q_shift = 1d34.
 
-         !### artificial_viscosity_cutoff
-
-         ! no artificial viscosity in cell k if v(k+1) - v(k) < this times csound(k).
-         ! i.e., no AV in k if collapse time(k) > sound crossing time/this.
-         ! this provides a way to eliminate the use of artificial viscosity
-         ! in all but extreme cases where it is really needed.
-
-      artificial_viscosity_cutoff = -1 ! ignore if <= 0
+      artificial_viscosity_Q_shift = -1 ! ignore if <= 0
          
 
 
@@ -5430,8 +5456,7 @@
 
          ! the artificial viscosity coefficient includes a quadratic term that is
          ! proportional to `(shock_spread_quadratic * r)^2`
-         ! where r is the local radius,
-         ! or, if shock_spread_relative_to_cell_width is true, the cell width.
+         ! where r is the local radius.
 
       shock_spread_quadratic = 1d-3
 
@@ -5440,17 +5465,16 @@
 
          ! the artificial viscosity coefficient includes a linear term that is
          ! proportional to `(shock_spread_linear * r * cs)`
-         ! wherecs is local sound speed and  r is the local radius,
-         ! or, if shock_spread_relative_to_cell_width is true, the cell width.
+         ! where cs is the local sound speed and r is the local radius.
 
       shock_spread_linear = 0
-      
-      
-         !### shock_spread_relative_to_cell_width
 
-         ! used with shock_spread_quadratic and shock_spread_linear
-      
-      shock_spread_relative_to_cell_width = .false.
+
+         !### art_visc_full_on_logRho_ge_this
+         !### art_visc_full_off_logRho_le_this
+
+      art_visc_full_on_logRho_ge_this = -99
+      art_visc_full_off_logRho_le_this = -99
 
 
          !### center_flash_total_time
@@ -6100,6 +6124,7 @@
             !          'mix fixup'            max_fixup_for_mix_limit
             !          'neg_mass_frac'        (solver found neg mass frac)
             !          'newton iters'         newton_iterations_limit
+            !          'rotation steps'       rotation_steps_limit
             !          'trnc err'             truncation_ratio_limit
             !          'v/v_crit'             v_div_v_crit_limit
             !          'varcontrol'           varcontrol_target
@@ -6249,7 +6274,7 @@
 
          ! If newton solve uses more `newton_iterations` than this, reduce the next timestep.
 
-      newton_iterations_limit = 5
+      newton_iterations_limit = 7
 
 
          !### newton_iterations_hard_limit
@@ -6257,6 +6282,20 @@
          ! If uses more iterations than this, retry.
 
       newton_iterations_hard_limit = -1
+
+
+         !### rotation_steps_limit
+
+         ! If rotation solver uses more steps than this, reduce the next timestep.
+
+      rotation_steps_limit = 500
+
+
+         !### rotation_steps_hard_limit
+
+         ! If rotation solver uses more steps than this, retry.
+
+      rotation_steps_hard_limit = 700
 
 
          !### diffusion_steps_limit
@@ -7929,6 +7968,7 @@
       use_other_adjust_mdot = .false.
       use_other_am_mixing = .false.
       use_other_brunt = .false.
+      use_other_brunt_smoothing = .false.
       use_other_build_initial_model = .false.
       use_other_cgrav = .false.
 
@@ -7957,79 +7997,9 @@
 
       use_other_edit_pulsation_info = .false.
       use_other_edit_gyre_info = .false.
+      use_other_get_gyre_model = .false.
 
       use_other_astero_freq_corr = .false.
-
-
-
-      !## Brunt controls
-
-         !### calculate_Brunt_N2
-
-         ! Only calculate `Brunt_N2` if this is true.
-
-      calculate_Brunt_N2 = .true.
-
-
-         !### brunt_N2_coefficient
-
-         ! Standard N2 is multiplied by this value.
-
-      brunt_N2_coefficient = 1
-
-         !### num_cells_for_smooth_brunt_B
-
-         ! Number of cells on either side to use in weighted smoothing of `brunt_B`.
-
-      num_cells_for_smooth_brunt_B = 2
-
-         !### use_other_brunt_smoothing
-
-         ! Call user defined "other_brunt_smoothing" routine if this is true.
-
-      use_other_brunt_smoothing = .false.
-
-
-
-         !### use_brunt_dlnRho_form
-
-         ! If true, compare density for adiabatic displacement of fluid element.
-
-         !     N^2 = (g/r)*A, A = (1/gamma1)*(dlnP/dlnR) - (dlnRho/dlnR)
-
-         ! If false, use Brassard form as revised by Mike Montgomery.
-
-         !     N^2 = g^2*(rho/P)*(chiT/chiRho)*(grada + brunt_B - gradT)
-
-         ! This form is less vulnerable to numerical noise.
-
-      use_brunt_dlnRho_form = .false.
-
-
-         !### use_brunt_gradmuX_form
-
-         ! For comparison to older codes.
-         ! Assumes ideal gas plus radiation for `brunt_B`.
-         ! Uses hydrogren mass fraction to estimate dlnmu = dX/(X + 0.6).
-
-      use_brunt_gradmuX_form = .false.
-
-
-
-         !### use_other_brunt
-
-         ! Call `other_brunt` if this flag is set true.
-         ! You can have your own routine to calulate brunt N^2.
-
-      use_other_brunt = .false.
-
-
-
-         !### min_magnitude_brunt_B
-
-         ! If set `brunt_B` to 0 if absolute value is < this.
-
-      min_magnitude_brunt_B = -1d99
 
 
 

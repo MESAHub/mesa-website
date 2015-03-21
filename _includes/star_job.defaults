@@ -544,6 +544,7 @@
 
 
          !### replace_element
+         !### replace_initial_element
          !### chem_name1
          !### chem_name2
          !### replace_element_nzlo
@@ -552,6 +553,7 @@
          ! `chem_name1` and `chem_name2` from `chem_def`
 
       replace_element = .false.
+      replace_initial_element = .false.
       chem_name1 = 'he3'
       chem_name2 = 'he4'
       replace_element_nzlo = -1
@@ -1092,30 +1094,6 @@
       relax_R_center_dt = 3.1558149984d1
 
 
-         !### set_free_fall_from_cell_k
-         !### set_free_fall_R_cm
-         !### set_free_fall_entropy
-         !### set_free_fall_mdot_Bondi
-         ! allows converting envelope to free fall conditions. ignored if <= 0
-
-      set_free_fall_from_cell_k = 0
-      set_free_fall_R_cm = 0 ! (Rsun)
-      set_free_fall_entropy = 0 ! (avo*kerg)
-      set_free_fall_mdot_Bondi = 0 ! (Msun/year)
-
-
-         !### set_initial_free_fall_from_cell_k
-         !### set_initial_free_fall_R_cm
-         !### set_initial_free_fall_entropy
-         !### set_initial_free_fall_mdot_Bondi
-         ! allows converting envelope to free fall conditions. ignored if <= 0
-
-      set_initial_free_fall_from_cell_k = 0
-      set_initial_free_fall_R_cm = 0 ! (Rsun)
-      set_initial_free_fall_entropy = 0 ! (avo*kerg)
-      set_initial_free_fall_mdot_Bondi = 0 ! (Msun/year)
-
-
 
          !### set_v_center
          !### set_initial_v_center
@@ -1164,31 +1142,6 @@
       relax_L_center_dt = 3.1558149984d1
 
 
-         !### set_free_fall_from_cell_k
-         !### set_free_fall_R_cm
-         !### set_free_fall_entropy
-         !### set_free_fall_mdot_Bondi
-         ! allows converting envelope to free fall conditions. ignored if <= 0
-
-      set_free_fall_from_cell_k = 0
-      set_free_fall_R_cm = 0
-      set_free_fall_entropy = 0 ! (avo*kerg)
-      set_free_fall_mdot_Bondi = 0 ! (Msun/year)
-
-
-         !### set_initial_free_fall_from_cell_k
-         !### set_initial_free_fall_R_cm
-         !### set_initial_free_fall_entropy
-         !### set_initial_free_fall_mdot_Bondi
-         ! allows converting envelope to free fall conditions. ignored if <= 0
-
-      set_initial_free_fall_from_cell_k = 0
-      set_initial_free_fall_R_cm = 0
-      set_initial_free_fall_entropy = 0 ! (avo*kerg)
-      set_initial_free_fall_mdot_Bondi = 0 ! (Msun/year)
-
-
-
          !### remove_center_at_cell_k
          !### remove_center_by_temperature
          !### remove_center_by_mass_fraction_q
@@ -1223,39 +1176,6 @@
       remove_initial_center_by_mass_Msun = 0
       remove_initial_center_by_radius_cm = 0
       remove_initial_center_by_radius_Rsun = 0
-
-
-
-         !### remove_envelope_at_cell_k
-         !### remove_envelope_beyond_temperature
-         !### remove_envelope_beyond_mass_gm
-         !### remove_envelope_beyond_mass_Msun
-         !### remove_envelope_beyond_radius_cm
-         !### remove_envelope_beyond_radius_Rsun
-         ! allows the envelope to be removed. ignored if <= 0
-
-      remove_envelope_at_cell_k = 0
-      remove_envelope_beyond_temperature = 0
-      remove_envelope_beyond_mass_gm = 0
-      remove_envelope_beyond_mass_Msun = 0
-      remove_envelope_beyond_radius_cm = 0
-      remove_envelope_beyond_radius_Rsun = 0
-
-
-         !### remove_initial_envelope_at_cell_k
-         !### remove_initial_envelope_beyond_temperature
-         !### remove_initial_envelope_beyond_mass_gm
-         !### remove_initial_envelope_beyond_mass_msun
-         !### remove_initial_envelope_beyond_radius_cm
-         !### remove_initial_envelope_beyond_radius_Rsun
-         ! allows the envelope to be removed. ignored if <= 0
-
-      remove_initial_envelope_at_cell_k = 0
-      remove_initial_envelope_beyond_temperature = 0
-      remove_initial_envelope_beyond_mass_gm = 0
-      remove_initial_envelope_beyond_mass_Msun = 0
-      remove_initial_envelope_beyond_radius_cm = 0
-      remove_initial_envelope_beyond_radius_Rsun = 0
 
 
          !### report_mass_not_fe56
@@ -1534,6 +1454,9 @@
          !### min_x_for_keep
          !### min_x_for_n
          !### min_x_for_add
+         !### max_Z_for_add
+         !### max_N_for_add
+         !### max_A_for_add
 
          ! Heger-style adaptive network (Woosley, Heger, et al, ApJSS, 151:75-102, 2004).
          ! If `enable_adaptive_network` is true, then
@@ -1563,7 +1486,9 @@
       min_x_for_keep = 1d-23
       min_x_for_n = 1d-18
       min_x_for_add = 1d-17
-
+      max_Z_for_add = 999
+      max_N_for_add = 999
+      max_A_for_add = 999
 
 
          !### net_reaction_filename
@@ -1628,6 +1553,32 @@
       T9_weaklib_full_off_hi_Z = 0.063d0
       T9_weaklib_full_on_hi_Z = 0.073d0
 
+     
+   ! controls for special weak rates
+
+      ! If this is true, calculate special weak rates using the
+      ! approach described in Schwab et al. (2015).
+
+      use_special_weak_rates = .false.
+
+      ! select which expression for the ion chemical potential to use
+      ! to calculate the energy shift associated with changing ion charge
+
+      ! + 'none': no corrections
+      ! + 'DGC1973': Dewitt, Graboske, & Cooper, M. S. 1973, ApJ, 181, 439
+      ! + 'I1993': Ichimaru, 1993, Reviews of Modern Physics, 65, 255
+      ! + 'PCR2009': Potekhin, Chabrier, & Rogers, 2009, Phys. Rev. E, 79, 016411
+
+      ion_coulomb_corrections = 'none'
+
+      ! select which expression to use to calculate the shift in the
+      ! electron chemical potential at the location of the nucleus
+
+      ! + 'none': no corrections
+      ! + 'ThomasFermi': Thomas-Fermi theory
+      ! + 'Itoh': Itoh et al., 2002, ApJ, 579, 380
+
+      electron_coulomb_corrections = 'none'
 
 !----------------------------------------------------------------------------------------------
 
@@ -1662,22 +1613,27 @@
          !### kappa_blend_logT_upper_bdy
          ! <= 0 means use default.
          ! Actual upper boundary will be min of this and max logT for lowT tables.
+         ! it is probably a good idea to keep the blend away from H ionization.
+         ! logT upper of about 3.9 or a bit less will do that.
+         ! older version had default of 4.1 for kappa_blend_logT_upper_bdy.
 
-      kappa_blend_logT_upper_bdy = 4.1d0
+      kappa_blend_logT_upper_bdy = 3.88d0
 
 
          !### kappa_blend_logT_lower_bdy
          ! <= 0 means use default
          ! Actual lower boundary will be max of this and min logT for highT tables.
+         ! typical logT_min for tables is 3.75.  check your tables to be sure.
+         ! older version had default of 4.0 for kappa_blend_logT_lower_bdy.
 
-      kappa_blend_logT_lower_bdy = 4.0d0
+      kappa_blend_logT_lower_bdy = 3.80d0
 
 
          !### kappa_type2_logT_lower_bdy
          ! <= 0 means use default
          ! Only use type2 opacities at temperatures above this limit.
 
-      kappa_type2_logT_lower_bdy = 3.8d0
+      kappa_type2_logT_lower_bdy = 3.80d0
 
 
          !### kappa_CO_prefix
@@ -1702,7 +1658,10 @@
       ionization_Z1_suffix = ''
 
 
-         !# "extra" parameters
+
+!----------------------------------------------------------------------------------------------
+
+   !# "extra" parameters
 
          ! For use by your `run_star_extras` routines.
 
@@ -1743,14 +1702,20 @@
 
 
 
+
+
+
+!----------------------------------------------------------------------------------------------
+
+   !# misc
+
+
          !### first_model_for_timing
          ! To get a breakdown of where the time is going
          ! set `first_model_for_timing` to determine when the clocks start.
          ! At the end of the run, there will be some output to the terminal showing times.
 
       first_model_for_timing = -1
-
-
 
 
          !### set_max_dt_to_frac_lifetime

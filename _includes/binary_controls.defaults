@@ -233,7 +233,14 @@
       
       limit_retention_by_mdot_edd = .true.
 
-         !### limit_retention_by_mdot_edd
+         !### use_es_opacity_for_mdot_edd
+
+         ! If .true., then the opacity for mdot_edd is computed as 0.2*(1+X)
+         ! If .false., the opacity of the outermost cell of the donor is used
+
+      use_es_opacity_for_mdot_edd = .false.
+
+         !### use_this_for_mdot_edd
 
          ! Fixed `mdot_edd` in Msun/yr, ignored if negative
 
@@ -266,11 +273,11 @@
 
          cur_mdot_frac = 0.5d0
 
-            !### cur_mdot_frac
+            !### max_explicit_abs_mdot
 
-            ! Limit the explicit mass transfer rate to `max_abs_mdot`, in Msun/secyer
+            ! Limit the explicit mass transfer rate to `max_explicit_abs_mdot`, in Msun/secyer
 
-         max_abs_mdot = 1d-7
+         max_explicit_abs_mdot = 1d-7
 
       !## implicit mass transfer computation.
 
@@ -359,6 +366,12 @@
             ! are detached and the explicit calculation gives very low values of mdot.
 
          min_mdot_for_implicit = 1d-16
+
+            !### max_implicit_abs_mdot
+
+            ! Limit the implicit mass transfer rate to `max_implicit_abs_mdot`, in Msun/secyer
+
+         max_implicit_abs_mdot = 1d99
 
       !## Tidal wind enhancement
       
@@ -682,6 +695,7 @@
          ! Logicals to deploy the use_other routines.
 
       use_other_rlo_mdot = .false.
+      use_other_mdot_edd = .false.
       use_other_jdot_gr = .false.
       use_other_jdot_ml = .false.
       use_other_jdot_ls = .false.
