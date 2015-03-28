@@ -1752,7 +1752,7 @@
             !### overshoot_f_above_nonburn_shell
             !### overshoot_f0_above_nonburn_shell
             !### overshoot_f_below_nonburn_shell
-            !### overshoot_f0_below_nonburn_shellm
+            !### overshoot_f0_below_nonburn_shell
 
             ! For nonburning regions.
 

@@ -5,8 +5,11 @@ date:   2015-03-20
 categories: release
 ---
 
+<i>Update: [Revision 7503][r7503] fixes a bug in this release.</i>
+
 Revision 7499 has been designated a MESA release version.
 
 For the full release notes, see [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/33620873/
+[r7503]:/release/2015/03/27/r7503.html
