@@ -4,6 +4,12 @@ title: MESA home
 permalink: index.html
 noToc: true
 ---
+
+_You may also want to visit
+[the MESA community portal](http://mesastar.org), where users share
+the inlists from their published results, tools & utilities, and
+teaching materials._
+
 # Why a new 1D stellar evolution code?
 
 The MESA Manifesto discusses the motivation for the MESA project,
