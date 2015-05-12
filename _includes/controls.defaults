@@ -922,7 +922,7 @@
          ! If true, stop at next AGB thermal pulse.
          ! This is defined as having a convective zone with helium burning
          ! when central helium is depleted
-         ! and `h1_boundary_mass - he4_boundary_mass <= TP_he_shell_max`.
+         ! and `he_core_mass - c_core_mass <= TP_he_shell_max`.
 
       stop_at_TP = .false.
 
@@ -989,7 +989,7 @@
 
          !### envelope_mass_limit
 
-         !     envelope_mass = star_mass - h1_boundary_mass
+         !     envelope_mass = star_mass - he_core_mass
 
          ! Stop when `envelope_mass` drops below this limit, in Msun units.
 
@@ -997,7 +997,7 @@
 
          !### envelope_fraction_left_limit
 
-         !     envelope_fraction_left = (star_mass - h1_boundary_mass)/(initial_mass - h1_boundary_mass)
+         !     envelope_fraction_left = (star_mass - he_core_mass)/(initial_mass - he_core_mass)
          ! Stop when `envelope_fraction_left` < this limit.
 
       envelope_fraction_left_limit = 0
@@ -1058,8 +1058,8 @@
 
          !### he_layer_mass_lower_limit
 
-         ! he layer mass is defined as `h1_boundary_mass` - `he4_boundary_mass`
-         ! stop when `he4_boundary_mass` > 0 and he layer mass < this limit (Msun units).
+         ! he layer mass is defined as `he_core_mass` - `c_core_mass`
+         ! stop when `c_core_mass` > 0 and he layer mass < this limit (Msun units).
 
       he_layer_mass_lower_limit = 0
 
