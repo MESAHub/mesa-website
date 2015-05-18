@@ -106,7 +106,7 @@ want to change.
 
 ### inlist_project
 
-These are the options that we'll use to construct a solar-mass star
+These are the options that we'll use to construct a 15 solar mass star
 from a pre-main sequence model and then stop the evolution once we
 reach the zero-age main sequence (ZAMS).
 
