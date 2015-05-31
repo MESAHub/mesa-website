@@ -11,3 +11,8 @@ dependencies on the Xcode runtime.  For the full release notes, see
 [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/32138788/
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r6208.zip/download

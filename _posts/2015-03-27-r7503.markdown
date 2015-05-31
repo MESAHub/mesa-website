@@ -11,3 +11,8 @@ a bug present in r7499.
 For a discussion of the bug, see [this mailing list post][notes].
 
 [notes]:https://sourceforge.net/p/mesa/mailman/message/33655221/
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r7503.zip/download

@@ -6,3 +6,8 @@ categories: release
 ---
 
 Revision 0971 has been designated a MESA release version.
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r0971.zip/download

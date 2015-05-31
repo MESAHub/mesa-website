@@ -11,3 +11,8 @@ binaries and ecapture, and a new version of GYRE.  For the full
 release notes, see [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/32434215/
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r6596.zip/download

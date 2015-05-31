@@ -6,3 +6,8 @@ categories: release
 ---
 
 Revision 4631 has been designated a MESA release version.
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r4631.zip/download

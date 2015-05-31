@@ -11,3 +11,8 @@ gfortran or ifort.  For the full release notes, see
 [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/mailarchive/message.php?msg_id=31811755
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r5819.zip/download

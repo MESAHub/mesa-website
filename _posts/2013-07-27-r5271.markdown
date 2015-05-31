@@ -9,3 +9,8 @@ Revision 5271 has been designated a MESA release version. For the
 release notes, see [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/31228022/
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r5271.zip/download

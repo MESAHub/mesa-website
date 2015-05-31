@@ -21,3 +21,8 @@ and provides new (to the web) documentation for [star_job][star_job],
 For the full release notes, see [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/32629541/
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r6794.zip/download

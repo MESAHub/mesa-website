@@ -9,3 +9,8 @@ Revision 5118 has been designated a MESA release version.  For the
 release notes, see [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/31074636/
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r5118.zip/download

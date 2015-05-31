@@ -6,3 +6,8 @@ categories: release
 ---
 
 Revision 3709 has been designated a MESA release version.
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r3709.zip/download

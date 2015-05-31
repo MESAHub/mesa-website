@@ -10,3 +10,8 @@ release notes, see [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/31428288/
 
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r5456.zip/download

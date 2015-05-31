@@ -6,3 +6,8 @@ categories: release
 ---
 
 Revision 2871 has been designated a MESA release version.
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r2871.zip/download

@@ -13,3 +13,8 @@ For the full release notes, see [this mailing list post][notes].
 
 [notes]:http://sourceforge.net/p/mesa/mailman/message/33620873/
 [r7503]:/release/2015/03/27/r7503.html
+
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r7499.zip/download
