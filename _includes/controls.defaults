@@ -577,14 +577,14 @@
 
          ! offset plus_dr location by this factor times r
 
-      mach1_plus_dr_factor = 2
+      mach1_plus_dr_factor = 1d-2
 
 
          !### mach1_minus_dr_factor
 
          ! offset minus_dr location by this factor times r
 
-      mach1_minus_dr_factor = 2
+      mach1_minus_dr_factor = 1d-2
 
 
 !----------------------------------------------------------------------------------------------
@@ -1613,7 +1613,14 @@
          ! Fraction of old to mix with new to get next.
 
       gradT_excess_age_fraction = 0.9d0
+ 
+         !### gradT_excess_max_change
 
+         ! These are for calculation of efficiency boosted gradT.
+         ! Maximum change allowed in one timestep for gradT_excess_alpha.
+         ! Ignored if negative.
+
+      gradT_excess_max_change = -1d0
 
          !### gradT_excess_lambda1
          !### gradT_excess_beta1
@@ -1962,6 +1969,14 @@
 
 
 
+            !### mlt_accel_g_theta
+
+            ! use this (if > 0) for limiting the acceleration of convection velocities.
+
+         mlt_accel_g_theta = -1
+
+
+
             !### prune_bad_cz_min_Hp_height
 
             ! Lower limit on radial extent of cz (<= 0 to disable).
@@ -2046,7 +2061,16 @@
 
             !### smooth_convective_bdy
 
-            ! Apply smoothing to abundances in newly nonconvective regions.
+            ! This is an option to smooth composition gradients
+            ! in newly non-convective regions trailing behind a retreating convection zone.
+            ! This effectively erases (most) of the stair-casing that happens without it.
+            ! But you should be aware that the smoothing process does not conserve species mass -- 
+            ! e.g., if have retreating He burning core below H shell, 
+            ! then the smoothing will convert some H into He in the newly non-convective region 
+            ! (this can be hand waved away as modeling partial burning of those regions 
+            ! during the substep period before the convection had retreated past the location).
+            
+            ! set this true to have the stair-casing removed at the price of some changes in abundances.
 
          smooth_convective_bdy = .true.
 
@@ -3573,6 +3597,12 @@
 
       min_dq = 1d-14
 
+         !### min_dq_for_xa
+
+         ! Min size for splitting because of composition gradient.
+
+      min_dq_for_xa = 1d-14
+
          !### mesh_min_dlnR
 
          ! Limit on difference in lnR across cell for mesh refinement.
@@ -4207,11 +4237,13 @@
       diffusion_dt_limit = 3.15d7
 
 
-         !### diffusion_use_pure_Coulomb
-
+         !### diffusion_use_iben_macdonald
+         
          ! if false, use atomic diffusion coefficients according to Paquette et al. (1986)
+         ! if true, similar to Iben & MacDonald (1985)
+         ! this was previously called 'diffusion_use_pure_coulomb'.
 
-      diffusion_use_pure_Coulomb = .false.
+      diffusion_use_iben_macdonald = .false.
 
 
          !### diffusion_min_dq_at_surface
@@ -4904,11 +4936,22 @@
    !# structure equations
 
 
+         !### velocity_q_upper_bound
+
+         ! Local override for global `v_flag`.
+         ! If local q > this bound, local `v_flag` is set false,
+         ! else local `v_flag` is set to global `v_flag`.
+         ! this lets you force v = 0 in outer envelope.
+
+      velocity_q_upper_bound = 1d99
+
+
          !### velocity_logT_lower_bound
 
          ! Local override for global `v_flag`.
          ! If local logT < this bound, local `v_flag` is set false,
          ! else local `v_flag` is set to global `v_flag`.
+         ! this lets you force v = 0 in outer envelope.
 
       velocity_logT_lower_bound = -1d99
 
@@ -5117,6 +5160,14 @@
       eps_grav_factor = 1
 
 
+         !### eps_grav_dt_use_start_values
+
+         ! set true if must use values for lnT, lnd, or lnP from start of step in d_dt.
+         ! e.g., if have made significant changes in abundance profiles in diffusion.
+
+      eps_grav_dt_use_start_values = .false.
+
+
          !### eps_grav_time_deriv_separation
 
          ! Separation (in grid cells) over which eps_grav can be time-differenced when Mstar changes
@@ -5310,11 +5361,11 @@
       theta_P = 1d0
                
 
-         !### use_time_centering
+         !### use_energy_conservation_form
          
-         ! if true, then use time centered velocity and time weighted area.
+         ! if true, then use time centered velocity and intrinsically energy conserverving forms for momentum and energy equations.
 
-      use_time_centering = .false.
+      use_energy_conservation_form = .false.
          
 
          !### max_ebdf_order
@@ -5931,6 +5982,62 @@
          ! For use with newton_itermin_for_reduce_min_corr_coeff.
 
       newton_reduced_min_corr_coeff = 0.1
+      
+      
+
+
+         !### min_xa_hard_limit
+         !### min_xa_hard_limit_for_highT
+
+         ! If solver produces mass fraction < this limit,
+         ! then reject the trial solution.
+         ! Can optionally relax this limit at high T.
+
+      min_xa_hard_limit = -1d-5
+      min_xa_hard_limit_for_highT = -3d-5
+
+
+         !### logT_max_for_xa_hard_limit
+
+         ! Use `min_xa_hard_limit` for center logT <= this.
+
+      logT_max_for_min_xa_hard_limit = 9.49
+
+
+         !### logT_min_for_xa_hard_limit_for_highT
+
+         ! Use `min_xa_hard_limit_for_highT` for center logT >= this.
+         ! Linear interpolate in logT for intermediate center temperatures.
+
+      logT_min_for_min_xa_hard_limit_for_highT = 9.51
+
+
+         !### sum_xa_hard_limit
+         !### sum_xa_hard_limit_for_highT
+
+         ! If solver produces any cell with abs(sum(xa)-1) > this limit,
+         ! then reject the trial solution.
+         ! Can optionally relax this limit at high T.
+
+      sum_xa_hard_limit = 5d-4
+      sum_xa_hard_limit_for_highT = 1d-3
+
+
+         !### logT_max_for_sum_xa_hard_limit
+
+         ! Use `sum_xa_hard_limit` for center logT <= this.
+
+      logT_max_for_sum_xa_hard_limit = 9.49
+
+
+         !### logT_min_for_sum_xa_hard_limit_for_highT
+
+         ! Use `sum_xa_hard_limit_for_highT` for center logT >= this.
+         ! Linear interpolate in logT for intermediate center temperatures.
+
+      logT_min_for_sum_xa_hard_limit_for_highT = 9.51
+      
+      
 
 
          !### do_newton_damping_for_neg_xa
@@ -5958,9 +6065,6 @@
 
 
    !# split mixing
-
-         ! Iterate mix+burn to get `avg_mix_dxdt` for fixed struct,
-         ! then do burn+struct using `avg_mix_dxdt` as constant source term.
 
          !### split_mixing_choice
 
@@ -6128,6 +6232,7 @@
             !          'trnc err'             truncation_ratio_limit
             !          'v/v_crit'             v_div_v_crit_limit
             !          'varcontrol'           varcontrol_target
+            !          'b_****'               see binary/defaults/binary_controls.defaults
       
       
       
@@ -7855,59 +7960,6 @@
       hydro_save_numjac_plot_data = .false.
       hydro_dump_call_number = -1
       hydro_dump_iter_number = -1
-
-
-         !### min_xa_hard_limit
-         !### min_xa_hard_limit_for_highT
-
-         ! If solver produces mass fraction < this limit,
-         ! then reject the trial solution.
-         ! Can optionally relax this limit at high T.
-
-      min_xa_hard_limit = -1d-5
-      min_xa_hard_limit_for_highT = -3d-5
-
-
-         !### logT_max_for_xa_hard_limit
-
-         ! Use `min_xa_hard_limit` for center logT <= this.
-
-      logT_max_for_min_xa_hard_limit = 9.49
-
-
-         !### logT_min_for_xa_hard_limit_for_highT
-
-         ! Use `min_xa_hard_limit_for_highT` for center logT >= this.
-         ! Linear interpolate in logT for intermediate center temperatures.
-
-      logT_min_for_min_xa_hard_limit_for_highT = 9.51
-
-
-         !### sum_xa_hard_limit
-         !### sum_xa_hard_limit_for_highT
-
-         ! If solver produces any cell with abs(sum(xa)-1) > this limit,
-         ! then reject the trial solution.
-         ! Can optionally relax this limit at high T.
-
-      sum_xa_hard_limit = 5d-4
-      sum_xa_hard_limit_for_highT = 1d-3
-
-
-         !### logT_max_for_sum_xa_hard_limit
-
-         ! Use `sum_xa_hard_limit` for center logT <= this.
-
-      logT_max_for_sum_xa_hard_limit = 9.49
-
-
-         !### logT_min_for_sum_xa_hard_limit_for_highT
-
-         ! Use `sum_xa_hard_limit_for_highT` for center logT >= this.
-         ! Linear interpolate in logT for intermediate center temperatures.
-
-      logT_min_for_sum_xa_hard_limit_for_highT = 9.51
-      
       
 
 
@@ -7990,6 +8042,7 @@
       use_other_wind = .false.
       use_other_split_mix = .false.
       use_other_after_struct_burn_mix = .false.
+      use_other_before_struct_burn_mix = .false.
       use_other_surface_PT = .false.
 
       use_other_get_pulsation_info = .false.

@@ -108,6 +108,23 @@
 
    !# timestep controls
 
+      ! The terminal output during evolution includes a short string for the 'dt_limit'.
+      ! This is to give you some indication of what is limiting the time steps.
+      ! Here's a dictionary mapping those terminal strings to the corresponding control parameters.
+      ! These only include limits from binary, to see the limits from star refer to
+      ! star/default/controls.defaults
+      
+            !           terminal output       related parameter
+            !          'b_companion'          timestep limited by companion
+            !          'b_RL'                 fr
+            !          'b_jorb'               fj
+            !          'b_envelope'           fm
+            !          'b_separation'         fa
+            !          'b_eccentricity'       fe
+            !          'b_deltam'             fdm
+      
+      
+
          !### fm
          !### fa
          !### fr
@@ -132,7 +149,7 @@
       fm = 0.01d0 ! change of envelope mass of donot
       fa = 0.01d0 ! change of binary separation
       fr = 0.10d0 ! change of relative Roche lobe gap
-      fj = 0.01d0 ! change of orbital angular momentum
+      fj = 0.001d0 ! change of orbital angular momentum
       fe = 0.01d0 ! change in orbital eccentricity
 
          !### fm_limit
@@ -152,6 +169,12 @@
       fm_limit = 1d-3
       fr_limit = 1d-2
       fe_limit = 1d-1
+
+         !### fr_dt_limit
+
+         ! Minimum timestep limit allowed for the fr control in years.
+
+      fr_dt_limit = 10d0
 
          !### fdm
 
@@ -201,6 +224,12 @@
          ! terminate evolution if (r-rl)/rl is bigger than this for accretor
 
       accretor_overflow_terminate = 0.0d0 
+
+         !### terminate_if_initial_overflow
+
+         ! terminate evolution if first model of run is overflowing
+
+      terminate_if_initial_overflow = .true.
 
 
 !----------------------------------------------------------------------------------------------
@@ -695,7 +724,9 @@
          ! Logicals to deploy the use_other routines.
 
       use_other_rlo_mdot = .false.
+      use_other_tsync = .false.
       use_other_mdot_edd = .false.
+      use_other_accreted_material_j = .false.
       use_other_jdot_gr = .false.
       use_other_jdot_ml = .false.
       use_other_jdot_ls = .false.

@@ -1348,10 +1348,8 @@
 
       adjust_abundances_for_new_isos = .true.
 
-
          !### set_rates_preference
          !### new_rates_preference
-         ! Only used if `set_rates_preference` is true.
 
          ! + 1 = NACRE rates
          ! + 2 = jina reaclib rates
@@ -1504,6 +1502,15 @@
          ! (which is an 18.8 MB file of rates data).
          ! To use previous version, set to `jina_reaclib_results05301331`.
       jina_reaclib_filename = ''
+      
+      
+         !### jina_reaclib_min_T9
+         ! set jina reaclib rates to zero for T9 <= this.
+         ! if this control is <= 0, then use the standard default from rates.
+         ! need <= 3d-3 for pre-ms li7 burning
+         ! if change this, must remove old cached rates from data/rates_data/cache
+
+      jina_reaclib_min_T9 = -1
 
 
          !### rate_tables_dir
@@ -1554,13 +1561,51 @@
       T9_weaklib_full_on_hi_Z = 0.073d0
 
      
-   ! controls for special weak rates
+   !## controls for special weak rates
 
+      !### use_special_weak_rates
       ! If this is true, calculate special weak rates using the
       ! approach described in Schwab et al. (2015).
 
       use_special_weak_rates = .false.
 
+      !### special_weak_states_file
+      ! File specifiying which states to include
+
+      ! Provide the low-lying energy levels of a given nucleus.
+      ! These are needed to calcuate the partition function
+      ! and to indicate which states have allowed transitions.
+      ! Each isotope should have an entry of the form
+      ! 
+      !     <name> <nlevels>
+      !     <E_1> <J_1>
+      !     ...
+      !     <E_n> <J_n>
+      !
+      ! where E = energy, J = spin.
+
+      special_weak_states_file = 'special_weak_rates.states'
+      
+      !### special_weak_transitions_file
+      ! File specifying to include
+
+      ! These are the transitions for electron capture / beta decay
+      ! reactions that should be used.
+      !
+      ! Each reaction should have and entry of the form
+      !
+      !     <iso1> <iso2> <ntrans>
+      !     <si_1> <sf_1> <logft_1>
+      !     ...
+      !     <si_n> <sf_n> <logft_n>
+      !
+      ! where si / sf are the n-th parent / daughter state, counting
+      ! in the order that you specified in the states file.  logft is
+      ! the comparative half-life of that transition.
+      
+      special_weak_transitions_file = 'special_weak_rates.transitions'
+      
+      !### ion_coulomb_corrections
       ! select which expression for the ion chemical potential to use
       ! to calculate the energy shift associated with changing ion charge
 
@@ -1571,6 +1616,7 @@
 
       ion_coulomb_corrections = 'none'
 
+      !### electron_coulomb_corrections
       ! select which expression to use to calculate the shift in the
       ! electron chemical potential at the location of the nucleus
 
