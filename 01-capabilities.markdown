@@ -62,3 +62,8 @@ I X-ray bursts. (10MB)
 [![Type I X-ray burst][8]][7]
 [7]:assets/movies/nshe.mov
 [8]:assets/movies/nshe.png
+
+## Explosive Nucleosynthesis
+
+[This movie][9] shows explosive nucleosynthesis with a 204 isotope net, as discussed in Section 6.2.2 of Paper III.
+[9]:assets/movies/15M_204i_ccsn.mov
