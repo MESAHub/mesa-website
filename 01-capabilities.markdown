@@ -65,5 +65,9 @@ I X-ray bursts. (10MB)
 
 ## Explosive Nucleosynthesis
 
-[This movie][9] shows explosive nucleosynthesis with a 204 isotope net, as discussed in Section 6.2.2 of Paper III.
+This movie shows explosive nucleosynthesis with a 204 isotope net, as
+discussed in Section 6.2.2 of Paper III. (1.5MB)
+
+[![Explosive Nucleosynthesis][10]][9]
 [9]:assets/movies/15M_204i_ccsn.mov
+[10]:assets/movies/15M_204i_ccsn.png
