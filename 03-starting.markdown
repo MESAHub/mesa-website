@@ -424,7 +424,7 @@ Each test suite problem lives in a subdirectory of
     $MESA_DIR/star/test_suite
 
 and you can find (slightly out-of-date, but still useful) descriptions
-of most of the test problems on the [MESA Forum][test_suite].
+of most of the test problems on [mesastar.org][test_suite].
 
 [test_suite]:http://mesastar.org/documentation/tutorials
 [high_mass]:http://mesastar.org/documentation/tutorials/massive-star-test-cases/high_mass/view

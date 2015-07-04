@@ -45,10 +45,7 @@ mesa-users.  You should also
 [search the mailing list archives](http://sourceforge.net/p/mesa/mailman/search/?mail_list=mesa-users)
 to look for similar questions that may have been asked in the past.
 And once you begin to know how to use MESA, please help by responding
-to posts on the list.  You should also visit the
-[MESA Forum](http://mesastar.org/).  Registration (upper right corner)
-is not mandatory to view pages, but is required to post material on
-pages.
+to posts on the list.
 
 ## Check the MESA map
 
