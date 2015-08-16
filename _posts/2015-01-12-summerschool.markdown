@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Summer School 2015"
-date:   2014-01-12
+date:   2015-01-12
 categories: summerschool
 ---
 
@@ -11,7 +11,7 @@ fields in stellar evolution, double white dwarf mergers, going beyond
 inlists, customizing pgstar for your models, and much more. Apply for
 admission at:
 
-[MESA Summer School 2014](http://cococubed.asu.edu/mesa_summer_school_2015/)
+[MESA Summer School 2015](http://cococubed.asu.edu/mesa_summer_school_2015/)
 
 Enrollment is limited and closes March 1, 2015.
 
