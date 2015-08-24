@@ -62,9 +62,13 @@ nuclear energy generation takes place.
 Let's indicate that we want to add two columns to our history file.
 
 {% highlight fortran %}
-integer function how_many_extra_history_columns(s, id, id_extra)
-   type (star_info), pointer :: s
+integer function how_many_extra_history_columns(id, id_extra)
    integer, intent(in) :: id, id_extra
+   integer :: ierr
+   type (star_info), pointer :: s
+   ierr = 0
+   call star_ptr(id, s, ierr)
+   if (ierr /= 0) return
    how_many_extra_history_columns = 2
 end function how_many_extra_history_columns
 {% endhighlight %}
@@ -78,21 +82,25 @@ shown in this routine that are worth remembering, so read through the
 code and pay attention to the comments.
 
 {% highlight fortran %}
-subroutine data_for_extra_history_columns(s, id, id_extra, n, names, vals, ierr)
+subroutine data_for_extra_history_columns(id, id_extra, n, names, vals, ierr)
 
    ! MESA provides routines for taking logarithms which will handle
    ! cases where you pass them zero, etc.  Take advantage of this!
    use crlibm_lib, only: safe_log10_cr
 
-   type (star_info), pointer :: s
    integer, intent(in) :: id, id_extra, n
    character (len=maxlen_history_column_name) :: names(n)
    real(dp) :: vals(n)
    integer, intent(out) :: ierr
+   type (star_info), pointer :: s
 
    real(dp), parameter :: frac = 0.90
    integer :: i
    real(dp) :: edot, edot_partial
+
+   ierr = 0
+   call star_ptr(id, s, ierr)
+   if (ierr /= 0) return
 
    ! calculate the total nuclear energy release rate by integrating
    ! the specific rate (eps_nuc) over the star.  using the dot_product
@@ -135,22 +143,32 @@ subroutine \`data\_for\_extra\_profile\_columns'.
 Here I've just uncommented the stock example.
 
 {% highlight fortran %}
-integer function how_many_extra_profile_columns(s, id, id_extra)
-   type (star_info), pointer :: s
+integer function how_many_extra_profile_columns(id, id_extra)
+   use star_def, only: star_info
    integer, intent(in) :: id, id_extra
-   how_many_extra_profile_columns = 1
+   integer :: ierr
+   type (star_info), pointer :: s
+   ierr = 0
+   call star_ptr(id, s, ierr)
+   if (ierr /= 0) return
+   how_many_extra_profile_columns = 0
 end function how_many_extra_profile_columns
 
-subroutine data_for_extra_profile_columns(s, id, id_extra, n, nz, names, vals, ierr)
-   type (star_info), pointer :: s
+
+subroutine data_for_extra_profile_columns(id, id_extra, n, nz, names, vals, ierr)
+   use star_def, only: star_info, maxlen_profile_column_name
+   use const_def, only: dp
    integer, intent(in) :: id, id_extra, n, nz
    character (len=maxlen_profile_column_name) :: names(n)
    real(dp) :: vals(nz,n)
    integer, intent(out) :: ierr
+   type (star_info), pointer :: s
    integer :: k
    ierr = 0
+   call star_ptr(id, s, ierr)
+   if (ierr /= 0) return
 
-   ! note: do NOT add these names to profile_columns.list
+   ! note: do NOT add the extra names to profile_columns.list
    ! the profile_columns.list is only for the built-in profile column options.
    ! it must not include the new column names you are adding here.
 
@@ -158,7 +176,7 @@ subroutine data_for_extra_profile_columns(s, id, id_extra, n, nz, names, vals, i
    if (n /= 1) stop 'data_for_extra_profile_columns'
    names(1) = 'beta'
    do k = 1, nz
-     vals(k,1) = s% Pgas(k)/s% P(k)
+      vals(k,1) = s% Pgas(k)/s% P(k)
    end do
 
 end subroutine data_for_extra_profile_columns
@@ -189,11 +207,18 @@ comments discuss some useful MESA features.
 {% highlight fortran %}
 ! returns either keep_going or terminate.
 ! note: cannot request retry or backup; extras_check_model can do that.
-integer function extras_finish_step(s, id, id_extra)
-   type (star_info), pointer :: s
+integer function extras_finish_step(id, id_extra)
+
    integer, intent(in) :: id, id_extra
    integer :: ierr
+   type (star_info), pointer :: s
+
    integer :: f
+
+   ierr = 0
+   call star_ptr(id, s, ierr)
+   if (ierr /= 0) return
+
    extras_finish_step = keep_going
    call store_extra_info(s)
 
@@ -282,13 +307,20 @@ neon burning.
 
 {% highlight fortran %}
 ! returns either keep_going, retry, backup, or terminate.
-integer function extras_check_model(s, id, id_extra)
+integer function extras_check_model(id, id_extra)
 
   use chem_def, only : i_burn_ne, category_name
 
-  type (star_info), pointer :: s
   integer, intent(in) :: id, id_extra
+  integer :: ierr
+  type (star_info), pointer :: s
+
   integer :: i_burn_max
+
+  ierr = 0
+  call star_ptr(id, s, ierr)
+  if (ierr /= 0) return
+
   extras_check_model = keep_going
 
   ! if you want to check multiple conditions, it can be useful
@@ -440,10 +472,13 @@ Second, edit the extras\_controls routine in run\_star\_extras.f to point
 the other\_neu at the routine you want to be executed.
 
 {% highlight fortran %}
-subroutine extras_controls(s, ierr)
-   type (star_info), pointer :: s
+subroutine extras_controls(id, ierr)
+   integer, intent(in) :: id
    integer, intent(out) :: ierr
+   type (star_info), pointer :: s
    ierr = 0
+   call star_ptr(id, s, ierr)
+   if (ierr /= 0) return
 
    ! this is the place to set any procedure pointers you want to change
    ! e.g., other_wind, other_mixing, other_energy  (see star_data.inc)
