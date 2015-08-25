@@ -440,3 +440,38 @@ a few minutes) to reach a central X of 0.5.  To try it yourself,
     ./rn
 
 You can do the same with any of the test\_suite cases.
+
+If you want to base your work off of a test\_suite case, you should
+make a copy the directory and then edit this copy.
+
+    cp -r $MESA_DIR/star/test_suite/high_mass my_high_mass
+
+The test\_suite examples require a few tweaks in order to be used
+"outside" the of the test_suite directory.  First, you need to edit
+make/makefile and delete the line
+
+    include ../../test_suite_makefile_prefix
+
+Then, edit the included inlist files and delete any references to
+inlist\_test\_suite like
+
+    read_extra_star_job_inlist1 = .true.
+    extra_star_job_inlist1_name = '../inlist_test_suite'
+
+These changes ensure that you are using the copy of MESA specified by
+`$MESA_DIR`.
+
+You may also need to adjust filenames of any initial models, if they
+are specified by relative path.
+
+The test\_suite inlists specify rather strict limits on the number of
+retries and backups.  As indicated by the comment in the inlists, you
+likely want to delete these limits.
+
+The MESA test\_suite problems also have non-standard
+run\_star\_extras, including routines that check the runtime of the
+example.  If these annoy you, they can be pruned by hand.
+
+Tools such as Bill Wolf's
+[mesa-cli](http://wmwolf.github.io/mesa_cli/) can automate some of
+these steps.
