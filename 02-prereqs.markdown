@@ -53,16 +53,12 @@ Take a look at the maps below to see the locations of MESA users.  To
 have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 
 [![Map of MESA users (World)][mmw_png]][mmw_pdf]
-[mmw_png]:assets/images/mesa_users_world.png
-[mmw_pdf]:assets/images/mesa_users_world.pdf
-
-[![Map of MESA users (Europe)][mme_png]][mme_pdf]
-[mme_png]:assets/images/mesa_users_europe.png
-[mme_pdf]:assets/images/mesa_users_europe.pdf
+[mmw_png]:assets/images/mesa_users_sep2015_world_mercator.png
+[mmw_pdf]:assets/images/mesa_users_sep2015_world_mercator.pdf
 
 [![Map of MESA users (USA)][mmu_png]][mmu_pdf]
-[mmu_png]:assets/images/mesa_users_usa.png
-[mmu_pdf]:assets/images/mesa_users_usa.pdf
+[mmu_png]:assets/images/mesa_users_sep2015_usa_mercator.png
+[mmu_pdf]:assets/images/mesa_users_sep2015_usa_mercator.pdf
 
 ## Ensure your system meets the minimum hardware requirements
 
