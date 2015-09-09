@@ -3557,7 +3557,8 @@
 
          !### logT_max_for_standard_mesh_delta_coeff
 
-         ! Use `mesh_delta_coeff_for_highT` for center logT <= this.
+         ! Use `mesh_delta_coeff` for center logT <= this.  This value
+         ! should be less than `logT_min_for_highT_mesh_delta_coeff`.
 
       logT_max_for_standard_mesh_delta_coeff = 9.0
 
@@ -3565,7 +3566,7 @@
          !### logT_min_for_highT_mesh_delta_coeff
 
          ! Use `mesh_delta_coeff_for_highT` for center logT >= this.
-         ! Linear interpolate in logT for intermediate center temperatures.
+         ! Linearly interpolate in logT for intermediate center temperatures.
 
       logT_min_for_highT_mesh_delta_coeff = 9.5
 
