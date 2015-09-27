@@ -1,14 +1,15 @@
 ---
 layout: post
 title:  "Instrument Paper 3"
-date:   2015-06-10
 ---
 
 The third MESA instrument paper
-[Modules for Experiments in Stellar Astrophysics (MESA): Binaries, Pulsations, and Explosions][arXiv]
-has now been submitted to ApJ and is posted on the arXiv.
+[Modules for Experiments in Stellar Astrophysics (MESA): Binaries, Pulsations, and Explosions][ApJ]
+has now been [published in ApJ][ApJ] and is
+[posted on the arXiv][arXiv].
 
 [arXiv]:http://arxiv.org/abs/1506.03146
+[ApJ]:http://iopscience.iop.org/article/10.1088/0067-0049/220/1/15
 
 See [Bill's post on MESA-users][mesa-users] for more information.
 
