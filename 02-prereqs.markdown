@@ -188,7 +188,9 @@ so do something else for a bit or get up and get a cup of coffee.
     cd $MESA_DIR
     ./install
 
-You should receive the message
+Note that there is no reason to use `sudo`.  The MESA install does not
+require root privileges.  Once it is done, you should receive the
+message
 
     ************************************************
     ************************************************
