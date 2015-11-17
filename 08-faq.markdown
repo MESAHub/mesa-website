@@ -185,3 +185,21 @@ MESA directory you will find a subdirectory called “sample”. Make a
 copy of the sample directory anywhere you’d like and give it whatever
 name you want. Follow the instructions in the README file to make and
 test the sample.
+
+# Third-party Tools
+
+## How can I read and/or plot MESA data using language X?
+
+Users have posted numerous useful scripts in a variety of languages on
+[mesastar.org][tools].
+
+[tools]:http://mesastar.org/tools-utilities
+
+## How can I include the effects of chemical enhancements on the opacities?
+
+Ehsan Moravveji has developed a package available for
+[free access on bitbucket][opmono] to recompute OP opacities for any
+desired mixture (that MESA supports) and for any user-specified iron
+and nickel enhancement factors.
+
+[opmono]:https://bitbucket.org/ehsan_moravveji/op_mono/overview
