@@ -29,7 +29,7 @@
       ! solver controls
       ! split mixing
       ! timestep controls
-      ! debugging output controls
+      ! debugging controls
       ! miscellaneous controls
 
 
@@ -391,6 +391,13 @@
       mixing_D_limit_for_log = 1d4
 
 
+         !### eta_RTI_limit_for_log
+
+         ! if `eta_RTI` is less than this, treat it as zero for history log
+
+      eta_RTI_limit_for_log = 1d4
+
+
          !### mass_loc_for_extra_log_info
 
          ! log contains info about this mass location in the model
@@ -431,13 +438,24 @@
 
       keep_surface_point_for_pulse_info = .false.
 
+         !### add_double_points_to_pulse_info
+
+         ! add double points at discontinuities
+
+      add_double_points_to_pulse_info = .false.
+
+         !### double_point_dlnrho_threshold
+
+         ! threshold in delta(ln rho) for a double point to be written
+
+      threshold_dlnrho_for_double_point = 0.
+
          !### format_for_FGONG_data
 
-         ! the "official standard" seems to be '(1P5E16.9,x)',
-         ! but that can produce numbers with no space separating them.
-         ! fortran can read such things, but other codes such as IDL cannot.
+         ! This is the 'wide' FGONG format, as agreed on at the 
+	 ! 5th Aarhus RGB workshop (University of Birmingham, UK, October 2015)
 
-      format_for_FGONG_data = '(1P5E16.9,x)'
+      format_for_FGONG_data = '(1P,5(X,E26.18E3))'
 
 
          !### format_for_OSC_data
@@ -479,6 +497,7 @@
 
          ! controls choice of location in model for "max_abs_v" history info.
          ! can use this to exclude locations too close to surface.
+         ! ignore if <= 0
 
       min_tau_for_max_abs_v_location = 0
 
@@ -575,14 +594,14 @@
 
          !### mach1_plus_dr_factor
 
-         ! offset plus_dr location by this factor times r
+         ! offset plus_dr location by this factor times r for history logs
 
       mach1_plus_dr_factor = 1d-2
 
 
          !### mach1_minus_dr_factor
 
-         ! offset minus_dr location by this factor times r
+         ! offset minus_dr location by this factor times r for history logs
 
       mach1_minus_dr_factor = 1d-2
 
@@ -1097,6 +1116,24 @@
 
       photosphere_r_lower_limit = -1d99
 
+         !### photosphere_m_upper_limit
+
+         ! stop when `photosphere_m` is greater than this limit, in Msun units
+
+      photosphere_m_upper_limit = 1d99
+
+         !### photosphere_m_lower_limit
+
+         ! stop when `photosphere_m` is less than this limit, in Msun units
+
+      photosphere_m_lower_limit = -1d99
+
+         !### photosphere_m_sub_M_center_limit
+
+         ! stop when `photosphere_m` is less than this limit above `M_center`, in Msun units
+
+      photosphere_m_sub_M_center_limit = -1d99
+
          !### log_Teff_upper_limit
 
          ! stop when log10 of Teff is greater than this limit.
@@ -1275,6 +1312,15 @@
       logQ_limit = 5d0
 
 
+         !### logQ_min_limit
+
+         ! logQ = logRho - 2*logT + 12.
+         ! stop if logQ at any zone is smaller than this limit.
+         ! -10 is a reasonable limit for the current mesa/eos.
+
+      logQ_min_limit = -10d0
+
+
          !### center_Ye_lower_limit
 
          ! stop if `center_ye` drops below this limit
@@ -1296,9 +1342,16 @@
       non_fe_core_infall_limit = 1d99
 
 
+         !### v_div_csound_max_limit
+
+         ! stop if any `v/csound` > this limit
+
+      v_div_csound_max_limit = 1d99
+
+
          !### v_div_csound_surf_limit
 
-         ! stop if `abs(v_surf/csound_surf)` > this limit
+         ! stop if `v_surf/csound_surf` > this limit
 
       v_div_csound_surf_limit = 1d99
 
@@ -1322,6 +1375,13 @@
          ! stop if `v_surf/v_esc` > this limit
 
       v_surf_div_v_esc_limit = 1d99
+
+
+         !### v_surf_kms_limit
+
+         ! stop if `v_surf` in km/s > this limit
+
+      v_surf_kms_limit = 1d99
 
 
 
@@ -1394,6 +1454,13 @@
          ! stop when asteroseismology `delta_nu` in micro Hz is > this.  <= 0 means no limit.
 
       delta_nu_upper_limit = 0
+
+
+         !### shock_mass_upper_limit
+
+         ! stop when shock_mass is > this.  <= 0 means no limit.
+
+      shock_mass_upper_limit = -1
 
 
          !### delta_Pg_lower_limit
@@ -1584,6 +1651,16 @@
          ! P is increased by factor `(1 + conv_dP_term)` by inclusion of convective turbulence.
 
       conv_dP_term_factor = 0
+
+
+         !### mlt_gradT_fraction
+
+         ! let f := mlt_gradT_fraction
+         ! if f is >= 0 and <= 1, then
+         ! gradT from mlt is replaced by f*grada_at_face(k) + (1-f)*gradr(k)
+         ! see also the vector control adjust_mlt_gradT_fraction for fine grain control
+
+      mlt_gradT_fraction = -1
 
 
          !### okay_to_reduce_gradT_excess
@@ -1901,7 +1978,67 @@
 
 
 
-      !## radiation turbulence
+      !## turbulence
+
+            !### RTI_max_time_full_off
+            !### RTI_min_time_full_on
+
+         RTI_max_time_full_off = 0 ! 0.5d0 ! seconds. no RTI when time <= this
+         RTI_min_time_full_on = 0 ! 1d0 ! seconds. full RTI when time >= this
+
+            !### RTI_smooth_fraction
+            
+            ! smoothing alpha_RTI
+            ! done at start of step
+            ! when alpha k-1 and k+1 are nonzero, set alpha k = combo of k-1, k, and k+1
+            ! e.g., 0.8*alpha(k) + 0.1*(alpha(k-1) + alpha(k+1)) assuming RTI_smooth_fraction = 0.6
+            ! set to 1.0 to turn off smoothing.
+
+         RTI_smooth_fraction = 0.8d0
+
+
+            !### alpha_RTI_diffusion_factor
+            !### dvdt_RTI_diffusion_factor
+            !### dedt_RTI_diffusion_factor
+            !### dlnddt_RTI_diffusion_factor
+            !### composition_RTI_diffusion_factor
+            !### eps_rti_factor
+
+         alpha_RTI_diffusion_factor = 1
+         dvdt_RTI_diffusion_factor = 1
+         dedt_RTI_diffusion_factor = 1
+         dlnddt_RTI_diffusion_factor = 1
+         composition_RTI_diffusion_factor = 1
+         eps_rti_factor = 1
+         
+
+            !### RTI_visc_skip_dr_factor
+            
+            ! option to skip changes to alpha when in or near art visc region
+            ! r(k)*RTI_visc_skip_dr_factor = dr to check on either side of cell k
+            ! < 0 means don't do this check
+            ! typical values similar to shock_spread_quadratic
+
+         RTI_visc_skip_dr_factor = -1
+         
+
+            !### alpha_RTI_src_max_q
+            !### alpha_RTI_src_min_q
+            
+            ! option to set alpha_RTI source term to zero when cell q out of bounds.
+            ! to turn off RTI near surface or center
+
+         alpha_RTI_src_max_q = 1d0
+         alpha_RTI_src_min_q = 0d0
+         
+
+            !### alpha_RTI_src_min_v_div_cs
+            
+            ! option to set alpha_RTI source term to zero when v/cs < this min.
+            ! e.g. to filter out false sources ahead of shock
+
+         alpha_RTI_src_min_v_div_cs = 1d0
+         
 
             !### radiation_turbulence_coeff
 
@@ -1915,6 +2052,8 @@
             ! 1 is reasonable value for this coefficient
 
          radiation_turbulence_coeff = 0
+
+
 
 
 
@@ -1939,6 +2078,13 @@
          turbulent_diffusion_rho_max = 1d99
 
 
+            !### turbulent_diffusion_Dmin
+
+            ! Only set turbulent diffusion if it gives D >= this.
+
+         turbulent_diffusion_Dmin = 1d1
+
+
       !## mixing misc
 
          ! such as smoothing and editing of diffusion coefficients
@@ -1946,6 +2092,10 @@
             !### mix_factor
 
             ! Mixing coefficients are multiplied by this factor.
+            ! The mix_factor is applied in subroutine get_convection_sigmas in star/private/mix_info.f90 --
+            ! the lagrangian diffusion coefficient sigma(k) at cell boundary k is set to
+            !         mix_factor*D*(4*pi*r(k)^2*rho_face(k))^2
+            ! Note that the value of D is not changed -- it is just used as a term in calculating sigma.
 
          mix_factor = 1
 
@@ -1956,6 +2106,14 @@
             ! convective velocities are limited to local sound speed times this factor
 
          max_conv_vel_div_csound = 1d99
+         
+
+
+            !### max_v_div_cs_for_convection
+
+            ! disable convection for locations with abs(v)/cs > this limit
+
+         max_v_div_cs_for_convection = 1d99
          
                   
 
@@ -2477,6 +2635,15 @@
          ! otherwise, do all of the transport after updating the structure.
       
       premix_omega = .false.
+      
+      
+      
+      
+         !### recalc_mixing_info_each_substep
+         
+         ! if recalc_mixing_info_each_substep is true, then recalculate the omega mixing coefficients after each substep of the solve omega mix process.
+      
+      recalc_mixing_info_each_substep = .false.
 
 
 
@@ -2528,6 +2695,11 @@
          ! For numerical stability, turn off rotational part of `D_mix` at very high T.
 
       D_mix_rotation_min_logT_full_off = 9.5
+
+
+         !### uniform_accretion_rotation_factor
+
+      uniform_accretion_rotation_factor = 0d0
 
 
 !----------------------------------------------------------------------------------------------
@@ -2771,32 +2943,61 @@
       use_atm_PT_at_center_of_surface_cell = .false.
 
 
-         !### use_hydrodynamic_surface_BCs
+         !### use_compression_outer_BC
          
-         ! 1) gradient of compression vanishes at surface
+         ! gradient of compression vanishes at surface
             ! see Grott, Chernigovski, Glatzel, 2005.
             ! d_dm(d_dm(r^2*v)) = 0 at surface
             ! by continuity, this is d_dm(d_dt(1/rho)) = 0 at surface
             ! finite volume form is
             ! (1/rho(1) - 1/rho_start(1)) = (1/rho(2) - 1/rho_start(2))
             ! this BC determines the density for surface cell.
-         
-         ! 2) black body radiation at surface
-            ! L = 4*pi*R^2*boltz_sig*T^4
-            ! this BC determines the temperature for the surface cell given R and L.
+         ! T_surf is set to Tsurf_factor*T_black_body(L_surf,R_surf)
                   
-      use_hydrodynamic_surface_BCs = .false.
+      use_compression_outer_BC = .false.
+      
 
-
-
-
-         !### use_momentum_eqn_outer_BC
+         !### use_momentum_outer_BC
          
-         ! use P_surf to set pressure gradient at surface
-         ! calculate v(1) based on that pressure gradient
-         ! this replaces the usual equation extrapolating P(1) to surface for comparison to P_surf from the atm.
+         ! use P_surf from atm to set pressure gradient at surface in momentum equation
+            ! calculate v(1) based on pressure difference P_surf - P(1)
+         ! T_surf is set to Tsurf_factor*T_black_body(L_surf,R_surf)
                   
-      use_momentum_eqn_outer_BC = .false.
+      use_momentum_outer_BC = .false.
+      
+
+         !### use_zero_Pgas_outer_BC
+         ! use Psurf = Radiation_Pressure(T_start(1))
+                  
+      use_zero_Pgas_outer_BC = .false.
+      
+
+         !### use_zero_dLdm_outer_BC
+         ! use L(1) = L(2) for T outer BC
+                  
+      use_zero_dLdm_outer_BC = .false.
+      
+
+         !### use_T_black_body_outer_BC
+         ! T_surf is set to Tsurf_factor*T_black_body(L_surf,R_surf)
+                  
+      use_T_black_body_outer_BC = .false.
+      
+      
+         !### use_fixed_vsurf_outer_BC
+         !### fixed_vsurf
+         ! v at outer boundary of model is set to be fixed_vsurf
+                  
+      use_fixed_vsurf_outer_BC = .false.
+      fixed_vsurf = 0
+      
+
+         !### Tsurf_factor
+         
+         ! used when use_compression_outer_BC or use_momentum_outer_BC
+         ! T_surf is set to Tsurf_factor*T_black_body(L_surf,R_surf)
+                  
+      Tsurf_factor = 1
 
 
 
@@ -2815,7 +3016,6 @@
          ! This only applies when the `wind_scheme = ''`.
 
       mass_change = 0d0
-
 
          ! Enhanced mass loss due to rotation
          ! as in Heger, Langer, and Woosley, 2000, ApJ, 528:368-396.
@@ -2881,19 +3081,91 @@
 
       surf_avg_tau = 100
 
+         !### hot_wind_scheme
+         !### hot_wind_Wolf_Rayet_scheme
+         !### cool_wind_RGB_scheme
+         !### cool_wind_AGB_scheme
+
+	 ! This section replaces the old "RGB_wind_scheme" and "AGB_wind_scheme"
+	 ! with temperature-dependent hot_wind and cool_wind.  You can still
+	 ! use the RGB and AGB wind scheme as before, the functionality remains. 
+
+	 ! Now you can also select a hot wind scheme that takes effect *above*
+	 ! some temperature, set by hot_wind_full_on_T and hot_wind_full_off_T.
+	 ! Similarly, the cool wind scheme has temperature controls that 
+	 ! set the temperature *below* which they are relevant 
+	 ! (cool_wind_full_off_T and cool_wind_full_on_T). The two temperature
+	 ! regimes can overlap; in this case the hot and cool Mdot values are added.
+	 ! The wind Mdot will ramp from 0 to full value between full_on_T and 
+	 ! full_off_T.
+	 
+	 ! As before, an empty string '' means no wind.
+
+	 ! The wind "eta" values, which are constant scaling factors, have all 
+	 ! renamed *_eta -> *_scaling_factor. 
 
 
-         !### RGB_wind_scheme
+         ! Here is an example of how to translate an existing inlist from the
+	 ! old style to the new:
 
-         ! Empty string means no RGB wind.
+	 !        Before                    |             After
+	 !                                  |
+	 ! RGB_wind_scheme = 'Reimers'      |  cool_wind_RGB_scheme = 'Reimers'
+	 ! Reimers_wind_eta = 0.1           |  Reimers_scaling_factor = 0.1
+	 ! AGB_wind_scheme = 'Blocker'      |  cool_wind_AGB_scheme = 'Blocker'
+    ! Blocker_wind_eta = 0.5           |  Blocker_scaling_factor = 0.5
+	 ! RGB_to_AGB_wind_switch = 1d-4    |  RGB_to_AGB_wind_switch = 1d-4
+                                            !  only use the cool_wind_scheme
+                                            !  cool_wind_full_on_T = 1d8    !K
+                                            !  cool_wind_full_off_T = 1.1d8 !K
+                                            !  hot_wind_scheme = ''
 
-      RGB_wind_scheme = ''
 
-         !### AGB_wind_scheme
+         ! suggested hot and cool wind schemes follow but any valid wind option
+	 ! will work for either hot or cool.
+         !
+         ! Empty string means no wind
+         ! 
+         ! Suggested hot wind options:
+         !  'Kudritzki'
+         !  'Vink'
+         !
+         ! Suggested cool wind options:
+         !  'Reimers'
+         !  'Blöcker'
+         !  'de Jager'
+         !  'van Loon'
+         !  'Nieuwenhuijzen'
+         !
+         ! For now the 'Dutch' scheme can be used in either capacity.
 
-         ! Empty string means no AGB wind.
+         hot_wind_scheme = ''
+         !hot_wind_Wolf_Rayet_scheme = ''     NOT SUPPORTED
+         cool_wind_RGB_scheme = ''
+         cool_wind_AGB_scheme = ''
 
-      AGB_wind_scheme = ''
+         !### cool_wind_full_on_T
+         !### cool_wind_full_off_T
+
+         ! on for T_phot < cool_wind_full_on_T
+         ! off for T_phot > cool_wind_full_off_T
+         ! ramp from 0 to 1 between the two limits
+	 ! set cool_wind_full_on_T = 0 to ignore the cool_wind
+
+         cool_wind_full_on_T  = 0.8d4
+         cool_wind_full_off_T = 1.0d4
+         
+
+         !### hot_wind_full_on_T
+         !### hot_wind_full_off_T
+
+         ! on for T_phot > hot_wind_full_on_T
+         ! off for T_phot < hot_wind_full_off_T
+         ! ramp from 0 to 1 between the two limits
+	 ! set hot_wind_full_on_T = 0 to ignore the hot_wind
+
+         hot_wind_full_on_T  = 1.2d4
+         hot_wind_full_off_T = 1.0d4
 
          !### RGB_to_AGB_wind_switch
 
@@ -2920,7 +3192,7 @@
          ! + 'other'  --- experimental
 
 
-         !### Reimers_wind_eta
+         !### Reimers_scaling_factor
 
          ! Reimers mass loss for red giants.
 
@@ -2932,10 +3204,10 @@
          ! Reimers mdot is `eta*4d-13*L*R/M` (Msun/year), with L, R, and M in solar units.
          ! Typical value is 0.5.
 
-      Reimers_wind_eta = 0
+      Reimers_scaling_factor = 0
 
 
-         !### Blocker_wind_eta = 0
+         !### Blocker_scaling_factor = 0
 
          ! Blocker's mass loss for AGB stars.
 
@@ -2948,59 +3220,59 @@
          ! with L, R, and M in solar units.
          ! Typical value is 0.1d0.
 
-      Blocker_wind_eta = 0
+      Blocker_scaling_factor = 0
 
 
-         !### de_Jager_wind_eta
+         !### de_Jager_scaling_factor
 
          ! de Jager mass loss for various applications.
          ! de Jager, C., Nieuwenhuijzen, H., & van der Hucht, K. A. 1988, A&AS, 72, 259.
          ! Parameter for mass loss by de Jager wind prescription.
 
-      de_Jager_wind_eta = 0d0
+      de_Jager_scaling_factor = 0d0
 
 
-         !### van_Loon_wind_eta
+         !### van_Loon_scaling_factor
 
          ! see van Loon et al. 2005, A&A, 438, 273
          ! "An empirical formula for the mass-loss rates of dust-enshrouded
          ! red supergiants and oxygen-rich Asymptotic Giant Branch stars"
 
-      van_Loon_wind_eta = 0d0
+      van_Loon_scaling_factor = 0d0
 
 
-         !### Kudritzki_wind_eta
+         !### Kudritzki_scaling_factor
 
          ! Radiation driven winds of hot stars.
          ! See Kudritzki et al, Astron. Astrophys. 219, 205-218 (1989).
 
-      Kudritzki_wind_eta = 0d0
+      Kudritzki_scaling_factor = 0d0
 
 
-         !### Nieuwenhuijzen_wind_eta
+         !### Nieuwenhuijzen_scaling_factor
 
          ! See Nieuwenhuijzen, H.; de Jager, C. 1990, A&A, 231, 134.
 
-      Nieuwenhuijzen_wind_eta = 0d0
+      Nieuwenhuijzen_scaling_factor = 0d0
 
 
-         !### Vink_wind_eta
+         !### Vink_scaling_factor
 
          ! Vink, J.S., de Koter, A., & Lamers, H.J.G.L.M., 2001, A&A, 369, 574.
          ! "Mass-loss predictions for O and B stars as a function of metallicity"
 
-      Vink_wind_eta = 0d0
+      Vink_scaling_factor = 0d0
 
 
-         !### Grafener_wind_eta
+         !### Grafener_scaling_factor
 
          ! Grafener, G. & Hamann, W.-R. 2008, A&A 482, 945
          ! contributed to mesa by Nilou Afsari
 
-      Grafener_wind_eta = 0d0
+      Grafener_scaling_factor = 0d0
 
 
-         !### Dutch_wind_eta
+         !### Dutch_scaling_factor
 
          ! The "Dutch" wind scheme for massive stars combines results from several papers,
          ! all with authors mostly from the Netherlands.
@@ -3015,7 +3287,7 @@
          ! Nugis, T.,& Lamers, H.J.G.L.M., 2000, A&A, 360, 227
          ! Some folks use 0.8 for non-rotating mdoels (Maeder & Meynet, 2001).
 
-       Dutch_wind_eta = 0d0
+       Dutch_scaling_factor = 0d0
 
 
          !### Dutch_wind_lowT_scheme
@@ -3083,11 +3355,11 @@
       remove_H_wind_H_mass_limit = 0
 
 
-         !### super_eddington_wind_eta
+         !### super_eddington_scaling_factor
 
          ! For super eddington wind we use Ledd averaged by mass to optical depth tau = `surf_avg_tau`.
 
-      super_eddington_wind_eta = 0
+      super_eddington_scaling_factor = 0
 
          !### super_eddington_wind_Ledd_factor
 
@@ -3100,21 +3372,21 @@
          !### wind_boost_full_off_L_div_Ledd
 
          ! Boost off for L/Ledd <= this (set large to disable this).
-         ! This alternative form is used when `super_eddington_wind_eta` == 0.
+         ! This alternative form is used when `super_eddington_scaling_factor` == 0.
 
       wind_boost_full_off_L_div_Ledd = 1.5
 
          !### wind_boost_full_on_L_div_Ledd
 
          ! Do max boost for L/Ledd >= this.
-         ! This alternative form is used when `super_eddington_wind_eta` == 0.
+         ! This alternative form is used when `super_eddington_scaling_factor` == 0.
 
       wind_boost_full_on_L_div_Ledd = 5
 
          !### super_eddington_wind_max_boost
 
          ! Multiply wind mdot by up to this amount.
-         ! This alternative form is used when `super_eddington_wind_eta` == 0.
+         ! This alternative form is used when `super_eddington_scaling_factor` == 0.
 
       super_eddington_wind_max_boost = 1 ! 10
 
@@ -3168,7 +3440,7 @@
 
       max_star_mass_for_gain = -1
 
-         !### max_star_mass_for_loss
+         !### min_star_mass_for_loss
 
          ! Automatic stops for mass loss/gain
          ! in Msun units (negative means ignore this parameter).
@@ -3206,12 +3478,12 @@
       wind_envelope_limit = -1
 
 
-         !### rlo_wind_eta
+         !### rlo_scaling_factor
 
          ! Amplitude of mass loss.
          ! "rlo" wind scheme provides a simple radius-determined-wind with exponential increase.
 
-      rlo_wind_eta = 0
+      rlo_scaling_factor = 0
 
          !### rlo_wind_min_L
 
@@ -3247,7 +3519,7 @@
          !### roche_lobe_xfer_full_on
 
          ! Full accretion when R/RL <= this.
-         ! Limit accretion when Roche lobe is nearing full (only with `rlo_wind_eta` > 0).
+         ! Limit accretion when Roche lobe is nearing full (only with `rlo_scaling_factor` > 0).
 
       roche_lobe_xfer_full_on = 0.5d0
 
@@ -3258,13 +3530,13 @@
       roche_lobe_xfer_full_off = 1.0d0
 
 
-         !### nova_wind_eta
+         !### nova_scaling_factor
 
          ! Amplitude of wind.
          ! "nova" wind is scheme used in Kato and Hachisu, ApJ 437:802-826, 1994. (eqn 23).
-         ! This only applies when `nova_wind_eta` > 0.
+         ! This only applies when `nova_scaling_factor` > 0.
 
-      nova_wind_eta = 0
+      nova_scaling_factor = 0
 
          !### nova_wind_b
 
@@ -3287,7 +3559,7 @@
 
          !### nova_min_Teff_for_accretion
 
-         ! When `nova_wind_eta /= 0` and `Teff < this` and `L > nova_wind_min_L`, no accretion.
+         ! When `nova_scaling_factor /= 0` and `Teff < this` and `L > nova_wind_min_L`, no accretion.
 
       nova_min_Teff_for_accretion = 0
 
@@ -3356,7 +3628,6 @@
       max_logT_for_k_const_mass = 6
       max_q_for_k_const_mass = 1.0
       min_q_for_k_const_mass = 0.995
-
 
 
 !----------------------------------------------------------------------------------------------
@@ -3619,6 +3890,28 @@
       merge_if_dlnR_too_small = .false.
 
 
+
+
+
+         !### mesh_min_dr_div_dRstar
+
+         ! Limit on relative radial extent for mesh refinement.
+         ! dRstar = s% r(1) - s% R_center
+         ! Don't split if dr/dRstar would drop below this limit.
+
+      mesh_min_dr_div_dRstar = -1
+
+
+         !### merge_if_dr_div_dRstar_too_small
+
+         ! If true, mesh adjustment will force merge if `dr_div_dRstar` too small.
+
+      merge_if_dr_div_dRstar_too_small = .true.
+
+
+
+
+
          !### mesh_min_dr_div_cs
 
          ! Limit (in seconds) on sound crossing time for mesh refinement.
@@ -3632,6 +3925,8 @@
          ! If true, mesh adjustment will force merge if `dr_div_cs` too small.
 
       merge_if_dr_div_cs_too_small = .true.
+
+
 
 
          !### max_center_cell_dq
@@ -3711,7 +4006,7 @@
          !### R_function_weight
          !### R_function_param
 
-         ! radius gradient
+         ! log radius gradient
 
          !     R_function = R_function_weight*log10(1 + (r/Rsun)/R_function_param)
 
@@ -3733,10 +4028,20 @@
 
 
 
+         !### R_function3_weight
+
+         ! radius gradient
+
+         !     R_function3 = R_function3_weight*(r/Rstar)
+
+      R_function3_weight = 0
+
+
+
          !### M_function_weight
          !### M_function_param
 
-         ! mass gradient
+         ! log mass gradient
 
          !     M_function = M_function_weight*log10(1 + (m/Msun)/M_function_param)
 
@@ -4112,13 +4417,6 @@
       remesh_log_L_nuc_burn_min = -50
 
 
-         !### remesh_max_brunt_N2_composition_term
-
-         ! Don't split cell if `brunt_N2_composition_term > this`.
-
-      remesh_max_brunt_N2_composition_term = 1d99
-
-
 
 !----------------------------------------------------------------------------------------------
 
@@ -4157,15 +4455,17 @@
          !### net_logTcut_lo
 
          ! strong rates are zero `logT < logTcut_lo`
+         ! use default from net if this is <= 0
 
-      net_logTcut_lo = 5.3d0
+      net_logTcut_lo = -1
 
 
          !### net_logTcut_lim
 
          ! strong rates cutoff smoothly for `logT < logTcut_lim`
+         ! use default from net if this is <= 0
 
-      net_logTcut_lim = 5.4d0
+      net_logTcut_lim = -1
 
 
          !### max_abar_for_burning
@@ -4246,6 +4546,20 @@
 
       diffusion_use_iben_macdonald = .false.
 
+         !### diffusion_use_cgs_solver
+
+         ! if false, solve the system of equations descibed by Thoul et al. (1994)
+         ! if true, solve the unmodified Burgers equations in cgs units
+
+      diffusion_use_cgs_solver = .false.
+
+         !### diffusion_do_thermal_diffusion
+
+         ! if true, include the heat flow vector terms in the Burgers equations
+         ! when diffusion_use_cgs_solver = .true.
+         ! these are problematic when distribution function become non-Maxwellian.
+
+      diffusion_do_thermal_diffusion = .false.
 
          !### diffusion_min_dq_at_surface
 
@@ -4447,6 +4761,18 @@
       diffusion_max_T_for_radaccel = 0
 
 
+
+         !### diffusion_min_Z_for_radaccel
+         !### diffusion_max_Z_for_radaccel
+
+         ! If Z between these limits, then include radiative levitation for that element.
+         ! Calculation of radiative levitation is costly, so only use it where necessary.
+         ! e.g., limit to Fe and Ni by min_Z = 26 and max_Z = 28
+
+      diffusion_min_Z_for_radaccel = 0
+      diffusion_max_Z_for_radaccel = 1000
+
+
          !### diffusion_screening_for_radaccel
 
          ! Include screening for radiative levitation.
@@ -4582,9 +4908,21 @@
          !### eosDT_HELMEOS_always_skip_elec_pos
 
          ! if use_eosDT_HELMEOS, then this flag is passed as arg
-         ! to control whether skip electrons and positrons. 
+         ! to control whether skip electrons and positrons.
+         ! if true, then always skip them
+         ! else skip only for low T, low density situations
          
       eosDT_HELMEOS_always_skip_elec_pos = .false.
+
+
+         !### eosDT_HELMEOS_always_include_elec_pos
+
+         ! if use_eosDT_HELMEOS, then this flag is passed as arg
+         ! to control whether skip electrons and positrons. 
+         ! if true, then always include them
+         ! else include only for low T, low density situations
+         
+      eosDT_HELMEOS_always_include_elec_pos = .false.
 
 
          !### use_fixed_XZ_for_eos
@@ -4655,7 +4993,33 @@
 
          !### use_Type2_opacities
 
-         ! Type2 opacities for extra C/O during and after He burning
+         ! Type2 opacities for extra C/O during and after He burning.  To use Type2
+         ! opacities one needs to specify a base metallicity, Zbase, which gives the metal
+         ! abundances previous to any CO enhancement. In regions where central hydrogen is
+         ! above a given threshold, or the metallicity is not significantly higher than
+         ! Zbase, Type1 tables are used instead, with blending regions to smoothly
+         ! transition from one to the other.  Why not just use Type2 all the time?  Is it
+         ! a performance reason to still support Type1s?
+         ! 
+         ! No -- the Type1 tables cover a wider range of X and have a higher resolution in
+         ! Z for each X.
+         ! 
+         ! The Type1 tables are for (X,Z) pairs from the following sets:
+         ! 
+         ! The 10 Type1 X's are 0.0, 0.1, 0.2, 0.35, 0.5, 0.7, 0.8, 0.9, 0.95, 1-Z The 13
+         ! Type1 Z's are 0.0, 1e-4, 3e-4, 1e-3, 2e-3, 4e-3, 1e-2, 2e-2, 3e-2, 4e-2, 6e-2,
+         ! 8e-1, 1e-1
+         ! 
+         ! The Type2 tables are for (X,Z) pairs from the following more limits sets: The 5
+         ! Type2 X's are 0.0, 0.03, 0.10, 0.35, 0.70 The 8 Type2 Z's are 0.00, 0.001,
+         ! 0.004, 0.01, 0.02, 0.03, 0.05, 0.1
+         ! 
+         ! There are 130 (X,Z) combinations for Type1 and only 40 for Type2.  So Type2
+         ! gives you C/O enhancement at a cost of lower resolution in (X,Z).  The Type1
+         ! tables also cover the full possible range of X from 0.0 to 1-Z, whereas the
+         ! Type2 tables stop at a max X of 0.70.  Extrapolating the Type2 tables to higher
+         ! X is not reliable, so we switch over to using Type1 data instead. In this case,
+         ! Type1 opacities are computed using Zbase instead of the actual metallicity.
 
       use_Type2_opacities = .false.
 
@@ -4666,6 +5030,14 @@
 
       Zbase = -1
 
+
+
+         !### use_Zbase_for_Type1_blend
+
+         ! If true, then if `use_Type2_opacities = .true.` Type1 opacities will be computed
+         ! using Zbase instead of Z. Ignored if `use_Type2_opacities = .false.`
+
+      use_Zbase_for_Type1_blend = .true.
 
 
          !### kap_Type2_full_off_X
@@ -4684,7 +5056,7 @@
 
          ! switch to Type1 if dZ too small `(dZ = Z - Zbase)`
          ! Type2 is full off for `dZ <= kap_Type2_full_off_dZ`
-         ! Type2 can be full on for `dZ >= kap_Type2_full_off_dZ`.
+         ! Type2 can be full on for `dZ >= kap_Type2_full_on_dZ`.
 
       kap_Type2_full_off_dZ = 0.001d0
       kap_Type2_full_on_dZ = 0.01d0
@@ -4889,22 +5261,6 @@
       num_cells_for_smooth_brunt_B = 2
 
 
-
-         !### use_brunt_dlnRho_form
-
-         ! If true, compare density for adiabatic displacement of fluid element.
-
-         !     N^2 = (g/r)*A, A = (1/gamma1)*(dlnP/dlnR) - (dlnRho/dlnR)
-
-         ! If false, use Brassard form as revised by Mike Montgomery.
-
-         !     N^2 = g^2*(rho/P)*(chiT/chiRho)*(grada + brunt_B - gradT)
-
-         ! This form is less vulnerable to numerical noise.
-
-      use_brunt_dlnRho_form = .false.
-
-
          !### use_brunt_gradmuX_form
 
          ! For comparison to older codes.
@@ -4995,20 +5351,37 @@
       use_gr_factors = .false.
 
 
-         !### use_dlnddt_form_of_density_eqn
+         !### zero_gravity
 
-         ! if true, use continuity equation, d(1/rho)/dt = 4*pi*d(v*r^2)/dm
-         ! else use default rho = cell_mass/cell_volume
+         ! if true, then set G to zero
+         ! for use in certain special test cases
 
-      use_dlnddt_form_of_density_eqn = .false.
+      zero_gravity = .false.
+
+
+         !### use_ODE_var_eqn_pairing
+         ! changes the pairing of equations and variables 
+         ! helps with numerical issues in hydro matrix solves
+
+      use_ODE_var_eqn_pairing = .false.
 
 
          !### use_dvdt_form_of_momentum_eqn
 
          ! if true, use dv/dt = ... form of momentum equation.
          ! this replaces the default pressure gradient form.
+         ! only when v_flag is true.
 
       use_dvdt_form_of_momentum_eqn = .false.
+
+
+         !### use_Paczynski_term_in_dvdt_eqn
+         
+         ! if true, then the dv/dt = ... form of momentum equation.
+         ! includes Paczynski correction term in optically thin regions.
+         ! B. Paczynski, 1969, Acta Astr., vol. 19
+
+      use_Paczynski_term_in_dvdt_eqn = .false.
 
 
          !### use_dedt_form_of_energy_eqn
@@ -5017,6 +5390,14 @@
          ! this replaces the default dL/dm and eps_grav form.
 
       use_dedt_form_of_energy_eqn = .false.
+
+
+         !### use_ODE_form_of_density_eqn
+
+         ! if true, use ODE dlnd/dt = ...
+         ! if false, use algebraic relation rho = cell_mass/cell_vol
+
+      use_ODE_form_of_density_eqn = .false.
 
 
          !### non_nuc_neu_factor
@@ -5341,15 +5722,32 @@
          !### duration_for_inject_extra_ergs_sec
 
          ! (units: sec) length of time for injecting extra ergs/s
-         ! set to large value to keep injecting indefinitely
+         ! set to negative value to keep injecting indefinitely or until reach target
       
-      duration_for_inject_extra_ergs_sec = 1d99
+      duration_for_inject_extra_ergs_sec = -1
+
+
+         !### inject_until_reach_model_with_total_energy
+
+         ! (units: ergs) target for model total energy
+         ! usually want to set duration_for_inject_extra_ergs_sec = -1 for this option.
+         ! see also: inject_until_reach_delta_total_energy
+         ! continue injecting until total energy of model reaches min of 
+            ! inject_until_reach_model_with_total_energy, and
+            ! inject_until_reach_delta_total_energy + initial total energy
+      
+      inject_until_reach_model_with_total_energy = 1d99
 
 
          !### inject_until_reach_delta_total_energy
 
          ! (units: ergs) target for change in total energy
          ! stop injecting when total_energy - total_energy_initial > this.
+         ! usually want to set duration_for_inject_extra_ergs_sec = -1 for this option.
+         ! see also: inject_until_reach_model_with_total_energy
+         ! continue injecting until total energy of model reaches min of 
+            ! inject_until_reach_model_with_total_energy, and
+            ! inject_until_reach_delta_total_energy + initial total energy
       
       inject_until_reach_delta_total_energy = 1d99
                
@@ -5367,50 +5765,13 @@
          ! if true, then use time centered velocity and intrinsically energy conserverving forms for momentum and energy equations.
 
       use_energy_conservation_form = .false.
-         
-
-         !### max_ebdf_order
-         !### min_ebdf_order
-         !### steps_before_try_higher_ebdf_order
-         !### factor_for_ebdf_order_tests
-         !### use_bdf_instead_of_ebdf
-         !### use_sdirk_instead_of_ebdf
-         !### use_symplectic_instead_of_ebdf
-         ! EXPERIMENTAL -- not ready for use.
-         
-      max_ebdf_order = -1
-      min_ebdf_order = -1
-      steps_before_try_higher_ebdf_order = -1
-      factor_for_ebdf_order_tests = 5
-      
-      use_bdf_instead_of_ebdf = .false.
-      use_sdirk_instead_of_ebdf = .false.
-      use_symplectic_instead_of_ebdf = .false.
-
-         !### ebdf_redo_mix_for_final_stage
-         ! EXPERIMENTAL -- not ready for use.
-         
-      ebdf_redo_mix_for_final_stage = .false.
-
-         !### ebdf_redo_mix_for_comparison_stage
-         ! EXPERIMENTAL -- not ready for use.
-         
-      ebdf_redo_mix_for_comparison_stage = .false.
-
-         !### ebdf_redo_mix_coeffs_other_stages
-         ! EXPERIMENTAL -- not ready for use.
-         
-      ebdf_redo_mix_coeffs_other_stages = .false.
-      
-      
-         !### trace_truncation_ratio
-
-      trace_truncation_ratio = .false.
                
 
-         !### use_ODE_var_eqn_pairing
+         !### use_energy_conservation_form
+         
+         ! if true, then use time centered velocity and intrinsically energy conserverving forms for momentum and energy equations.
 
-      use_ODE_var_eqn_pairing = .false.
+      use_energy_conservation_form = .false.
 
 
 
@@ -5472,7 +5833,7 @@
 
          ! Qvisc = min(0d0, Qvisc + artificial_viscosity_Q_shift)
          ! This serves to filter out use of artificial viscosity in low compression regions.
-         ! e.g., try artificial_viscosity_Q_shift = 1d34.
+         ! e.g., artificial_viscosity_Q_shift = 1d34.
 
       artificial_viscosity_Q_shift = -1 ! ignore if <= 0
          
@@ -5619,7 +5980,103 @@
       reset_total_energy_initial_when_done_with_piston = .true.
       
       
+      ! for comparison tests
+         
+         !### gamma_law_hydro
+         
+         ! off as long as value is <= 0
+         ! values > 0 are used for gamma law eos along with simple hydro
       
+      gamma_law_hydro = 0d0
+      
+      
+      ! Rayleigh-Taylor Instability
+      
+      RTI_A = 1.18d-5
+      RTI_B = 1.2d0
+      RTI_C = 0.102d0 ! set this to 0 to turn off RT
+      RTI_D = 0d0
+      
+      
+      !### use_lagrangian_riemann_solver
+      use_lagrangian_riemann_solver = .false. ! experimental
+      
+      !### use_adjust_mesh_split_merge
+      use_adjust_mesh_split_merge = .false. ! experimental
+      
+      !### use_adjust_mesh_split_merge
+      adjust_mesh_split_merge_max_iters = 100 ! experimental
+      
+      !### use_3rd_order_TVD_RK
+      use_3rd_order_TVD_RK = .false. ! experimental
+      
+      !### use_2nd_order_TVD_RK
+      use_2nd_order_TVD_RK = .false. ! experimental
+      
+      !### explicit_hydro_use_luminosities
+      explicit_hydro_use_luminosities = .false. ! experimental
+      
+      !### explicit_hydro_timestep
+      explicit_hydro_max_nsteps = -1 ! experimental
+
+      !### explicit_hydro_nz0
+      explicit_hydro_nz0 = 1024 ! experimental
+      
+      !### explicit_hydro_LogZoning
+      explicit_hydro_LogZoning = .false. ! experimental
+      
+      !### explicit_hydro_MaxLong
+      ! split cell if ratio of actual/desired dr is > this; ignore if <= 0
+      
+      explicit_hydro_MaxLong = 2d0 
+      
+      !### explicit_hydro_MaxShort
+      ! merge cell if ratio of desired/actual dr is > this; ignore if <= 0
+      
+      explicit_hydro_MaxShort = 4d0  
+      
+      !### explicit_hydro_trace_amr
+      explicit_hydro_trace_amr = .false. ! experimental
+            
+      !### explicit_hydro_CFL
+      explicit_hydro_CFL = 0.9d0 ! experimental
+            
+      !### explicit_hydro_Energy_floor
+      explicit_hydro_Energy_floor = 1d-99 ! experimental      
+            
+      !### explicit_hydro_kap_floor_min
+      ! see SNEC paper, section 2.2
+      explicit_hydro_kap_floor_min = 1d-2 ! experimental
+            
+      !### explicit_hydro_kap_floor_A
+      explicit_hydro_kap_floor_A = 0.005306d0 ! experimental
+            
+      !### explicit_hydro_kap_floor_B
+      explicit_hydro_kap_floor_B = 0.234694d0 ! experimental
+      
+      !### explicit_hydro_use_flux_limiter
+      explicit_hydro_use_flux_limiter = .true. ! experimental
+      
+      !### explicit_hydro_include_Lconv_in_Lface
+      ! if false, then are assuming L_conv = 0, i.e., fully radiative model.
+      explicit_hydro_include_Lconv_in_Lface = .false. ! experimental
+
+
+      
+      !### explicit_hydro_trace_interval
+      explicit_hydro_trace_interval = -1 ! experimental
+
+      !### explicit_hydro_P_atol
+      explicit_hydro_P_atol = 1d-3 ! experimental
+      
+      !### explicit_hydro_P_rtol
+      explicit_hydro_P_rtol = 1d-3 ! experimental
+      
+      !### explicit_hydro_v_atol
+      explicit_hydro_v_atol = 1d-3 ! experimental
+      
+      !### explicit_hydro_v_rtol
+      explicit_hydro_v_rtol = 1d-3 ! experimental
 
 
 !----------------------------------------------------------------------------------------------
@@ -5676,7 +6133,7 @@
          !### tol_correction_high_T_limit
 
          ! For very late stages of massive star evolution, need to relax tolerances.
-         ! If center T >= this limit, switch scaling factors.
+         ! If max T >= this limit, switch scaling factors.
 
       tol_correction_high_T_limit = 1d9
 
@@ -5688,7 +6145,6 @@
 
       tol_correction_norm_high_T = 3d-3
       tol_max_correction_high_T = 3d-1
-
 
 
          !### tol_correction_extreme_T_limit
@@ -5708,22 +6164,15 @@
       tol_max_correction_extreme_T = 8d-1
 
 
-
-         !### just_use_energy_resid
-
-         ! for calculation of residual norm and max.
-
-      just_use_energy_resid = .false.
-
-
-
          !### include_L_in_error_est
          !### include_v_in_error_est
+         !### include_u_in_error_est
 
          ! Some variables can be excluded from calculation of correction norm and max.
 
       include_L_in_error_est = .false.
       include_v_in_error_est = .false.
+      include_u_in_error_est = .false.
 
 
          !### tol_correction_norm_alt
@@ -5816,7 +6265,7 @@
 
          ! If correction max increases by this factor or more, quit.
 
-      max_corr_jump_limit = 1d99
+      max_corr_jump_limit = 1d6
 
 
          !### resid_norm_jump_limit
@@ -5829,7 +6278,7 @@
 
          ! If residual max increases by this factor or more, quit.
 
-      max_resid_jump_limit = 1d99
+      max_resid_jump_limit = 1d6
 
 
          !### max_iterations_for_jacobian
@@ -5848,27 +6297,6 @@
          ! Send newton damping data to screen.
 
       trace_newton_damping = .false.
-
-
-
-         !### refine_solution
-
-         ! If this is true, then allow code to do an extra iteration with same jacobian
-         ! to refine an already converged solution.
-         ! It will do the refinement only if the correction norm is > 0.1 * tolerance,
-         ! and if it hasn't already reached the max allowed number of iterations,
-         ! and if the previous iteration was done using a new jacobian (i.e., won't use old J to refine).
-
-      refine_solution = .false.
-
-
-
-         !### refine_mtx_solution
-
-         ! If this is non-zero, then refine the linear algebra solution.
-         ! Note: this might help with poorly conditioned matrices.
-
-      refine_mtx_solution = .false.
 
 
          !### hydro_decsol_switch
@@ -6038,7 +6466,13 @@
 
       logT_min_for_sum_xa_hard_limit_for_highT = 9.51
       
-      
+   
+
+         !### do_newton_damping_for_neg_alpha_RTI
+
+         ! If true, uniformly reduce newton corrections if necessary to avoid neg alpha_RTI (only used when RTI_flag true).
+
+      do_newton_damping_for_neg_alpha_RTI = .true.
 
 
          !### do_newton_damping_for_neg_xa
@@ -6054,13 +6488,27 @@
          ! or make them too large.
 
       hydro_mtx_max_allowed_abs_dlogT = 99
+      hydro_mtx_max_allowed_abs_dlogE = 99
       hydro_mtx_max_allowed_abs_dlogRho = 99
       hydro_mtx_max_allowed_abs_dlogPgas = 99
-      min_logT_for_hydro_mtx_max_allowed = 99
+      min_logT_for_hydro_mtx_max_allowed = -1d99 ! always enforce max
       hydro_mtx_max_allowed_logT = 99
+      hydro_mtx_max_allowed_logE = 99
       hydro_mtx_max_allowed_logRho = 99
       hydro_mtx_max_allowed_logPgas = 99
 
+
+         !### use_PCM
+
+      use_PCM = .true.
+
+         !### use_PLM
+
+      use_PLM = .false.
+
+         !### use_LPP_HARMOD
+
+      use_LPP_HARMOD = .false.
 
 !----------------------------------------------------------------------------------------------
 
@@ -6162,9 +6610,10 @@
       ! The terminal output during evolution includes a short string for the 'dt_limit'.
       ! This is to give you some indication of what is limiting the time steps.
       ! Here's a dictionary mapping those terminal strings to the corresponding control parameters.
+      ! (There is a similar table in mesa/binary/defaults/binary_controls.defaults.)
       
             !           terminal output       related parameter
-            !          'avg E resid'          limit_for_avg_E_residual
+            !          'avg lgE resid'        limit_for_avg_lgE_residual
             !          'CpT_absMdot_div_L'    CpT_absMdot_div_L_limit
             !          'Lnuc'                 delta_lgL_nuc_limit
             !          'Lnuc_cat'             delta_lgL_nuc_cat_limit
@@ -6194,7 +6643,7 @@
             !          'delta_mstar'          delta_lg_star_mass_limit
             !          'diff iters'           diffusion_iters_limit
             !          'diff steps'           diffusion_steps_limit
-            !          'dt_Courant'           dt_div_dt_Courant_limit
+            !          'dt_explicit'          dt_div_dt_explicit_limit
             !          'dt_acoustic'          dt_div_dt_acoustic_limit
             !          'dt_collapse'          dt_div_dt_cell_collapse_limit
             !          'dt_dynamic'           dt_div_dt_dynamic_limit
@@ -6206,6 +6655,7 @@
             !          'highT del Ye'         delta_Ye_highT_limit
             !          'hold'                 (recent backup, so no increase in dt)
             !          'lgL'                  delta_lgL_limit
+            !          'lgL_phot'             delta_lgL_phot_limit
             !          'lgP'                  delta_lgP_limit
             !          'lgR'                  delta_lgR_limit
             !          'lgRho'                delta_lgRho_limit
@@ -6222,7 +6672,7 @@
             !          'lg_XO_cntr'           delta_lg_XO_cntr_limit
             !          'lg_XSi_cntr'          delta_lg_XSi_cntr_limit
             !          'log_eps_nuc'          delta_log_eps_nuc_limit
-            !          'max E resid'          limit_for_max_E_residual
+            !          'max lgE resid'        limit_for_max_abs_lgE_residual
             !          'max_dt'               max_years_for_timestep
             !          'max dt change'        max_timestep_factor
             !          'min dt change'        min_timestep_factor
@@ -6230,7 +6680,6 @@
             !          'neg_mass_frac'        (solver found neg mass frac)
             !          'newton iters'         newton_iterations_limit
             !          'rotation steps'       rotation_steps_limit
-            !          'trnc err'             truncation_ratio_limit
             !          'v/v_crit'             v_div_v_crit_limit
             !          'varcontrol'           varcontrol_target
             !          'b_****'               see binary/defaults/binary_controls.defaults
@@ -6430,37 +6879,6 @@
          ! If use a total number of iters > this, retry.
 
       diffusion_iters_hard_limit = 800
-
-
-         !### truncation_ratio_xh_atol
-         !### truncation_ratio_xh_rtol
-         !### truncation_ratio_xa_atol
-         !### truncation_ratio_xa_rtol
-         !### eval_truncation_ratio_do_max
-
-      truncation_ratio_xh_atol = 1d-4
-      truncation_ratio_xh_rtol = 1d-4
-      truncation_ratio_xa_atol = 1d-4
-      truncation_ratio_xa_rtol = 1d-4
-      eval_truncation_ratio_do_max = .true.
-
-         !### use_truncation_ratio_limit
-
-         ! if false, then skip test of truncation ratio and use varcontrol instead.
-
-      use_truncation_ratio_limit = .true.
-
-         !### truncation_ratio_limit
-
-         ! If estimated local truncation error > this, reduce the next timestep.
-
-      truncation_ratio_limit = 1d99
-
-         !### truncation_ratio_hard_limit
-
-         ! If estimated local truncation error > this, retry.
-
-      truncation_ratio_hard_limit = 1d99
 
 
       ! limits based on max decrease in mass fraction at any location in star
@@ -7296,6 +7714,17 @@
       delta_lgL_hard_limit = -1
 
 
+         !### delta_lgL_phot_limit_L_min
+         !### delta_lgL_phot_limit
+         !### delta_lgL_phot_hard_limit
+
+         ! Limit for magnitude of change in log10(L_phot/Lsun).
+         ! Only apply this limit when L_phot >= `delta_lgL_phot_limit_L_min` (in Lsun units).
+      delta_lgL_phot_limit_L_min = -100
+      delta_lgL_phot_limit = 0.1
+      delta_lgL_phot_hard_limit = -1
+
+
          !### v_div_v_crit_limit
          !### v_div_v_crit_hard_limit
 
@@ -7351,15 +7780,14 @@
       dt_div_dt_mass_loss_hard_limit = -1
 
 
-         !### dt_div_dt_Courant_limit
-         !### dt_div_dt_Courant_hard_limit
+         !### dt_div_dt_explicit_limit
+         !### dt_div_dt_explicit_hard_limit
 
-         ! limit for dt compared to Courant timescale (negative means no limit)
+         ! limit for dt compared to explicit solver timescale (negative means no limit)
+         ! dt_explicit = min over all cells of min(dr/csound, dr^2/max(D_mix,eta_RTI))
 
-	      ! dt_Courant = min over shells of sound crossing time, dr/csound
-
-      dt_div_dt_Courant_limit = -1
-      dt_div_dt_Courant_hard_limit = -1
+      dt_div_dt_explicit_limit = -1
+      dt_div_dt_explicit_hard_limit = -1
 
 
          !### dt_div_dt_cell_collapse_limit
@@ -7769,22 +8197,40 @@
       hard_limit_for_rel_rate_in_energy_conservation = 1d99 ! 1d-5
 
          
-         !### limit_for_avg_E_residual
-         !### hard_limit_for_avg_E_residual
+         !### limit_for_avg_lgE_residual
+         !### hard_limit_for_avg_lgE_residual
          
-         ! avg_E_residual = abs(dot_product(s% dq(1:s% nz),s% E_residual(1:s% nz)))
+         ! avg_lgE_residual = abs(dot_product(s% dq(1:s% nz),s% lnE_residual(1:s% nz)))/ln10
 
-      limit_for_avg_E_residual = 1d99 ! 1d-7
-      hard_limit_for_avg_E_residual = 1d99 ! 1d-5
+      limit_for_avg_lgE_residual = 1d99 ! 1d-7
+      hard_limit_for_avg_lgE_residual = 1d99 ! 1d-5
 
          
-         !### limit_for_max_E_residual
-         !### hard_limit_for_max_E_residual
+         !### limit_for_max_abs_lgE_residual
+         !### hard_limit_for_max_abs_lgE_residual
          
-         ! max_E_residual = maxval(abs(s% E_residual(1:s% nz)))
+         ! max_abs_lgE_residual = maxval(abs(s% lnE_residual(1:s% nz)))/ln10
 
-      limit_for_max_E_residual = 1d99 ! 1d-7
-      hard_limit_for_max_E_residual = 1d99 ! 1d-5
+      limit_for_max_abs_lgE_residual = 1d99 ! 1d-7
+      hard_limit_for_max_abs_lgE_residual = 1d99 ! 1d-5
+
+         
+         !### limit_for_avg_v_residual
+         !### hard_limit_for_avg_v_residual
+         
+         ! avg_v_residual = abs(dot_product(s% dq(1:s% nz),s% v_residual(1:s% nz)))
+
+      limit_for_avg_v_residual = 1d99 ! 1d-7
+      hard_limit_for_avg_v_residual = 1d99 ! 1d-5
+
+         
+         !### limit_for_max_abs_v_residual
+         !### hard_limit_for_max_abs_v_residual
+         
+         ! max_abs_v_residual = maxval(abs(s% v_residual(1:s% nz)))
+
+      limit_for_max_abs_v_residual = 1d99 ! 1d-7
+      hard_limit_for_max_abs_v_residual = 1d99 ! 1d-5
 
 
          !### report_why_dt_limits
@@ -7819,7 +8265,7 @@
 !----------------------------------------------------------------------------------------------
 
 
-   !# debugging output controls
+   !# debugging controls
 
 
          !### report_hydro_solver_progress
@@ -7833,6 +8279,12 @@
          ! If true, produce terminal output when have some internal error.
 
       report_ierr = .false.
+
+         !### stop_for_NaNs
+
+         ! If true and report_ierr is also true, then stop for NaNs.
+
+      stop_for_NaNs = .false.
 
 
 
@@ -7978,6 +8430,20 @@
       trace_k = -1
 
 
+         !### fill_arrays_with_NaNs
+
+         ! initialize arrays with NaNs to trap reads of uninitialized entries.
+
+      fill_arrays_with_NaNs = .true.
+
+
+         !### zero_when_allocate
+
+         ! initialize arrays with zeros.
+
+      zero_when_allocate = .false.
+
+
 
 !----------------------------------------------------------------------------------------------
 
@@ -8006,6 +8472,9 @@
 
       zams_filename = 'zams_z2m2_y28.data'
 
+
+      set_rho_to_dm_div_dV = .true. ! make consistent when load model
+      
 
          !### use_other_{hook}
 

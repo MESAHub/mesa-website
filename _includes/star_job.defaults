@@ -17,6 +17,7 @@
    ! kap controls
    ! ionization controls
    ! include other inlists
+   ! color files
    ! private or experimental
 
 
@@ -296,6 +297,16 @@
       create_pre_main_sequence_model = .false.
 
 
+         !### create_merger_model !!! EXPERIMENTAL
+         !### saved_model_for_merger_1
+         !### saved_model_for_merger_2
+         ! If `create_merger_model` is true, then create a star by merging the two models provided.
+
+      create_merger_model = .false.
+      saved_model_for_merger_1 = 'undefined'
+      saved_model_for_merger_2 = 'undefined'
+
+
          !### pre_ms_T_c
          ! Initial center temperature (must be below 1d6).
          ! If you have initial convergence problems creating a pre-ms model,
@@ -431,10 +442,12 @@
 
          !### set_initial_dt
          !### years_for_initial_dt
+         !### seconds_for_initial_dt
          ! if true, set initial timestep, dt, in years
 
       set_initial_dt = .false.
       years_for_initial_dt = 0
+      seconds_for_initial_dt = 0
 
 
          !### limit_initial_dt
@@ -567,11 +580,13 @@
          ! `relax_composition_filename` holds the desired composition profile information
          ! file format for relax composition
 
-         !     1st line: num_points  num_species  
+         !     1st line: num_points num_species
          !     then 1 line for for each point where define desired composition
          !     xq xa(1) ... xa(num_species)
          !     xq = fraction of xmstar exterior to the point
          !     where xmstar = mstar - M_center
+         !     the interpolation routines require that the xq values which
+         !     appear in your file must be monotonically increasing
          !     xa(i) = mass fraction of i'th species
 
          ! NOTE: it is up to you to ensure that the current net isotopes match
@@ -655,6 +670,41 @@
       relax_initial_mass_scale = .false.
       dlgm_per_step = 1d-3
       change_mass_years_for_dt = 1
+
+
+         !### relax_initial_entropy
+         !### max_steps_to_relax_entropy
+         !### timescale_for_relax_entropy
+         !### max_dt_for_relax_entropy
+         !### num_timescales_for_relax_entropy
+         !### relax_entropy_filename
+         ! relax entropy from current to specified over a certain amount of relaxation timescales.
+         ! This is done by adding an extra heating term of the form
+
+         !  s% extra_heat(k) =  &
+         !     (1d0 - exp_cr(s%lnS(k))/desired_entropy(k))*exp_cr(s%lnE(k))/(timescale_for_relax_entropy*secyer)
+
+         ! and evolving the star without changing the composition for num_timescales_for_relax_entropy times
+         ! timescale_for_relax_entropy. To circumvent convection we limit the acceleration of convective velocities
+         ! using min_T_for_acceleration_limited_conv_velocity = 0 (see controls.defaults), and the timescale
+         ! for relaxation should be very short (less than a second).
+
+         ! `relax_entropy_filename` holds the desired entropy profile information
+         ! file format for relax entropy
+
+         !     1st line: num_points
+         !     then 1 line for for each point where define desired composition
+         !     xq entropy
+         !     xq = fraction of xmstar exterior to the point
+         !     where xmstar = mstar - M_center
+         !     entropy = specific entropy in units of erg/gr/K
+
+      relax_initial_entropy = .false.
+      max_steps_to_relax_entropy = 1000
+      timescale_for_relax_entropy = 1d-9 ! in years
+      max_dt_for_relax_entropy = 1d-9 ! in years
+      num_timescales_for_relax_entropy = 100
+      relax_entropy_filename = ''
 
 
          !### relax_dxdt_nuc_factor
@@ -758,6 +808,39 @@
       set_tau_factor_after_core_C_burn = -1
 
 
+         !### adjust_tau_factor_to_surf_density
+         !### base_for_adjust_tau_factor_to_surf_density
+         
+         ! if adjust_tau_factor_to_surf_density, then at start of each step
+         ! set tau_factor to current Rho(1) divided by base_for_adjust_tau_factor_to_surf_density
+      
+      adjust_tau_factor_to_surf_density = .false.
+      base_for_adjust_tau_factor_to_surf_density = 0d0
+      
+
+
+         !### relax_to_this_Tsurf_factor
+         !### dlogTsurf_factor
+         !### relax_Tsurf_factor
+         !### relax_initial_Tsurf_factor
+
+
+      relax_to_this_Tsurf_factor = -1
+      dlogTsurf_factor = 0.1
+      relax_Tsurf_factor = .false.
+      relax_initial_Tsurf_factor = .false.
+
+
+         !### set_to_this_Tsurf_factor
+         !### set_Tsurf_factor
+         !### set_initial_Tsurf_factor
+         ! As for `relax_to_this_Tsurf_factor`, but changes `Tsurf_factor` without reconverging.
+
+      set_to_this_Tsurf_factor = -1
+      set_Tsurf_factor = .false.
+      set_initial_Tsurf_factor = .false.
+
+
          !### relax_mass_change
          !### relax_initial_mass_change
          !### relax_mass_change_min_steps
@@ -818,27 +901,45 @@
       new_lnPgas_flag = .false.
 
 
-         !### change_E_flag
-         !### change_initial_E_flag
-         !### new_E_flag
+         !### change_lnE_flag
+         !### change_initial_lnE_flag
+         !### new_lnE_flag
          ! E variables
-         ! `E_flag` is true if we are using internal energy variables in place of lnT
+         ! `lnE_flag` is true if we are using lnE variables in place of lnT
+         ! NOTE: the mesa/eos has special tables for this.
+         ! they are constructed from the standard (lnd,lnT) tables and have similar limits.
+         ! in particular, like the other tables, they only go up to Z of 0.04
+         ! when the eos is called with off-table arguments, it reverts to making iterative calls on the (lnd,lnT) eos.
+         ! that works pretty well, but in some cases the partials are not as accurate as the ones from the (lnd,lnE) table.
+         ! the less accurate partials can lead to convergence problems that force unexpectedly small timesteps.
+         ! in such cases, it may be desirable to leave lnE_flag false. 
 
-      change_E_flag = .false.
-      change_initial_E_flag = .false.
-      new_E_flag = .false.
+      change_lnE_flag = .false.
+      change_initial_lnE_flag = .false.
+      new_lnE_flag = .false.
 
-
-      !## luminosity variables
 
          !### change_L_flag
          !### change_initial_L_flag
          !### new_L_flag
-         ! change whether MESA evolves a luminosity variable.
-
+         ! luminosity variables
+         ! `L_flag` is true if we are using luminosity variables
+         
       change_L_flag = .false.
       change_initial_L_flag = .false.
       new_L_flag = .false.
+
+
+         !### change_RTI_flag
+         !### change_initial_RTI_flag
+         !### new_RTI_flag
+         
+         ! RTI variables
+         ! `RTI_flag` is true if we are doing Rayleigh Taylor Instabilities
+
+      change_RTI_flag = .false.
+      change_initial_RTI_flag = .false.
+      new_RTI_flag = .false.
       
 
       !## velocity variables
@@ -846,7 +947,8 @@
          !### change_v_flag
          !### change_initial_v_flag
          !### new_v_flag
-         ! change whether MESA evolves a (radial) velocity variable.
+         ! change whether MESA evolves a (radial) velocity variable, v,
+         ! defined at cell boundaries
 
       change_v_flag = .false.
       change_initial_v_flag = .false.
@@ -866,6 +968,22 @@
          ! integral is sum over all cells of `(gamma1-4d0/3d0)` weighted by `dm*P/rho`
 
       gamma1_integral_for_v_flag = 0d0
+
+
+         !### change_u_flag
+         !### change_initial_u_flag
+         !### new_u_flag
+         ! change whether MESA evolves a (radial) velocity variable, u,
+         ! defined at cell centers.
+         ! this is an alternative to v at cell boundaries. 
+         ! can use one or the other, but not both.
+         
+         ! Experimental -- not ready for use.
+
+      change_u_flag = .false.
+      change_initial_u_flag = .false.
+      new_u_flag = .false.
+
 
       !## rotation controls
 
@@ -1142,40 +1260,131 @@
       relax_L_center_dt = 3.1558149984d1
 
 
+         !### remove_initial_center_at_cell_k
+         !### remove_initial_center_by_temperature
+         !### remove_initial_center_by_mass_fraction_q
+         !### remove_initial_center_by_delta_mass_gm
+         !### remove_initial_center_by_delta_mass_msun
+         !### remove_initial_center_by_mass_gm
+         !### remove_initial_center_by_mass_msun
+         !### remove_initial_center_by_radius_cm
+         !### remove_initial_center_by_radius_Rsun
+         !### remove_initial_center_by_si28
+         !### remove_initial_center_by_ye
+         !### remove_initial_center_by_infall_kms
+         !### remove_initial_center_by_infall_kms
+         
+         ! allows the core to be removed. ignored if <= 0
+         ! value for si28 is mass fraction at which to make mass cut
+            ! i.e. cut at first location going inward where mass fraction of si28 >= this limit
+         ! value for ye is electron per baryon number for cut
+         ! value for infall_kms is infall speed in km per sec to make the cut
+
+      remove_initial_center_at_cell_k = 0
+      remove_initial_center_by_temperature = 0
+      remove_initial_center_by_mass_fraction_q = 0
+      remove_initial_center_by_delta_mass_gm = 0
+      remove_initial_center_by_delta_mass_Msun = 0
+      remove_initial_center_by_mass_gm = 0
+      remove_initial_center_by_mass_Msun = 0
+      remove_initial_center_by_radius_cm = 0
+      remove_initial_center_by_radius_Rsun = 0
+      remove_initial_center_by_si28 = 0
+      remove_initial_center_by_ye = 0
+      remove_initial_center_by_infall_kms = 0
+
+
          !### remove_center_at_cell_k
          !### remove_center_by_temperature
          !### remove_center_by_mass_fraction_q
+         !### remove_center_by_delta_mass_gm
+         !### remove_center_by_delta_mass_Msun
          !### remove_center_by_mass_gm
          !### remove_center_by_mass_Msun
          !### remove_center_by_radius_cm
          !### remove_center_by_radius_Rsun
+         !### remove_center_by_si28
+         !### remove_center_by_ye
+         !### remove_center_by_infall_kms
          ! allows the core to be removed. ignored if <= 0
 
       remove_center_at_cell_k = 0
       remove_center_by_temperature = 0
       remove_center_by_mass_fraction_q = 0
+      remove_center_by_delta_mass_gm = 0
+      remove_center_by_delta_mass_Msun = 0
       remove_center_by_mass_gm = 0
       remove_center_by_mass_Msun = 0
       remove_center_by_radius_cm = 0
       remove_center_by_radius_Rsun = 0
+      remove_center_by_si28 = 0
+      remove_center_by_ye = 0
+      remove_center_by_infall_kms = 0
 
 
-         !### remove_initial_center_at_cell_k
-         !### remove_initial_center_by_temperature
-         !### remove_initial_center_by_mass_fraction_q
-         !### remove_initial_center_by_mass_gm
-         !### remove_initial_center_by_mass_msun
-         !### remove_initial_center_by_radius_cm
-         !### remove_initial_center_by_radius_Rsun
-         ! allows the core to be removed. ignored if <= 0
+         !### remove_initial_center_at_inner_max_v
+         !### remove_center_at_inner_max_v
 
-      remove_initial_center_at_cell_k = 0
-      remove_initial_center_by_temperature = 0
-      remove_initial_center_by_mass_fraction_q = 0
-      remove_initial_center_by_mass_gm = 0
-      remove_initial_center_by_mass_Msun = 0
-      remove_initial_center_by_radius_cm = 0
-      remove_initial_center_by_radius_Rsun = 0
+      remove_initial_center_at_inner_max_v = .false.
+      remove_center_at_inner_max_v = .false.
+
+
+         !### remove_initial_surface_at_cell_k
+         !### remove_initial_surface_by_optical_depth
+         !### remove_initial_surface_by_temperature
+         !### remove_initial_surface_by_density
+         !### remove_initial_surface_by_pressure
+         !### remove_initial_surface_by_mass_fraction_q
+         !### remove_initial_surface_by_mass_gm
+         !### remove_initial_surface_by_mass_msun
+         !### remove_initial_surface_by_radius_cm
+         !### remove_initial_surface_by_radius_Rsun
+         ! allows the outer envelope to be removed. ignored if <= 0
+
+      remove_initial_surface_at_cell_k = 0
+      remove_initial_surface_by_optical_depth = 0
+      remove_initial_surface_by_temperature = 0
+      remove_initial_surface_by_density = 0
+      remove_initial_surface_by_pressure = 0
+      remove_initial_surface_by_mass_fraction_q = 0
+      remove_initial_surface_by_mass_gm = 0
+      remove_initial_surface_by_mass_Msun = 0
+      remove_initial_surface_by_radius_cm = 0
+      remove_initial_surface_by_radius_Rsun = 0
+
+
+         !### remove_surface_at_cell_k
+         !### remove_surface_by_optical_depth
+         !### remove_surface_by_temperature
+         !### remove_surface_by_density
+         !### remove_surface_by_pressure
+         !### remove_surface_by_mass_fraction_q
+         !### remove_surface_by_mass_gm
+         !### remove_surface_by_mass_Msun
+         !### remove_surface_by_radius_cm
+         !### remove_surface_by_radius_Rsun
+         ! allows the outer envelope to be removed. ignored if <= 0
+
+
+      remove_surface_at_cell_k = 0
+      remove_surface_by_optical_depth = 0
+      remove_surface_by_temperature = 0
+      remove_surface_by_density = 0
+      remove_surface_by_pressure = 0
+      remove_surface_by_mass_fraction_q = 0
+      remove_surface_by_mass_gm = 0
+      remove_surface_by_mass_Msun = 0
+      remove_surface_by_radius_cm = 0
+      remove_surface_by_radius_Rsun = 0
+
+
+         !### repeat_remove_surface_for_each_step
+         ! if true, then at each step removes surface as specified.
+         ! e.g., if doing remove at specific density and 
+         ! expansion has lowered the surface density to below the limit,
+         ! then remove surface mass down to the limit.
+
+      repeat_remove_surface_for_each_step = .false.
 
 
          !### report_mass_not_fe56
@@ -1308,6 +1517,7 @@
          !### set_other_HELM_flags
          !### HELM_include_radiation
          !### HELM_always_skip_elec_pos
+         !### HELM_always_include_elec_pos
 
          ! Flags for controlling parts of HELM.
          ! If HELM skips electron-positron, it also skips coulomb.
@@ -1317,6 +1527,7 @@
 
          !     set_other_HELM_flags = .true.
          !     HELM_always_skip_elec_pos = .true.
+         !     HELM_always_include_elec_pos = .false.
          !     HELM_include_radiation = .true. or .false. depending on what you want
          !     set_Z_all_HELM = .true.
          !     Z_all_HELM = -0.1 ! switch to HELM for Z > this
@@ -1325,6 +1536,7 @@
       set_other_HELM_flags = .false.
       HELM_include_radiation = .true.
       HELM_always_skip_elec_pos = .false.
+      HELM_always_include_elec_pos = .false.
 
 
 !----------------------------------------------------------------------------------------------
@@ -1747,9 +1959,30 @@
       extras_lpar(:) = .false.
 
 
-
-
-
+!----------------------------------------------------------------------------------------------
+	!# Color Files
+         !### Filenames for each bolometric correction (BC) table to load
+         ! Must set the number of files to load
+         ! Must be <= `max_num_color_files` (defined in `colors_def.f90`).
+         ! Must set the number of BC's in each file (May be different for each file).
+         ! Must be <= `max_num_bcs_per_file` (defined in `colors_def.f90`).
+         ! Files should be structed as:
+         ! Teff log_g Fe_h filter1 filter1 ....
+         ! where filter1 is the name of the filter (No spaces allowed in name)
+         ! Names must be unique accross all files loaded
+         ! For a filter named filter1 history output will be bc_filter1 for bolometric corrections
+         ! and abs_mag_filter1 for absolute magnitude 
+         
+         color_num_files=-1
+         color_file_names(:)=''
+         color_num_colors(:)=-1
+         
+         ! Default file from Lejeune, Cuisinier, Buser (1998) A&AS 130, 65-75
+         ! Can be replaced if need be.
+         color_num_files=1
+         color_file_names(1)='lcb98cor.dat'
+         color_num_colors(1)=11
+			
 
 !----------------------------------------------------------------------------------------------
 
@@ -1767,7 +2000,8 @@
          !### set_max_dt_to_frac_lifetime
          !### max_frac_of_lifetime_per_step
          ! limit max timestep.
-         ! If true, set `max_timestep` according to expected lifetime as a function of mass.
+         ! If true, set `max_timestep` and `max_years_for_timestep`
+         ! according to expected lifetime as a function of mass.
          ! Use the Iben & Laughlin (1989) formula to estimate lifetime.
          ! Multiply that times the value of `max_frac_of_lifetime_per_step` to get `max_timestep`.
 
@@ -1809,3 +2043,11 @@
 !----------------------------------------------------------------------------------------------
 
    !# private or experimental
+   
+   
+      !### warn_run_star_extras
+      ! Due to changing the run_stars_extra functions to hooks, we break peoples
+      ! run_stars_extra files. This flag sets a warning message and stops the MESA run
+      ! untill it is set to .false., if people This way people will hopefully not be 
+      ! confused as to why their run_stars_extra functions are not being called. 
+      warn_run_star_extras=.True.

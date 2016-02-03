@@ -231,10 +231,23 @@
 
       terminate_if_initial_overflow = .true.
 
+         !### terminate_if_L2_overflow
+
+         ! terminate evolution if there is overflow through the second Lagrangian point
+         ! (experimental!)
+
+      terminate_if_L2_overflow = .false.
+
 
 !----------------------------------------------------------------------------------------------
 
    !# mass transfer controls
+
+         !### ignore_rlof
+
+         ! If true, then ignore Roche lobe overflow (i.e., no mass will be transferred)
+
+      ignore_rlof = .false.
 
          !### mass_transfer_*
 
