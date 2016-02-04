@@ -3086,39 +3086,40 @@
          !### cool_wind_RGB_scheme
          !### cool_wind_AGB_scheme
 
-	 ! This section replaces the old "RGB_wind_scheme" and "AGB_wind_scheme"
-	 ! with temperature-dependent hot_wind and cool_wind.  You can still
+	 ! This section replaces the old "`RGB_wind_scheme`" and "`AGB_wind_scheme`"
+	 ! with temperature-dependent hot\_wind and cool\_wind.  You can still
 	 ! use the RGB and AGB wind scheme as before, the functionality remains.
 
 	 ! Now you can also select a hot wind scheme that takes effect *above*
-	 ! some temperature, set by hot_wind_full_on_T and hot_wind_full_off_T.
+	 ! some temperature, set by `hot_wind_full_on_T` and `hot_wind_full_off_T`.
 	 ! Similarly, the cool wind scheme has temperature controls that
 	 ! set the temperature *below* which they are relevant
-	 ! (cool_wind_full_off_T and cool_wind_full_on_T). The two temperature
+	 ! (`cool_wind_full_off_T` and `cool_wind_full_on_T`). The two temperature
 	 ! regimes can overlap; in this case the hot and cool Mdot values are added.
-	 ! The wind Mdot will ramp from 0 to full value between full_on_T and
-	 ! full_off_T.
+	 ! The wind Mdot will ramp from 0 to full value between full\_on\_T and
+	 ! full\_off\_T.
 
 	 ! As before, an empty string '' means no wind.
 
 	 ! The wind "eta" values, which are constant scaling factors, have all
-	 ! renamed *_eta -> *_scaling_factor.
+	 ! renamed \*\_wind\_eta -> \*\_scaling\_factor.
 
 
          ! Here is an example of how to translate an existing inlist from the
 	 ! old style to the new:
 
-	 !        Before                    |             After
-	 !                                  |
-	 ! RGB_wind_scheme = 'Reimers'      |  cool_wind_RGB_scheme = 'Reimers'
-	 ! Reimers_wind_eta = 0.1           |  Reimers_scaling_factor = 0.1
-	 ! AGB_wind_scheme = 'Blocker'      |  cool_wind_AGB_scheme = 'Blocker'
-    ! Blocker_wind_eta = 0.5           |  Blocker_scaling_factor = 0.5
-	 ! RGB_to_AGB_wind_switch = 1d-4    |  RGB_to_AGB_wind_switch = 1d-4
-                                            !  only use the cool_wind_scheme
-                                            !  cool_wind_full_on_T = 1d8    !K
-                                            !  cool_wind_full_off_T = 1.1d8 !K
-                                            !  hot_wind_scheme = ''
+	 !     |        Before                    |             After                 |
+	 !     |----------------------------------|-----------------------------------|
+	 !     | RGB_wind_scheme = 'Reimers'      |  cool_wind_RGB_scheme = 'Reimers' |
+	 !     | Reimers_wind_eta = 0.1           |  Reimers_scaling_factor = 0.1     |
+	 !     | AGB_wind_scheme = 'Blocker'      |  cool_wind_AGB_scheme = 'Blocker' |
+     !     | Blocker_wind_eta = 0.5           |  Blocker_scaling_factor = 0.5     |
+	 !     | RGB_to_AGB_wind_switch = 1d-4    |  RGB_to_AGB_wind_switch = 1d-4    |
+     !     |                                  |                                   | 
+     !     |                                  |  ! only use the cool_wind_scheme  |
+     !     |                                  |  cool_wind_full_on_T = 1d8    !K  |
+     !     |                                  |  cool_wind_full_off_T = 1.1d8 !K  |
+     !     |                                  |  hot_wind_scheme = ''             |
 
 
          ! suggested hot and cool wind schemes follow but any valid wind option
@@ -3127,15 +3128,17 @@
          ! Empty string means no wind
          !
          ! Suggested hot wind options:
-         !  'Kudritzki'
-         !  'Vink'
+         !
+         ! + 'Kudritzki'
+         ! + 'Vink'
          !
          ! Suggested cool wind options:
-         !  'Reimers'
-         !  'Blöcker'
-         !  'de Jager'
-         !  'van Loon'
-         !  'Nieuwenhuijzen'
+         !
+         !   + 'Reimers'
+         !   + 'Blöcker'
+         !   + 'de Jager'
+         !   + 'van Loon'
+         !   + 'Nieuwenhuijzen'
          !
          ! For now the 'Dutch' scheme can be used in either capacity.
 
@@ -3146,10 +3149,10 @@
          !### cool_wind_full_on_T
          !### cool_wind_full_off_T
 
-         ! on for T_phot < cool_wind_full_on_T
-         ! off for T_phot > cool_wind_full_off_T
+         ! on for T\_phot < `cool_wind_full_on_T`
+         ! off for T\_phot > `cool_wind_full_off_T`
          ! ramp from 0 to 1 between the two limits
-	 ! set cool_wind_full_on_T = 0 to ignore the cool_wind
+	 ! set `cool_wind_full_on_T = 0` to ignore the cool_wind
 
          cool_wind_full_on_T  = 0.8d4
          cool_wind_full_off_T = 1.0d4
@@ -3158,10 +3161,10 @@
          !### hot_wind_full_on_T
          !### hot_wind_full_off_T
 
-         ! on for T_phot > hot_wind_full_on_T
-         ! off for T_phot < hot_wind_full_off_T
+         ! on for T\_phot > `hot_wind_full_on_T`
+         ! off for T\_phot < `hot_wind_full_off_T`
          ! ramp from 0 to 1 between the two limits
-	 ! set hot_wind_full_on_T = 0 to ignore the hot_wind
+    	 ! set `hot_wind_full_on_T = 0` to ignore the hot_wind
 
          hot_wind_full_on_T  = 1.2d4
          hot_wind_full_off_T = 1.0d4
