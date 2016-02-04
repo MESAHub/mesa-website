@@ -350,7 +350,7 @@
          ! Assumes no nuclear burning and constant entropy. Ignores radiation pressure.
          ! Uses star controls `initial_y` and `initial_z` to set X, Y, and Z.
          ! Uses `initial_zfracs` to set abundances of metals.
-         
+
          ! Note: if you'd like to do-it-yourself, then you can use `other_build_initial_model`.
          ! In that case, in addition to setting `create_initial_model`, also set
          ! star controls `use_other_build_initial_model`.
@@ -504,7 +504,7 @@
          !### dump_missing_metals_into_heaviest
 
          ! this controls the treatment metals that are not included in the current net.
-         ! if this flag is true, then the mass fractions of missing metals are added 
+         ! if this flag is true, then the mass fractions of missing metals are added
          ! to the mass fraction of the most massive metal included in the net.
          ! if this flag is false, then the mass fractions of the metals in the net
          ! are renormalized to make up for the total mass fraction of missing metals.
@@ -810,13 +810,13 @@
 
          !### adjust_tau_factor_to_surf_density
          !### base_for_adjust_tau_factor_to_surf_density
-         
+
          ! if adjust_tau_factor_to_surf_density, then at start of each step
          ! set tau_factor to current Rho(1) divided by base_for_adjust_tau_factor_to_surf_density
-      
+
       adjust_tau_factor_to_surf_density = .false.
       base_for_adjust_tau_factor_to_surf_density = 0d0
-      
+
 
 
          !### relax_to_this_Tsurf_factor
@@ -912,7 +912,7 @@
          ! when the eos is called with off-table arguments, it reverts to making iterative calls on the (lnd,lnT) eos.
          ! that works pretty well, but in some cases the partials are not as accurate as the ones from the (lnd,lnE) table.
          ! the less accurate partials can lead to convergence problems that force unexpectedly small timesteps.
-         ! in such cases, it may be desirable to leave lnE_flag false. 
+         ! in such cases, it may be desirable to leave lnE_flag false.
 
       change_lnE_flag = .false.
       change_initial_lnE_flag = .false.
@@ -924,7 +924,7 @@
          !### new_L_flag
          ! luminosity variables
          ! `L_flag` is true if we are using luminosity variables
-         
+
       change_L_flag = .false.
       change_initial_L_flag = .false.
       new_L_flag = .false.
@@ -933,14 +933,14 @@
          !### change_RTI_flag
          !### change_initial_RTI_flag
          !### new_RTI_flag
-         
+
          ! RTI variables
          ! `RTI_flag` is true if we are doing Rayleigh Taylor Instabilities
 
       change_RTI_flag = .false.
       change_initial_RTI_flag = .false.
       new_RTI_flag = .false.
-      
+
 
       !## velocity variables
 
@@ -975,9 +975,9 @@
          !### new_u_flag
          ! change whether MESA evolves a (radial) velocity variable, u,
          ! defined at cell centers.
-         ! this is an alternative to v at cell boundaries. 
+         ! this is an alternative to v at cell boundaries.
          ! can use one or the other, but not both.
-         
+
          ! Experimental -- not ready for use.
 
       change_u_flag = .false.
@@ -1102,12 +1102,12 @@
 
          !### num_steps_to_relax_rotation
          ! use `num_steps_to_relax_rotation` steps to relax omega to new value
-         
+
       num_steps_to_relax_rotation = 100
-         
+
          !### relax_omega_max_yrs_dt
          ! `relax_omega_max_yrs_dt` sets a maximum time step used during the relaxation process
-         ! < 0 implies MESA chooses the step. Useful number is 1d4 if 
+         ! < 0 implies MESA chooses the step. Useful number is 1d4 if
          ! `num_steps_to_relax_rotation` > ~150
 
       relax_omega_max_yrs_dt=-1
@@ -1201,9 +1201,9 @@
          !### new_R_center
          !### dlgR_per_step
          !### relax_R_center_dt
-         ! as above for the mass, but for the radius.  
-         ! `new_R_center` in cm.  
-         ! `relax_R_center_dt` in seconds.  
+         ! as above for the mass, but for the radius.
+         ! `new_R_center` in cm.
+         ! `relax_R_center_dt` in seconds.
 
       relax_R_center = .false.
       relax_initial_R_center = .false.
@@ -1226,8 +1226,8 @@
          !### new_v_center
          !### dv_per_step
          !### relax_v_center_dt
-         ! `new_v_center` in cm/s.  
-         ! `relax_v_center_dt` in seconds.  
+         ! `new_v_center` in cm/s.
+         ! `relax_v_center_dt` in seconds.
 
       relax_v_center = .false.
       relax_initial_v_center = .false.
@@ -1249,9 +1249,9 @@
          !### new_L_center
          !### dlgL_per_step
          !### relax_L_center_dt
-         ! as above for the mass, but for the luminosity.  
-         ! `new_L_center` in erg/sec.  
-         ! `relax_L_center_dt` in seconds.  
+         ! as above for the mass, but for the luminosity.
+         ! `new_L_center` in erg/sec.
+         ! `relax_L_center_dt` in seconds.
 
       relax_L_center = .false.
       relax_initial_L_center = .false.
@@ -1273,7 +1273,7 @@
          !### remove_initial_center_by_ye
          !### remove_initial_center_by_infall_kms
          !### remove_initial_center_by_infall_kms
-         
+
          ! allows the core to be removed. ignored if <= 0
          ! value for si28 is mass fraction at which to make mass cut
             ! i.e. cut at first location going inward where mass fraction of si28 >= this limit
@@ -1380,7 +1380,7 @@
 
          !### repeat_remove_surface_for_each_step
          ! if true, then at each step removes surface as specified.
-         ! e.g., if doing remove at specific density and 
+         ! e.g., if doing remove at specific density and
          ! expansion has lowered the surface density to below the limit,
          ! then remove surface mass down to the limit.
 
@@ -1586,7 +1586,7 @@
 
          !### set_rate_n14pg
          ! Empty string means ignore this control.
-         ! Can be one of 
+         ! Can be one of
 
          ! + 'NACRE'
          ! + 'jina reaclib'
@@ -1612,7 +1612,7 @@
 
          !### set_rate_1212
          ! Empty string means ignore this control.
-         ! Can be one of: 
+         ! Can be one of:
 
          ! + `'CF88_basic_1212'` : the single rate approximation from CF88.
          ! + `'CF88_multi_1212'` : combines the rates for the n, p, and a channels.
@@ -1622,19 +1622,19 @@
 
       set_rate_1212 = ''
 
-   
-      ! use can also provide tabulated rates for any of the reactions  
+
+      ! use can also provide tabulated rates for any of the reactions
       ! tabulated rates automatically take priority over any other options for the reaction.
       ! e.g., if you provide a rate table for c12ag, those rates will be used
       ! if preference to the other options given in `set_rate_c12ag`.
-      
+
       ! to provide tabulated rates:
       ! create a file of (T8, rate) pairs as in data/rates_data/rates
       ! you can give as many pairs as you want with any spacing in T8
-      ! add the file name to reactions.list 
+      ! add the file name to reactions.list
       ! you can have a local copy of reactions.list as well as rates directory
-         
-         
+
+
 
          !### num_special_rate_factors
          !### reaction_for_special_factor
@@ -1714,8 +1714,8 @@
          ! (which is an 18.8 MB file of rates data).
          ! To use previous version, set to `jina_reaclib_results05301331`.
       jina_reaclib_filename = ''
-      
-      
+
+
          !### jina_reaclib_min_T9
          ! set jina reaclib rates to zero for T9 <= this.
          ! if this control is <= 0, then use the standard default from rates.
@@ -1772,7 +1772,7 @@
       T9_weaklib_full_off_hi_Z = 0.063d0
       T9_weaklib_full_on_hi_Z = 0.073d0
 
-     
+
    !## controls for special weak rates
 
       !### use_special_weak_rates
@@ -1788,7 +1788,7 @@
       ! These are needed to calcuate the partition function
       ! and to indicate which states have allowed transitions.
       ! Each isotope should have an entry of the form
-      ! 
+      !
       !     <name> <nlevels>
       !     <E_1> <J_1>
       !     ...
@@ -1797,7 +1797,7 @@
       ! where E = energy, J = spin.
 
       special_weak_states_file = 'special_weak_rates.states'
-      
+
       !### special_weak_transitions_file
       ! File specifying to include
 
@@ -1814,9 +1814,9 @@
       ! where si / sf are the n-th parent / daughter state, counting
       ! in the order that you specified in the states file.  logft is
       ! the comparative half-life of that transition.
-      
+
       special_weak_transitions_file = 'special_weak_rates.transitions'
-      
+
       !### ion_coulomb_corrections
       ! select which expression for the ion chemical potential to use
       ! to calculate the energy shift associated with changing ion charge
@@ -1844,7 +1844,7 @@
 
          !### kappa_file_prefix
          ! Modify this to select a different set of opacity tables.
-         ! alternatives: 
+         ! alternatives:
 
          ! + `'gn93'`
          ! + `'gs98'`
@@ -1971,18 +1971,18 @@
          ! where filter1 is the name of the filter (No spaces allowed in name)
          ! Names must be unique accross all files loaded
          ! For a filter named filter1 history output will be bc_filter1 for bolometric corrections
-         ! and abs_mag_filter1 for absolute magnitude 
-         
+         ! and abs_mag_filter1 for absolute magnitude
+
          color_num_files=-1
          color_file_names(:)=''
          color_num_colors(:)=-1
-         
+
          ! Default file from Lejeune, Cuisinier, Buser (1998) A&AS 130, 65-75
          ! Can be replaced if need be.
          color_num_files=1
          color_file_names(1)='lcb98cor.dat'
          color_num_colors(1)=11
-			
+
 
 !----------------------------------------------------------------------------------------------
 
@@ -2043,11 +2043,11 @@
 !----------------------------------------------------------------------------------------------
 
    !# private or experimental
-   
-   
+
+
       !### warn_run_star_extras
       ! Due to changing the run_stars_extra functions to hooks, we break peoples
       ! run_stars_extra files. This flag sets a warning message and stops the MESA run
-      ! untill it is set to .false., if people This way people will hopefully not be 
-      ! confused as to why their run_stars_extra functions are not being called. 
-      warn_run_star_extras=.True.
+      ! until it is set to .false., if people This way people will hopefully not be
+      ! confused as to why their run_stars_extra functions are not being called.
+      warn_run_star_extras = .true.
