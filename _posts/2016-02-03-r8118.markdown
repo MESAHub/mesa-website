@@ -7,17 +7,21 @@ categories: release
 
 Revision 8118 has been designated a MESA release version.
 
-We call your attention to four high level items.  Please consult the
+We call your attention to some high level items.  Please consult the
 full release notes, available in [this mailing list post][notes], to
 learn more.
 
-[notes]:http://example.com
+[notes]:http://sourceforge.net/p/mesa/mailman/message/34821561/
 
 + Almost all extras routines in run\_star\_extras and
   run\_binary\_extras are now implemented as hooks, in a similar way
   to all other\_* routines.  If you use a custom run\_star\_extras,
   you need to slightly modify it for it to be compatible with this and
   future versions.
+
++ The old `RGB_wind_scheme` and `AGB_wind_scheme` have been replaced
+  with temperature-dependent `hot_wind_scheme` and
+  `cool_wind_RGB_scheme` and `cool_wind_AGB_scheme`.
 
 + There has been a small change in how opacities are computed when
   blending Type1 and Type2 tables.
