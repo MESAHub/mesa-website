@@ -335,10 +335,10 @@ order to do this your inlist might look like:
     Zbase = 0.02
 
   ! configure mass loss on RGB & AGB
-    RGB_wind_scheme = 'Dutch'
-    AGB_wind_scheme = 'Dutch'
+    cool_wind_RGB_scheme = 'Dutch'
+    cool_wind_AGB_scheme = 'Dutch'
     RGB_to_AGB_wind_switch = 1d-4
-    Dutch_wind_eta = 0.8
+    Dutch_scaling_factor = 0.8
 
 / ! end of controls namelist
 {% endhighlight %}
@@ -383,25 +383,36 @@ Searching in controls.defaults for the word "Dutch" quickly leads to
 the following summary of these options.
 
 {% highlight fortran %}
-! the "Dutch" wind scheme for massive stars combines results from
-! several papers, all with authors mostly from the Netherlands.
-   
-! the particular combination we use is based on
-   ! Glebbeek, E., et al, A&A 497, 255-264 (2009) [more Dutch authors!]
+!### Dutch_scaling_factor
 
-! for Teff > 1e4 and surface H > 0.4 by mass, use Vink et al 2001
-   ! Vink, J.S., de Koter, A., & Lamers, H.J.G.L.M., 2001, A&A, 369, 574.
-   
-! for Teff > 1e4 and surface H < 0.4 by mass, use Nugis & Lamers 2000
-   ! Nugis, T.,& Lamers, H.J.G.L.M., 2000, A&A, 360, 227
-   
-! for Teff < 1e4, 
-   ! use de Jager if Dutch_wind_logT_scheme = 'de Jager'
-      ! de Jager, C., Nieuwenhuijzen, H., & van der Hucht, K. A. 1988, A&AS, 72, 259.
-   ! use van Loon if Dutch_wind_logT_scheme = 'van Loon'
-      ! van Loon et al. 2005, A&A, 438, 273.
-   ! use Nieuwenhuijzen if Dutch_wind_logT_scheme = 'Nieuwenhuijzen'
-      ! Nieuwenhuijzen, H.; de Jager, C. 1990, A&A, 231, 134
+! The "Dutch" wind scheme for massive stars combines results from several papers,
+! all with authors mostly from the Netherlands.
+
+! The particular combination we use is based on
+! Glebbeek, E., et al, A&A 497, 255-264 (2009) [more Dutch authors!]
+
+! For Teff > 1e4 and surface H > 0.4 by mass, use Vink et al 2001
+! Vink, J.S., de Koter, A., & Lamers, H.J.G.L.M., 2001, A&A, 369, 574.
+
+! For Teff > 1e4 and surface H < 0.4 by mass, use Nugis & Lamers 2000
+! Nugis, T.,& Lamers, H.J.G.L.M., 2000, A&A, 360, 227
+! Some folks use 0.8 for non-rotating mdoels (Maeder & Meynet, 2001).
+
+Dutch_scaling_factor = 0d0
+
+
+!### Dutch_wind_lowT_scheme
+
+! For Teff < 1e4
+
+! Use de Jager if `Dutch_wind_logT_scheme = 'de Jager'`
+! de Jager, C., Nieuwenhuijzen, H., & van der Hucht, K. A. 1988, A&AS, 72, 259.
+
+! Use van Loon if `Dutch_wind_logT_scheme = 'van Loon'`
+! van Loon et al. 2005, A&A, 438, 273.
+
+! Use Nieuwenhuijzen if `Dutch_wind_logT_scheme = 'Nieuwenhuijzen'`
+! Nieuwenhuijzen, H.; de Jager, C. 1990, A&A, 231, 134
 
 Dutch_wind_lowT_scheme = 'de Jager'
 {% endhighlight %}
