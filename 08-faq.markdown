@@ -80,11 +80,12 @@ these versions from a zipfile, you will see messages like
 when you run MESA.  These messages are safe to ignore.
 
 <a id="yosemite"></a>
-## What do I need to do to run MESA on OS X 10.10 (Yosemite)?
+<a id="osx"></a>
+## What do I need to do to run MESA on OS X?
 
-It is necessary to take the following actions after you upgrade to
-Yosemite, even if you had a working version of MESA on your previous
-version of OS X.
+It is necessary to take the following actions on recent versions of OS
+X (10.9 or later) , even if you had a working version of MESA on your
+previous version of OS X.
 
 * Install or reinstall the current version of [Xquartz][xquartz].
 
@@ -95,12 +96,33 @@ xcode-select --install
 {% endhighlight %}
 
 * Install the latest version of the [MESA SDK][sdkosx] appropriate for
-OS X 10.10.  Support for Yosemite was not added until October 23,
-2014.
+your version of OS X.
 
 [xquartz]:http://xquartz.macosforge.org/landing/
 [clt]:https://developer.apple.com/library/ios/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_
 [sdkosx]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Mac_OS_X
+
+<a id="crlibm-fail"></a>
+## Why do I get the error "C compiler cannot create executables"?
+
+If you receive the error
+
+    configure: error: C compiler cannot create executables
+    See `config.log' for more details.
+
+during the MESA installation of crlibm, please check that you are not
+using an unsupported 32-bit system.  If you're using OS X, make sure
+you've [installed Xcode and the command line tools][xcode].
+
+[xcode]:#osx
+
+If the error persists, please email mesa-users@lists.sourceforge.net
+and
+
++ give your operating system and its version information
++ indicate which version of the SDK you are using
++ attach the file `$MESA_DIR/crlibm/crlibm/config.log`
+
 
 # PGPLOT and pgstar
 
