@@ -3082,7 +3082,6 @@
       surf_avg_tau = 100
 
          !### hot_wind_scheme
-         !### hot_wind_Wolf_Rayet_scheme
          !### cool_wind_RGB_scheme
          !### cool_wind_AGB_scheme
 
