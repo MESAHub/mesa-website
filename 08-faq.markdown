@@ -33,6 +33,18 @@ to right, Frank Timmes, Aaron Dotter, Falk Herwig, Lars Bildsten, and
 Bill Paxton).  Photo taken by Bill's patient wife, Kathlyn, who
 deserves a great deal of credit for the existence of MESA.
 
+## Why did my inlists and/or run\_star\_extras stop working?
+
+As MESA evolves, inlist options, variable names, and other aspects of
+the code change in ways that are not backward-compatible.  Here is a
+list of some of the major renaming events; it is by no means
+exhaustive.  Consult the release notes for these versions for more
+information.
+
++ [r4411](release/2012/08/25/r4411.html): major renaming and reorganization of the code
++ [r8118](release/2016/02/03/r8118.html): renaming and restructuring of controls related to winds. `run_star_extras` routines changed to hooks.
++ [r8845](release/2016/06/19/r8845.html): names using "cnt" were changed to use "interval" (e.g., `terminal_cnt` was renamed to `terminal_interval`).  the option `photostep` was renamed to `photo_interval`.
+
 
 # Prereqs & Installation
 

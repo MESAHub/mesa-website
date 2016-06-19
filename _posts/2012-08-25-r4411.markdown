@@ -7,6 +7,9 @@ categories: release
 
 Revision 4411 has been designated a MESA release version.
 
+The full release notes are available in [this mailing list post][notes].
+
+[notes]:https://sourceforge.net/p/mesa/mailman/message/29724876/
 
 A [ZIP file of this release][zip] is available for download.
 
