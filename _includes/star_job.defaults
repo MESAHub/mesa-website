@@ -154,7 +154,7 @@
          !### save_pgstar_files_when_terminate
          ! if true, then when the run terminates,
          ! pgstar outputs files for plots that have `file_flag = .true.`
-         ! independently of the corresponding `file_cnt`.
+         ! independently of the corresponding `file_interval`.
 
       save_pgstar_files_when_terminate = .false.
 
@@ -332,8 +332,8 @@
          ! Model contruction is from inside out
          ! and stops when reaches either of the following limits.
 
-      pre_ms_logT_surf_limit = 3.7
-      pre_ms_logP_surf_limit = 3.5
+      pre_ms_logT_surf_limit = 3.7d0
+      pre_ms_logP_surf_limit = 3.5d0
 
 
          !### pre_ms_relax_num_steps
@@ -388,7 +388,7 @@
          !### initial_model_eps
          ! Integration accuracy.
 
-      initial_model_eps = 0.05
+      initial_model_eps = 0.05d0
 
 
 
@@ -617,6 +617,8 @@
          !### change_Y
          !### relax_initial_Y
          !### change_initial_Y
+         !### relax_Y_minq
+         !### relax_Y_maxq
          !### new_Y
          ! `relax_Y = .true.` gradually changes average Y, reconverging at each step.
          ! `change_Y = .true.` changes abundances; doesn't reconverge the model.
@@ -626,6 +628,8 @@
       change_Y = .false.
       relax_initial_Y = .false.
       change_initial_Y = .false.
+      relax_Y_minq = 0d0
+      relax_Y_maxq = 1d0
       new_Y = -1
 
 
@@ -633,6 +637,8 @@
          !### change_Z
          !### relax_initial_Z
          !### change_initial_Z
+         !### relax_Z_minq
+         !### relax_Z_maxq
          !### new_Z
          ! `relax_Z = .true.` gradually changes average Z, reconverging at each step.
          ! `change_Z = .true.` simply changes abundances; doesn't reconverge the model.
@@ -642,6 +648,8 @@
       change_Z = .false.
       relax_initial_Z = .false.
       change_initial_Z = .false.
+      relax_Z_minq = 0d0
+      relax_Z_maxq = 1d0
       new_Z = -1
 
 
@@ -681,12 +689,12 @@
          ! relax entropy from current to specified over a certain amount of relaxation timescales.
          ! This is done by adding an extra heating term of the form
 
-         !  s% extra_heat(k) =  &
-         !     (1d0 - exp_cr(s%lnS(k))/desired_entropy(k))*exp_cr(s%lnE(k))/(timescale_for_relax_entropy*secyer)
+         !     s% extra_heat(k) =  &
+         !         (1d0 - exp_cr(s%lnS(k))/desired_entropy(k))*exp_cr(s%lnE(k))/(timescale_for_relax_entropy*secyer)
 
-         ! and evolving the star without changing the composition for num_timescales_for_relax_entropy times
-         ! timescale_for_relax_entropy. To circumvent convection we limit the acceleration of convective velocities
-         ! using min_T_for_acceleration_limited_conv_velocity = 0 (see controls.defaults), and the timescale
+         ! and evolving the star without changing the composition for `num_timescales_for_relax_entropy` times
+         ! `timescale_for_relax_entropy`. To circumvent convection we limit the acceleration of convective velocities
+         ! using `min_T_for_acceleration_limited_conv_velocity = 0` (see controls.defaults), and the timescale
          ! for relaxation should be very short (less than a second).
 
          ! `relax_entropy_filename` holds the desired entropy profile information
@@ -787,7 +795,7 @@
 
 
       relax_to_this_tau_factor = -1
-      dlogtau_factor = 0.1
+      dlogtau_factor = 0.1d0
       relax_tau_factor = .false.
       relax_initial_tau_factor = .false.
       relax_tau_factor_after_core_He_burn = -1
@@ -811,8 +819,8 @@
          !### adjust_tau_factor_to_surf_density
          !### base_for_adjust_tau_factor_to_surf_density
 
-         ! if adjust_tau_factor_to_surf_density, then at start of each step
-         ! set tau_factor to current Rho(1) divided by base_for_adjust_tau_factor_to_surf_density
+         ! if `adjust_tau_factor_to_surf_density`, then at start of each step
+         ! set `tau_factor` to current Rho(1) divided by `base_for_adjust_tau_factor_to_surf_density`
 
       adjust_tau_factor_to_surf_density = .false.
       base_for_adjust_tau_factor_to_surf_density = 0d0
@@ -826,7 +834,7 @@
 
 
       relax_to_this_Tsurf_factor = -1
-      dlogTsurf_factor = 0.1
+      dlogTsurf_factor = 0.1d0
       relax_Tsurf_factor = .false.
       relax_initial_Tsurf_factor = .false.
 
@@ -919,17 +927,6 @@
       new_lnE_flag = .false.
 
 
-         !### change_L_flag
-         !### change_initial_L_flag
-         !### new_L_flag
-         ! luminosity variables
-         ! `L_flag` is true if we are using luminosity variables
-
-      change_L_flag = .false.
-      change_initial_L_flag = .false.
-      new_L_flag = .false.
-
-
          !### change_RTI_flag
          !### change_initial_RTI_flag
          !### new_RTI_flag
@@ -959,7 +956,7 @@
          ! automatically turn on velocities if `center_ye` drops below this limit.
          ! this is useful for evolution leading up to core collapse.
 
-      center_ye_limit_for_v_flag = 0.45
+      center_ye_limit_for_v_flag = 0.45d0
 
 
          !### gamma1_integral_for_v_flag
@@ -1023,7 +1020,7 @@
          !### new_omega_div_omega_crit
          !### set_omega_div_omega_crit
          !### set_initial_omega_div_omega_crit
-         ! as above, but sets omega/omega_crit
+         ! as above, but sets `omega/omega_crit`
          ! `omega_crit` is defined as:
 
          !     gamma_factor = 1d0 - min(L_div_Ledd, 0.9999d0)
@@ -1146,6 +1143,14 @@
       relax_initial_surface_rotation_v = .false.
       near_zams_relax_initial_surface_rotation_v = .false.
 
+
+         !### new_D_omega_flag
+         !### change_D_omega_flag
+         !### change_initial_D_omega_flag
+
+      new_D_omega_flag = .false.
+      change_D_omega_flag = .false.
+      change_initial_D_omega_flag = .false.
 
 
          !### relax_core
@@ -1322,11 +1327,28 @@
       remove_center_by_infall_kms = 0
 
 
-         !### remove_initial_center_at_inner_max_v
-         !### remove_center_at_inner_max_v
+         !### remove_initial_center_at_inner_max_abs_v
+         !### remove_center_at_inner_max_abs_v
 
-      remove_initial_center_at_inner_max_v = .false.
-      remove_center_at_inner_max_v = .false.
+      remove_initial_center_at_inner_max_abs_v = .false.
+      remove_center_at_inner_max_abs_v = .false.
+      
+      
+         !### remove_fallback_at_each_step
+
+      remove_fallback_at_each_step = .false.
+
+
+         !### zero_initial_inner_v_by_mass_msun
+         !### zero_inner_v_by_mass_Msun
+         
+      zero_initial_inner_v_by_mass_Msun = 0
+      zero_inner_v_by_mass_Msun = 0
+      
+      
+         !### remove_center_logRho_limit
+
+      remove_center_logRho_limit = -1d99
 
 
          !### remove_initial_surface_at_cell_k
@@ -1873,7 +1895,7 @@
          ! Actual upper boundary will be min of this and max logT for lowT tables.
          ! it is probably a good idea to keep the blend away from H ionization.
          ! logT upper of about 3.9 or a bit less will do that.
-         ! older version had default of 4.1 for kappa_blend_logT_upper_bdy.
+         ! older version had default of 4.1 for `kappa_blend_logT_upper_bdy`.
 
       kappa_blend_logT_upper_bdy = 3.88d0
 
@@ -1881,8 +1903,8 @@
          !### kappa_blend_logT_lower_bdy
          ! <= 0 means use default
          ! Actual lower boundary will be max of this and min logT for highT tables.
-         ! typical logT_min for tables is 3.75.  check your tables to be sure.
-         ! older version had default of 4.0 for kappa_blend_logT_lower_bdy.
+         ! typical `logT_min` for tables is 3.75.  check your tables to be sure.
+         ! older version had default of 4.0 for `kappa_blend_logT_lower_bdy`.
 
       kappa_blend_logT_lower_bdy = 3.80d0
 
@@ -1962,16 +1984,16 @@
 !----------------------------------------------------------------------------------------------
 	!# Color Files
          !### Filenames for each bolometric correction (BC) table to load
-         ! Must set the number of files to load
-         ! Must be <= `max_num_color_files` (defined in `colors_def.f90`).
-         ! Must set the number of BC's in each file (May be different for each file).
-         ! Must be <= `max_num_bcs_per_file` (defined in `colors_def.f90`).
-         ! Files should be structed as:
-         ! Teff log_g Fe_h filter1 filter1 ....
-         ! where filter1 is the name of the filter (No spaces allowed in name)
-         ! Names must be unique accross all files loaded
-         ! For a filter named filter1 history output will be bc_filter1 for bolometric corrections
-         ! and abs_mag_filter1 for absolute magnitude
+         !     Must set the number of files to load
+         !     Must be <= `max_num_color_files` (defined in `colors_def.f90`).
+         !     Must set the number of BC's in each file (May be different for each file).
+         !     Must be <= `max_num_bcs_per_file` (defined in `colors_def.f90`).
+         !     Files should be structed as:
+         !     Teff log_g Fe_h filter1 filter1 ....
+         !     where filter1 is the name of the filter (No spaces allowed in name)
+         !     Names must be unique accross all files loaded
+         !     For a filter named filter1 history output will be bc_filter1 for bolometric corrections
+         !     and abs_mag_filter1 for absolute magnitude
 
          color_num_files=-1
          color_file_names(:)=''
@@ -2046,8 +2068,8 @@
 
 
       !### warn_run_star_extras
-      ! Due to changing the run_stars_extra functions to hooks, we break peoples
-      ! run_stars_extra files. This flag sets a warning message and stops the MESA run
-      ! until it is set to .false., if people This way people will hopefully not be
-      ! confused as to why their run_stars_extra functions are not being called.
+      ! Due to changing the `run_star_extras` functions to hooks, we break existing
+      ! `run_star_extras` files. This flag sets a warning message and stops the MESA run
+      ! until it is set to `.false.`.  This way people will hopefully not be
+      ! confused as to why their `run_star_extras` functions are not being called.
       warn_run_star_extras = .true.

@@ -18,10 +18,11 @@
 
       !## window updates
 
-         !### pgstar_cnt
-         ! update windows when `mod(model_number,pgstar_cnt) == 0`
+         !### pgstar_interval
+         ! update windows when `mod(model_number,pgstar_interval) == 0`
+         ! note: this replaces the obsolete control 'pgstar_cnt'.
 
-      pgstar_cnt = 1
+      pgstar_interval = 1
 
 
          !### pause
@@ -152,7 +153,7 @@
          ! these apply to the top of the grid, not to the subplots within the grid.
          pgstar_grid_show_title = .true.
          pgstar_grid_title_scale = 1.2
-         pgstar_grid_title_disp = 2.0
+         pgstar_grid_title_disp = 1.8
          pgstar_grid_title_coord = 0.5
          pgstar_grid_title_fjust = 0.5
 
@@ -240,7 +241,7 @@
          TRho_Profile_file_flag = .false.
          TRho_Profile_file_dir = 'png'
          TRho_Profile_file_prefix = 'trho_profile_'
-         TRho_Profile_file_cnt = 5 ! output when mod(model_number,TRho_Profile_file_cnt)==0
+         TRho_Profile_file_interval = 5 ! output when mod(model_number,TRho_Profile_file_interval)==0
          TRho_Profile_file_width = -1 ! (inches) negative means use same value as for window
          TRho_Profile_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -346,7 +347,7 @@
          Abundance_file_flag = .false.
          Abundance_file_dir = 'png'
          Abundance_file_prefix = 'abund_'
-         Abundance_file_cnt = 5 ! output when mod(model_number,Abundance_file_cnt)==0
+         Abundance_file_interval = 5 ! output when mod(model_number,Abundance_file_interval)==0
          Abundance_file_width = -1 ! (inches) negative means use same value as for window
          Abundance_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -386,7 +387,7 @@
          Power_file_flag = .false.
          Power_file_dir = 'png'
          Power_file_prefix = 'power_'
-         Power_file_cnt = 5 ! output when mod(model_number,Power_file_cnt)==0
+         Power_file_interval = 5 ! output when mod(model_number,Power_file_interval)==0
          Power_file_width = -1 ! (inches) negative means use same value as for window
          Power_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -412,6 +413,8 @@
          show_Mixing_annotation1 = .false.
          show_Mixing_annotation2 = .false.
          show_Mixing_annotation3 = .false.
+         
+         Mixing_show_rotation_details = .true.
 
          Mixing_xaxis_name = 'mass'
          Mixing_xaxis_reversed = .false.
@@ -427,7 +430,7 @@
          Mixing_file_flag = .false.
          Mixing_file_dir = 'png'
          Mixing_file_prefix = 'mixing_'
-         Mixing_file_cnt = 5 ! output when mod(model_number,Mixing_file_cnt)==0
+         Mixing_file_interval = 5 ! output when mod(model_number,Mixing_file_interval)==0
          Mixing_file_width = -1 ! (inches) negative means use same value as for window
          Mixing_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -472,7 +475,7 @@
          Dynamo_file_flag = .false.
          Dynamo_file_dir = 'png'
          Dynamo_file_prefix = 'dynamo_'
-         Dynamo_file_cnt = 5 ! output when mod(model_number,Dynamo_file_cnt)==0
+         Dynamo_file_interval = 5 ! output when mod(model_number,Dynamo_file_interval)==0
          Dynamo_file_width = -1 ! (inches) negative means use same value as for window
          Dynamo_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -511,7 +514,7 @@
          Mode_Prop_file_flag = .false.
          Mode_Prop_file_dir = 'png'
          Mode_Prop_file_prefix = 'mode_prop_'
-         Mode_Prop_file_cnt = 5 ! output when mod(model_number,Mode_Prop_file_cnt)==0
+         Mode_Prop_file_interval = 5 ! output when mod(model_number,Mode_Prop_file_interval)==0
          Mode_Prop_file_width = -1 ! (inches) negative means use same value as for window
          Mode_Prop_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -544,7 +547,7 @@
          Summary_Burn_file_flag = .false.
          Summary_Burn_file_dir = 'png'
          Summary_Burn_file_prefix = 'Summary_Burn_'
-         Summary_Burn_file_cnt = 5 ! output when mod(model_number,Summary_Burn_file_cnt)==0
+         Summary_Burn_file_interval = 5 ! output when mod(model_number,Summary_Burn_file_interval)==0
          Summary_Burn_file_width = -1 ! (inches) negative means use same value as for window
          Summary_Burn_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -621,7 +624,7 @@
          Summary_Profile_file_flag = .false.
          Summary_Profile_file_dir = 'png'
          Summary_Profile_file_prefix = 'Summary_Profile_'
-         Summary_Profile_file_cnt = 5 ! output when mod(model_number,Summary_Profile_file_cnt)==0
+         Summary_Profile_file_interval = 5 ! output when mod(model_number,Summary_Profile_file_interval)==0
          Summary_Profile_file_width = -1 ! (inches) negative means use same value as for window
          Summary_Profile_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -685,7 +688,7 @@
          Summary_History_file_flag = .false.
          Summary_History_file_dir = 'png'
          Summary_History_file_prefix = 'Summary_History_'
-         Summary_History_file_cnt = 5 ! output when mod(model_number,Summary_History_file_cnt)==0
+         Summary_History_file_interval = 5 ! output when mod(model_number,Summary_History_file_interval)==0
          Summary_History_file_width = -1 ! (inches) negative means use same value as for window
          Summary_History_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -779,7 +782,7 @@
          Kipp_file_flag = .false.
          Kipp_file_dir = 'png'
          Kipp_file_prefix = 'conv_'
-         Kipp_file_cnt = 5 ! output when mod(model_number,Kipp_file_cnt)==0
+         Kipp_file_interval = 5 ! output when mod(model_number,Kipp_file_interval)==0
          Kipp_file_width = -1 ! (inches) negative means use same value as for window
          Kipp_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -845,7 +848,7 @@
          rti_file_flag = .false.
          rti_file_dir = 'png'
          rti_file_prefix = 'rti_'
-         rti_file_cnt = 5 ! output when mod(model_number,rti_file_cnt)==0
+         rti_file_interval = 5 ! output when mod(model_number,rti_file_interval)==0
          rti_file_width = -1 ! (inches) negative means use same value as for window
          rti_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -891,7 +894,7 @@
          TRho_file_flag = .false.
          TRho_file_dir = 'png'
          TRho_file_prefix = 'trho_'
-         TRho_file_cnt = 5 ! output when mod(model_number,TRho_file_cnt)==0
+         TRho_file_interval = 5 ! output when mod(model_number,TRho_file_interval)==0
          TRho_file_width = -1 ! (inches) negative means use same value as for window
          TRho_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -947,7 +950,7 @@
          HR_file_flag = .false.
          HR_file_dir = 'png'
          HR_file_prefix = 'hr_'
-         HR_file_cnt = 5 ! output when mod(model_number,HR_file_cnt)==0
+         HR_file_interval = 5 ! output when mod(model_number,HR_file_interval)==0
          HR_file_width = -1 ! (inches) negative means use same value as for window
          HR_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1000,7 +1003,7 @@
          logL_Teff_file_flag = .false.
          logL_Teff_file_dir = 'png'
          logL_Teff_file_prefix = 'logL_Teff_'
-         logL_Teff_file_cnt = 5 ! output when mod(model_number,logL_Teff_file_cnt)==0
+         logL_Teff_file_interval = 5 ! output when mod(model_number,logL_Teff_file_interval)==0
          logL_Teff_file_width = -1 ! (inches) negative means use same value as for window
          logL_Teff_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1053,7 +1056,7 @@
          logL_R_file_flag = .false.
          logL_R_file_dir = 'png'
          logL_R_file_prefix = 'logL_R_'
-         logL_R_file_cnt = 5 ! output when mod(model_number,logL_R_file_cnt)==0
+         logL_R_file_interval = 5 ! output when mod(model_number,logL_R_file_interval)==0
          logL_R_file_width = -1 ! (inches) negative means use same value as for window
          logL_R_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1107,7 +1110,7 @@
          logL_v_file_flag = .false.
          logL_v_file_dir = 'png'
          logL_v_file_prefix = 'logL_v_'
-         logL_v_file_cnt = 5 ! output when mod(model_number,logL_v_file_cnt)==0
+         logL_v_file_interval = 5 ! output when mod(model_number,logL_v_file_interval)==0
          logL_v_file_width = -1 ! (inches) negative means use same value as for window
          logL_v_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1162,7 +1165,7 @@
          L_Teff_file_flag = .false.
          L_Teff_file_dir = 'png'
          L_Teff_file_prefix = 'L_Teff_'
-         L_Teff_file_cnt = 5 ! output when mod(model_number,L_Teff_file_cnt)==0
+         L_Teff_file_interval = 5 ! output when mod(model_number,L_Teff_file_interval)==0
          L_Teff_file_width = -1 ! (inches) negative means use same value as for window
          L_Teff_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1216,7 +1219,7 @@
          L_v_file_flag = .false.
          L_v_file_dir = 'png'
          L_v_file_prefix = 'L_v_'
-         L_v_file_cnt = 5 ! output when mod(model_number,L_v_file_cnt)==0
+         L_v_file_interval = 5 ! output when mod(model_number,L_v_file_interval)==0
          L_v_file_width = -1 ! (inches) negative means use same value as for window
          L_v_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1269,7 +1272,7 @@
          L_R_file_flag = .false.
          L_R_file_dir = 'png'
          L_R_file_prefix = 'L_R_'
-         L_R_file_cnt = 5 ! output when mod(model_number,L_R_file_cnt)==0
+         L_R_file_interval = 5 ! output when mod(model_number,L_R_file_interval)==0
          L_R_file_width = -1 ! (inches) negatiRe means use same Ralue as for window
          L_R_file_aspect_ratio = -1 ! negatiRe means use same Ralue as for window
 
@@ -1323,7 +1326,7 @@
          R_Teff_file_flag = .false.
          R_Teff_file_dir = 'png'
          R_Teff_file_prefix = 'R_Teff_'
-         R_Teff_file_cnt = 5 ! output when mod(model_number,R_Teff_file_cnt)==0
+         R_Teff_file_interval = 5 ! output when mod(model_number,R_Teff_file_interval)==0
          R_Teff_file_width = -1 ! (inches) negative means use same value as for window
          R_Teff_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1377,7 +1380,7 @@
          R_L_file_flag = .false.
          R_L_file_dir = 'png'
          R_L_file_prefix = 'R_L_'
-         R_L_file_cnt = 5 ! output when mod(model_number,R_L_file_cnt)==0
+         R_L_file_interval = 5 ! output when mod(model_number,R_L_file_interval)==0
          R_L_file_width = -1 ! (inches) negative means use same value as for window
          R_L_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1430,7 +1433,7 @@
          logg_Teff_file_flag = .false.
          logg_Teff_file_dir = 'png'
          logg_Teff_file_prefix = 'logg_Teff_'
-         logg_Teff_file_cnt = 5 ! output when mod(model_number,logg_Teff_file_cnt)==0
+         logg_Teff_file_interval = 5 ! output when mod(model_number,logg_Teff_file_interval)==0
          logg_Teff_file_width = -1 ! (inches) negative means use same value as for window
          logg_Teff_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1483,7 +1486,7 @@
          logg_logT_file_flag = .false.
          logg_logT_file_dir = 'png'
          logg_logT_file_prefix = 'logg_logT_'
-         logg_logT_file_cnt = 5 ! output when mod(model_number,logg_logT_file_cnt)==0
+         logg_logT_file_interval = 5 ! output when mod(model_number,logg_logT_file_interval)==0
          logg_logT_file_width = -1 ! (inches) negative means use same value as for window
          logg_logT_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1529,7 +1532,7 @@
          dPg_dnu_file_flag = .false.
          dPg_dnu_file_dir = 'png'
          dPg_dnu_file_prefix = 'dPg_dnu_'
-         dPg_dnu_file_cnt = 5 ! output when mod(model_number,dPg_dnu_file_cnt)==0
+         dPg_dnu_file_interval = 5 ! output when mod(model_number,dPg_dnu_file_interval)==0
          dPg_dnu_file_width = -1 ! (inches) negative means use same value as for window
          dPg_dnu_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1569,7 +1572,7 @@
          Network_file_flag = .false.
          Network_file_dir = 'png'
          Network_file_prefix = 'Network_'
-         Network_file_cnt = 5 ! output when mod(model_number,Network_file_cnt)==0
+         Network_file_interval = 5 ! output when mod(model_number,Network_file_interval)==0
          Network_file_width = -1 ! (inches) negative means use same value as for window
          Network_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1580,6 +1583,7 @@
 
          ! for tracking shocks
          Profile_Panels_show_Mach_1_location = .false.
+         Profile_Panels_show_photosphere_location = .false.
          Profile_Panels_xwidth_left_of_shock = -1
          Profile_Panels_xwidth_right_of_shock = -1
          Profile_Panels_xwidth_left_div_shock_value = -1
@@ -1640,7 +1644,7 @@
          Profile_Panels1_file_flag = .false.
          Profile_Panels1_file_dir = 'png'
          Profile_Panels1_file_prefix = 'profile_panels1_'
-         Profile_Panels1_file_cnt = 5 ! output when mod(model_number,Profile_Panels1_file_cnt)==0
+         Profile_Panels1_file_interval = 5 ! output when mod(model_number,Profile_Panels1_file_interval)==0
          Profile_Panels1_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels1_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1704,7 +1708,7 @@
          Profile_Panels2_file_flag = .false.
          Profile_Panels2_file_dir = 'png'
          Profile_Panels2_file_prefix = 'profile_Panels2_'
-         Profile_Panels2_file_cnt = 5 ! output when mod(model_number,Profile_Panels2_file_cnt)==0
+         Profile_Panels2_file_interval = 5 ! output when mod(model_number,Profile_Panels2_file_interval)==0
          Profile_Panels2_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels2_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1769,7 +1773,7 @@
          Profile_Panels3_file_flag = .false.
          Profile_Panels3_file_dir = 'png'
          Profile_Panels3_file_prefix = 'profile_Panels3_'
-         Profile_Panels3_file_cnt = 5 ! output when mod(model_number,Profile_Panels3_file_cnt)==0
+         Profile_Panels3_file_interval = 5 ! output when mod(model_number,Profile_Panels3_file_interval)==0
          Profile_Panels3_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels3_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1835,7 +1839,7 @@
          Profile_Panels4_file_flag = .false.
          Profile_Panels4_file_dir = 'png'
          Profile_Panels4_file_prefix = 'profile_Panels4_'
-         Profile_Panels4_file_cnt = 5 ! output when mod(model_number,Profile_Panels4_file_cnt)==0
+         Profile_Panels4_file_interval = 5 ! output when mod(model_number,Profile_Panels4_file_interval)==0
          Profile_Panels4_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels4_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1900,7 +1904,7 @@
          Profile_Panels5_file_flag = .false.
          Profile_Panels5_file_dir = 'png'
          Profile_Panels5_file_prefix = 'profile_Panels5_'
-         Profile_Panels5_file_cnt = 5 ! output when mod(model_number,Profile_Panels5_file_cnt)==0
+         Profile_Panels5_file_interval = 5 ! output when mod(model_number,Profile_Panels5_file_interval)==0
          Profile_Panels5_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels5_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -1950,7 +1954,7 @@
          Profile_Panels6_file_flag = .false.
          Profile_Panels6_file_dir = 'png'
          Profile_Panels6_file_prefix = 'profile_Panels6_'
-         Profile_Panels6_file_cnt = 5 ! output when mod(model_number,Profile_Panels6_file_cnt)==0
+         Profile_Panels6_file_interval = 5 ! output when mod(model_number,Profile_Panels6_file_interval)==0
          Profile_Panels6_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels6_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2000,7 +2004,7 @@
          Profile_Panels7_file_flag = .false.
          Profile_Panels7_file_dir = 'png'
          Profile_Panels7_file_prefix = 'profile_Panels7_'
-         Profile_Panels7_file_cnt = 5 ! output when mod(model_number,Profile_Panels7_file_cnt)==0
+         Profile_Panels7_file_interval = 5 ! output when mod(model_number,Profile_Panels7_file_interval)==0
          Profile_Panels7_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels7_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2050,7 +2054,7 @@
          Profile_Panels8_file_flag = .false.
          Profile_Panels8_file_dir = 'png'
          Profile_Panels8_file_prefix = 'profile_Panels8_'
-         Profile_Panels8_file_cnt = 5 ! output when mod(model_number,Profile_Panels8_file_cnt)==0
+         Profile_Panels8_file_interval = 5 ! output when mod(model_number,Profile_Panels8_file_interval)==0
          Profile_Panels8_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels8_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2100,7 +2104,7 @@
          Profile_Panels9_file_flag = .false.
          Profile_Panels9_file_dir = 'png'
          Profile_Panels9_file_prefix = 'profile_Panels9_'
-         Profile_Panels9_file_cnt = 5 ! output when mod(model_number,Profile_Panels9_file_cnt)==0
+         Profile_Panels9_file_interval = 5 ! output when mod(model_number,Profile_Panels9_file_interval)==0
          Profile_Panels9_file_width = -1 ! (inches) negative means use same value as for window
          Profile_Panels9_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2162,7 +2166,7 @@
          History_Track1_file_flag = .false.
          History_Track1_file_dir = 'png'
          History_Track1_file_prefix = 'track1_'
-         History_Track1_file_cnt = 5 ! output when mod(model_number,History_Track1_file_cnt)==0
+         History_Track1_file_interval = 5 ! output when mod(model_number,History_Track1_file_interval)==0
          History_Track1_file_width = -1 ! (inches) negative means use same value as for window
          History_Track1_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2219,7 +2223,7 @@
          History_Track2_file_flag = .false.
          History_Track2_file_dir = 'png'
          History_Track2_file_prefix = 'track2_'
-         History_Track2_file_cnt = 5 ! output when mod(model_number,History_Track2_file_cnt)==0
+         History_Track2_file_interval = 5 ! output when mod(model_number,History_Track2_file_interval)==0
          History_Track2_file_width = -1 ! (inches) negative means use same value as for window
          History_Track2_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2276,7 +2280,7 @@
          History_Track3_file_flag = .false.
          History_Track3_file_dir = 'png'
          History_Track3_file_prefix = 'track3_'
-         History_Track3_file_cnt = 5 ! output when mod(model_number,History_Track3_file_cnt)==0
+         History_Track3_file_interval = 5 ! output when mod(model_number,History_Track3_file_interval)==0
          History_Track3_file_width = -1 ! (inches) negative means use same value as for window
          History_Track3_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2333,7 +2337,7 @@
          History_Track4_file_flag = .false.
          History_Track4_file_dir = 'png'
          History_Track4_file_prefix = 'track4_'
-         History_Track4_file_cnt = 5 ! output when mod(model_number,History_Track4_file_cnt)==0
+         History_Track4_file_interval = 5 ! output when mod(model_number,History_Track4_file_interval)==0
          History_Track4_file_width = -1 ! (inches) negative means use same value as for window
          History_Track4_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2389,7 +2393,7 @@
          History_Track5_file_flag = .false.
          History_Track5_file_dir = 'png'
          History_Track5_file_prefix = 'track5_'
-         History_Track5_file_cnt = 5 ! output when mod(model_number,History_Track5_file_cnt)==0
+         History_Track5_file_interval = 5 ! output when mod(model_number,History_Track5_file_interval)==0
          History_Track5_file_width = -1 ! (inches) negative means use same value as for window
          History_Track5_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2445,7 +2449,7 @@
          History_Track6_file_flag = .false.
          History_Track6_file_dir = 'png'
          History_Track6_file_prefix = 'track6_'
-         History_Track6_file_cnt = 5 ! output when mod(model_number,History_Track6_file_cnt)==0
+         History_Track6_file_interval = 5 ! output when mod(model_number,History_Track6_file_interval)==0
          History_Track6_file_width = -1 ! (inches) negative means use same value as for window
          History_Track6_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2501,7 +2505,7 @@
          History_Track7_file_flag = .false.
          History_Track7_file_dir = 'png'
          History_Track7_file_prefix = 'track7_'
-         History_Track7_file_cnt = 5 ! output when mod(model_number,History_Track7_file_cnt)==0
+         History_Track7_file_interval = 5 ! output when mod(model_number,History_Track7_file_interval)==0
          History_Track7_file_width = -1 ! (inches) negative means use same value as for window
          History_Track7_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2557,7 +2561,7 @@
          History_Track8_file_flag = .false.
          History_Track8_file_dir = 'png'
          History_Track8_file_prefix = 'track8_'
-         History_Track8_file_cnt = 5 ! output when mod(model_number,History_Track8_file_cnt)==0
+         History_Track8_file_interval = 5 ! output when mod(model_number,History_Track8_file_interval)==0
          History_Track8_file_width = -1 ! (inches) negative means use same value as for window
          History_Track8_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2613,7 +2617,7 @@
          History_Track9_file_flag = .false.
          History_Track9_file_dir = 'png'
          History_Track9_file_prefix = 'track9_'
-         History_Track9_file_cnt = 5 ! output when mod(model_number,History_Track9_file_cnt)==0
+         History_Track9_file_interval = 5 ! output when mod(model_number,History_Track9_file_interval)==0
          History_Track9_file_width = -1 ! (inches) negative means use same value as for window
          History_Track9_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2703,7 +2707,7 @@
          History_Panels1_file_flag = .false.
          History_Panels1_file_dir = 'png'
          History_Panels1_file_prefix = 'History_Panels1_'
-         History_Panels1_file_cnt = 5 ! output when mod(model_number,History_Panels1_file_cnt)==0
+         History_Panels1_file_interval = 5 ! output when mod(model_number,History_Panels1_file_interval)==0
          History_Panels1_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels1_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2753,7 +2757,7 @@
          History_Panels2_file_flag = .false.
          History_Panels2_file_dir = 'png'
          History_Panels2_file_prefix = 'History_Panels2_'
-         History_Panels2_file_cnt = 5 ! output when mod(model_number,History_Panels2_file_cnt)==0
+         History_Panels2_file_interval = 5 ! output when mod(model_number,History_Panels2_file_interval)==0
          History_Panels2_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels2_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2802,7 +2806,7 @@
          History_Panels3_file_flag = .false.
          History_Panels3_file_dir = 'png'
          History_Panels3_file_prefix = 'History_Panels3_'
-         History_Panels3_file_cnt = 5 ! output when mod(model_number,History_Panels3_file_cnt)==0
+         History_Panels3_file_interval = 5 ! output when mod(model_number,History_Panels3_file_interval)==0
          History_Panels3_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels3_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2852,7 +2856,7 @@
          History_Panels4_file_flag = .false.
          History_Panels4_file_dir = 'png'
          History_Panels4_file_prefix = 'History_Panels4_'
-         History_Panels4_file_cnt = 5 ! output when mod(model_number,History_Panels4_file_cnt)==0
+         History_Panels4_file_interval = 5 ! output when mod(model_number,History_Panels4_file_interval)==0
          History_Panels4_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels4_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2906,7 +2910,7 @@
          History_Panels5_file_flag = .false.
          History_Panels5_file_dir = 'png'
          History_Panels5_file_prefix = 'History_Panels5_'
-         History_Panels5_file_cnt = 5 ! output when mod(model_number,History_Panels5_file_cnt)==0
+         History_Panels5_file_interval = 5 ! output when mod(model_number,History_Panels5_file_interval)==0
          History_Panels5_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels5_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -2954,7 +2958,7 @@
          History_Panels6_file_flag = .false.
          History_Panels6_file_dir = 'png'
          History_Panels6_file_prefix = 'History_Panels6_'
-         History_Panels6_file_cnt = 5 ! output when mod(model_number,History_Panels6_file_cnt)==0
+         History_Panels6_file_interval = 5 ! output when mod(model_number,History_Panels6_file_interval)==0
          History_Panels6_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels6_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3002,7 +3006,7 @@
          History_Panels7_file_flag = .false.
          History_Panels7_file_dir = 'png'
          History_Panels7_file_prefix = 'History_Panels7_'
-         History_Panels7_file_cnt = 5 ! output when mod(model_number,History_Panels7_file_cnt)==0
+         History_Panels7_file_interval = 5 ! output when mod(model_number,History_Panels7_file_interval)==0
          History_Panels7_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels7_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3050,7 +3054,7 @@
          History_Panels8_file_flag = .false.
          History_Panels8_file_dir = 'png'
          History_Panels8_file_prefix = 'History_Panels8_'
-         History_Panels8_file_cnt = 5 ! output when mod(model_number,History_Panels8_file_cnt)==0
+         History_Panels8_file_interval = 5 ! output when mod(model_number,History_Panels8_file_interval)==0
          History_Panels8_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels8_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3104,7 +3108,7 @@
          History_Panels9_file_flag = .false.
          History_Panels9_file_dir = 'png'
          History_Panels9_file_prefix = 'History_Panels9_'
-         History_Panels9_file_cnt = 5 ! output when mod(model_number,History_Panels9_file_cnt)==0
+         History_Panels9_file_interval = 5 ! output when mod(model_number,History_Panels9_file_interval)==0
          History_Panels9_file_width = -1 ! (inches) negative means use same value as for window
          History_Panels9_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3194,7 +3198,7 @@
          Color_magnitude1_file_flag = .false.
          Color_magnitude1_file_dir = 'png'
          Color_magnitude1_file_prefix = 'Color_magnitude1_'
-         Color_magnitude1_file_cnt = 5 ! output when mod(model_number,Color_magnitude1_file_cnt)==0
+         Color_magnitude1_file_interval = 5 ! output when mod(model_number,Color_magnitude1_file_interval)==0
          Color_magnitude1_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude1_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3280,7 +3284,7 @@
          Color_magnitude2_file_flag = .false.
          Color_magnitude2_file_dir = 'png'
          Color_magnitude2_file_prefix = 'Color_magnitude2_'
-         Color_magnitude2_file_cnt = 5 ! output when mod(model_number,Color_magnitude2_file_cnt)==0
+         Color_magnitude2_file_interval = 5 ! output when mod(model_number,Color_magnitude2_file_interval)==0
          Color_magnitude2_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude2_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3366,7 +3370,7 @@
          Color_magnitude3_file_flag = .false.
          Color_magnitude3_file_dir = 'png'
          Color_magnitude3_file_prefix = 'Color_magnitude3_'
-         Color_magnitude3_file_cnt = 5 ! output when mod(model_number,Color_magnitude3_file_cnt)==0
+         Color_magnitude3_file_interval = 5 ! output when mod(model_number,Color_magnitude3_file_interval)==0
          Color_magnitude3_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude3_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3452,7 +3456,7 @@
          Color_magnitude4_file_flag = .false.
          Color_magnitude4_file_dir = 'png'
          Color_magnitude4_file_prefix = 'Color_magnitude4_'
-         Color_magnitude4_file_cnt = 5 ! output when mod(model_number,Color_magnitude4_file_cnt)==0
+         Color_magnitude4_file_interval = 5 ! output when mod(model_number,Color_magnitude4_file_interval)==0
          Color_magnitude4_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude4_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3538,7 +3542,7 @@
          Color_magnitude5_file_flag = .false.
          Color_magnitude5_file_dir = 'png'
          Color_magnitude5_file_prefix = 'Color_magnitude5_'
-         Color_magnitude5_file_cnt = 5 ! output when mod(model_number,Color_magnitude5_file_cnt)==0
+         Color_magnitude5_file_interval = 5 ! output when mod(model_number,Color_magnitude5_file_interval)==0
          Color_magnitude5_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude5_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3624,7 +3628,7 @@
          Color_magnitude6_file_flag = .false.
          Color_magnitude6_file_dir = 'png'
          Color_magnitude6_file_prefix = 'Color_magnitude6_'
-         Color_magnitude6_file_cnt = 5 ! output when mod(model_number,Color_magnitude6_file_cnt)==0
+         Color_magnitude6_file_interval = 5 ! output when mod(model_number,Color_magnitude6_file_interval)==0
          Color_magnitude6_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude6_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3710,7 +3714,7 @@
          Color_magnitude7_file_flag = .false.
          Color_magnitude7_file_dir = 'png'
          Color_magnitude7_file_prefix = 'Color_magnitude7_'
-         Color_magnitude7_file_cnt = 5 ! output when mod(model_number,Color_magnitude7_file_cnt)==0
+         Color_magnitude7_file_interval = 5 ! output when mod(model_number,Color_magnitude7_file_interval)==0
          Color_magnitude7_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude7_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3796,7 +3800,7 @@
          Color_magnitude8_file_flag = .false.
          Color_magnitude8_file_dir = 'png'
          Color_magnitude8_file_prefix = 'Color_magnitude8_'
-         Color_magnitude8_file_cnt = 5 ! output when mod(model_number,Color_magnitude8_file_cnt)==0
+         Color_magnitude8_file_interval = 5 ! output when mod(model_number,Color_magnitude8_file_interval)==0
          Color_magnitude8_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude8_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3882,7 +3886,7 @@
          Color_magnitude9_file_flag = .false.
          Color_magnitude9_file_dir = 'png'
          Color_magnitude9_file_prefix = 'Color_magnitude9_'
-         Color_magnitude9_file_cnt = 5 ! output when mod(model_number,Color_magnitude9_file_cnt)==0
+         Color_magnitude9_file_interval = 5 ! output when mod(model_number,Color_magnitude9_file_interval)==0
          Color_magnitude9_file_width = -1 ! (inches) negative means use same value as for window
          Color_magnitude9_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3952,7 +3956,7 @@
          Text_Summary1_file_flag = .false.
          Text_Summary1_file_dir = 'png'
          Text_Summary1_file_prefix = 'Text_Summary1_'
-         Text_Summary1_file_cnt = 5 ! output when mod(model_number,Text_Summary1_file_cnt)==0
+         Text_Summary1_file_interval = 5 ! output when mod(model_number,Text_Summary1_file_interval)==0
          Text_Summary1_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary1_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -3977,7 +3981,7 @@
          Text_Summary2_file_flag = .false.
          Text_Summary2_file_dir = 'png'
          Text_Summary2_file_prefix = 'Text_Summary2_'
-         Text_Summary2_file_cnt = 5 ! output when mod(model_number,Text_Summary2_file_cnt)==0
+         Text_Summary2_file_interval = 5 ! output when mod(model_number,Text_Summary2_file_interval)==0
          Text_Summary2_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary2_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4002,7 +4006,7 @@
          Text_Summary3_file_flag = .false.
          Text_Summary3_file_dir = 'png'
          Text_Summary3_file_prefix = 'Text_Summary3_'
-         Text_Summary3_file_cnt = 5 ! output when mod(model_number,Text_Summary3_file_cnt)==0
+         Text_Summary3_file_interval = 5 ! output when mod(model_number,Text_Summary3_file_interval)==0
          Text_Summary3_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary3_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4027,7 +4031,7 @@
          Text_Summary4_file_flag = .false.
          Text_Summary4_file_dir = 'png'
          Text_Summary4_file_prefix = 'Text_Summary4_'
-         Text_Summary4_file_cnt = 5 ! output when mod(model_number,Text_Summary4_file_cnt)==0
+         Text_Summary4_file_interval = 5 ! output when mod(model_number,Text_Summary4_file_interval)==0
          Text_Summary4_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary4_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4051,7 +4055,7 @@
          Text_Summary5_file_flag = .false.
          Text_Summary5_file_dir = 'png'
          Text_Summary5_file_prefix = 'Text_Summary5_'
-         Text_Summary5_file_cnt = 5 ! output when mod(model_number,Text_Summary5_file_cnt)==0
+         Text_Summary5_file_interval = 5 ! output when mod(model_number,Text_Summary5_file_interval)==0
          Text_Summary5_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary5_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4075,7 +4079,7 @@
          Text_Summary6_file_flag = .false.
          Text_Summary6_file_dir = 'png'
          Text_Summary6_file_prefix = 'Text_Summary6_'
-         Text_Summary6_file_cnt = 5 ! output when mod(model_number,Text_Summary6_file_cnt)==0
+         Text_Summary6_file_interval = 5 ! output when mod(model_number,Text_Summary6_file_interval)==0
          Text_Summary6_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary6_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4099,7 +4103,7 @@
          Text_Summary7_file_flag = .false.
          Text_Summary7_file_dir = 'png'
          Text_Summary7_file_prefix = 'Text_Summary7_'
-         Text_Summary7_file_cnt = 5 ! output when mod(model_number,Text_Summary7_file_cnt)==0
+         Text_Summary7_file_interval = 5 ! output when mod(model_number,Text_Summary7_file_interval)==0
          Text_Summary7_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary7_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4123,7 +4127,7 @@
          Text_Summary8_file_flag = .false.
          Text_Summary8_file_dir = 'png'
          Text_Summary8_file_prefix = 'Text_Summary8_'
-         Text_Summary8_file_cnt = 5 ! output when mod(model_number,Text_Summary8_file_cnt)==0
+         Text_Summary8_file_interval = 5 ! output when mod(model_number,Text_Summary8_file_interval)==0
          Text_Summary8_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary8_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4147,7 +4151,7 @@
          Text_Summary9_file_flag = .false.
          Text_Summary9_file_dir = 'png'
          Text_Summary9_file_prefix = 'Text_Summary9_'
-         Text_Summary9_file_cnt = 5 ! output when mod(model_number,Text_Summary9_file_cnt)==0
+         Text_Summary9_file_interval = 5 ! output when mod(model_number,Text_Summary9_file_interval)==0
          Text_Summary9_file_width = -1 ! (inches) negative means use same value as for window
          Text_Summary9_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4234,7 +4238,7 @@
          Grid1_file_flag = .false.
          Grid1_file_dir = 'png'
          Grid1_file_prefix = 'grid1'
-         Grid1_file_cnt = 5 ! output when mod(model_number,Grid1_file_cnt)==0
+         Grid1_file_interval = 5 ! output when mod(model_number,Grid1_file_interval)==0
          Grid1_file_width = 9 ! negative means use same value as for window
          Grid1_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4330,7 +4334,7 @@
          Grid2_file_flag = .false.
          Grid2_file_dir = 'png'
          Grid2_file_prefix = 'Grid2'
-         Grid2_file_cnt = 5 ! output when mod(model_number,Grid2_file_cnt)==0
+         Grid2_file_interval = 5 ! output when mod(model_number,Grid2_file_interval)==0
          Grid2_file_width = 9 ! negative means use same value as for window
          Grid2_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4404,7 +4408,7 @@
          Grid3_file_flag = .false.
          Grid3_file_dir = 'png'
          Grid3_file_prefix = 'grid3_'
-         Grid3_file_cnt = 5 ! output when mod(model_number,Grid3_file_cnt)==0
+         Grid3_file_interval = 5 ! output when mod(model_number,Grid3_file_interval)==0
          Grid3_file_width = -1 ! (inches) negative means use same value as for window
          Grid3_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4507,7 +4511,7 @@
          Grid4_file_flag = .false.
          Grid4_file_dir = 'png'
          Grid4_file_prefix = 'grid4_'
-         Grid4_file_cnt = 5 ! output when mod(model_number,Grid4_file_cnt)==0
+         Grid4_file_interval = 5 ! output when mod(model_number,Grid4_file_interval)==0
          Grid4_file_width = -1 ! (inches) negative means use same value as for window
          Grid4_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4599,7 +4603,7 @@
          Grid5_file_flag = .false.
          Grid5_file_dir = 'png'
          Grid5_file_prefix = 'grid5_'
-         Grid5_file_cnt = 5 ! output when mod(model_number,Grid5_file_cnt)==0
+         Grid5_file_interval = 5 ! output when mod(model_number,Grid5_file_interval)==0
          Grid5_file_width = -1 ! (inches) negative means use same value as for window
          Grid5_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4694,7 +4698,7 @@
          Grid6_file_flag = .false.
          Grid6_file_dir = 'png'
          Grid6_file_prefix = 'grid6_'
-         Grid6_file_cnt = 5 ! output when mod(model_number,Grid6_file_cnt)==0
+         Grid6_file_interval = 5 ! output when mod(model_number,Grid6_file_interval)==0
          Grid6_file_width = -1 ! (inches) negative means use same value as for window
          Grid6_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4767,7 +4771,7 @@
          Grid7_file_flag = .false.
          Grid7_file_dir = 'png'
          Grid7_file_prefix = 'grid7_'
-         Grid7_file_cnt = 5 ! output when mod(model_number,Grid7_file_cnt)==0
+         Grid7_file_interval = 5 ! output when mod(model_number,Grid7_file_interval)==0
          Grid7_file_width = -1 ! (inches) negative means use same value as for window
          Grid7_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4873,7 +4877,7 @@
          Grid8_file_flag = .false.
          Grid8_file_dir = 'png'
          Grid8_file_prefix = 'grid8_'
-         Grid8_file_cnt = 5 ! output when mod(model_number,Grid8_file_cnt)==0
+         Grid8_file_interval = 5 ! output when mod(model_number,Grid8_file_interval)==0
          Grid8_file_width = -1 ! (inches) negative means use same value as for window
          Grid8_file_aspect_ratio = -1 ! negative means use same value as for window
 
@@ -4968,7 +4972,7 @@
          Grid9_file_flag = .false.
          Grid9_file_dir = 'png'
          Grid9_file_prefix = 'grid9_'
-         Grid9_file_cnt = 5 ! output when mod(model_number,Grid9_file_cnt)==0
+         Grid9_file_interval = 5 ! output when mod(model_number,Grid9_file_interval)==0
          Grid9_file_width = -1 ! (inches) negative means use same value as for window
          Grid9_file_aspect_ratio = -1 ! negative means use same value as for window
 

@@ -57,7 +57,7 @@
 
          ! Initial eccentricity of the system
 
-      initial_eccentricity = 0.0
+      initial_eccentricity = 0.0d0
 
 
 !----------------------------------------------------------------------------------------------
@@ -94,13 +94,13 @@
       history_int_format = '(i32, 1x)'
       history_txt_format = '(a32, 1x)'
 
-         !### photostep
+         !### photo_interval
          !### photo_digits
 
-         ! These overwrite the numbers set for `photostep` and `photo_digits` for each
+         ! These overwrite the numbers set for `photo_interval` and `photo_digits` for each
          ! star, so that profiles are outputted simultaneously
 
-      photostep = 50
+      photo_interval = 50
       photo_digits = 3
 
 
@@ -187,7 +187,7 @@
 
          !### dt_softening_factor
 
-         ! Weight factor to average max_timestep with old one (in log space) as in
+         ! Weight factor to average `max_timestep` with old one (in log space) as in
          !
          !     dt_next_max = 10**(dt_softening_factor*log10(dt_next_max_old) + &
          !         (1-dt_softening_factor)*log10(dt_next_max))
@@ -195,11 +195,11 @@
          ! where `dt_next_max_old` is the limit used in the previous step. This is meant
          ! to avoid large changes in dt. Values must be < 1 and >= 0.
 
-      dt_softening_factor = 0.5
+      dt_softening_factor = 0.5d0
 
          !### varcontrol_{stage}
 
-         ! Allows binary to set varcontrol_target for each star depending on the
+         ! Allows binary to set `varcontrol_target` for each star depending on the
          ! stage of evolution. Ignored if < 0. Each one controls the following stages,
          !
          ! + `varcontrol_case_a` : `varcontrol_target` for both stars during mass transfer
@@ -234,7 +234,7 @@
          !### terminate_if_L2_overflow
 
          ! terminate evolution if there is overflow through the second Lagrangian point
-         ! (experimental!)
+         ! Amount of overflow needed to reach L2 implemented as in Marchant et al. (2016), A&A, 588, A50
 
       terminate_if_L2_overflow = .false.
 
@@ -271,16 +271,56 @@
 
          !### limit_retention_by_mdot_edd
 
-         ! Limit accretion into the donor using `mdot_edd`
+         ! Limit accretion using `mdot_edd`. The current implementation is intended for use with
+         ! black hole accretors, as in e.g. Podsiadlowski, Rappaport & Han (2003), MNRAS, 341, 385.
+         ! For other accretors `mdot_edd` should be set with `use_this_for_mdot_edd`, the hook
+         ! `use_other_mdot_edd`, or by appropriately setting `use_this_for_mdot_edd_eta`.
+         ! Note: MESA versions equal or lower than 8118 used eta=1 and did not correct
+         ! the accreted mass for the energy lost by radiation.
+
+         ! If accreted material radiates an amount of energy equal to `L=eta*mtransfer_rate*clight**2`,
+         ! then accretion is assumed to be limited to the Eddington luminosity,
+         ! Ledd = 4*pi*cgrav*Mbh*clight/kappa
+         ! which results in the Eddington mass-accretion rate
+         !     mdot_edd = 4*pi*cgrav*Mbh/(kappa*clight*eta)
+         ! the efficiency eta is determined by the properties of the last stable circular orbit,
+         ! and for a BH with no initial spin it can be expressed in terms of the initial BH mass Mbh0
+         ! and the current BH mass,
+         !     eta = 1-sqrt(1-(Mbh/Mbh0)**2)
+         ! for Mbh < sqrt(6) Mbh0. For BHs with initial spins different from zero, an effective
+         ! Mbh0 can be computed, corresponding to the mass the black hole would have needed to
+         ! have with zero spin to reach the current mass and spin.
       
       limit_retention_by_mdot_edd = .true.
 
          !### use_es_opacity_for_mdot_edd
 
-         ! If .true., then the opacity for mdot_edd is computed as 0.2*(1+X)
+         ! If .true., then the opacity for `mdot_edd` is computed as 0.2*(1+X)
          ! If .false., the opacity of the outermost cell of the donor is used
 
-      use_es_opacity_for_mdot_edd = .false.
+      use_es_opacity_for_mdot_edd = .true.
+
+         !### use_this_for_mdot_edd_eta
+
+         ! Fixed `mdot_edd_eta`, if negative, eta will be computed consistently as material is accreted.
+         ! Values should be between ~0.06-0.42, the minimum corresponding to a BH with spin parameter a=0, and the maximum to a=1.
+
+      use_this_for_mdot_edd_eta = -1
+
+         !### use_radiation_corrected_transfer_rate
+
+         ! If true, then reduce the increase in mass of the BH to account for the radiated energy `eta*mtransfer_rate_clight**2`
+         ! so that in a timestep
+         !     delta_Mbh = (1-eta)*mass_transfer_rate*dt
+
+      use_radiation_corrected_transfer_rate = .true.
+
+         !### initial_bh_spin
+
+         ! Initial spin parameter of the black hole "a". Must be between 0 and 1.
+         ! Evolution of BH spin is done with eq. (6) of King & Kolb (1999), MNRAS, 305, 654
+
+      initial_bh_spin = 0
 
          !### use_this_for_mdot_edd
 
@@ -296,6 +336,8 @@
          ! + "Kolb" : Optically thick overflow of Kolb & Ritter 1990, A&A, 236, 385
          ! + "roche_lobe" : Set mass transfer rate such that the donor remains inside
          !                its Roche lobe. Only works implicitly.
+         ! + "contact" : Extends the roche_lobe scheme to include contact systems as in
+         !               Marchant et al. (2016), A&A, 588, A50
 
       mdot_scheme = "Ritter"
 
@@ -384,6 +426,16 @@
 
          max_change_factor = 1.5d0
          min_change_factor = 1.05d0
+
+            !### num_tries_for_increase_change_factor
+            !### change_factor_increase
+
+            ! If after every `num_tries_for_increase_change_factor` iterations the implicit scheme does not have upper
+            ! and lower bounds for the mass transfer rate, multiply `change_factor` by `change_factor_increase`. Ignored if
+            ! `num_tries_for_increase_change_factor < 1`. Increase is limited to `max_change_factor`.
+
+         num_tries_for_increase_change_factor = 20
+         change_factor_increase = 1.1d0
 
             !### starting_mdot
 
@@ -665,13 +717,13 @@
 
          ! If after a step `eccentricity < min_eccentricity`, then fix it at this value
 
-      min_eccentricity = 0.0
+      min_eccentricity = 0.0d0
 
          !### max_eccentricity
 
          ! If after a step `eccentricity > max_eccentricity`, then fix it at this value
 
-      max_eccentricity = 0.99
+      max_eccentricity = 0.99d0
 
 
 !----------------------------------------------------------------------------------------------
