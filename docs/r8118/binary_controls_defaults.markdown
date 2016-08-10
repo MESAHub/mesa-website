@@ -1,11 +1,11 @@
 ---
 layout: default
 title: binary_controls defaults
-permalink: binary_controls_defaults.html
 namelist: binary\_controls
 mesapath: $MESA\_DIR/binary/defaults/binary\_controls.defaults
+tags: hidden
 ---
 
-{% include docheader.markdown %}
+{% include_relative header.markdown %}
 
-{% include_relative docs/r{{site.version}}/binary_controls.markdown %}
+{% include_relative binary_controls.markdown %}
