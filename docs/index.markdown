@@ -1,8 +1,7 @@
 ---
 layout: default
-title: Defaults Documentation
+title: documentation archive
 permalink: docs.html
-tags: hidden
 noToc: true
 ---
 

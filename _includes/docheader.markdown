@@ -1,6 +1,11 @@
 *This web documentation corresponds to the most recent MESA release
-(r{{site.version}}).  If you find errors or formatting issues, please
-email Josiah Schwab using [this link][jwschwab].*
+(r{{site.version}}).  Documentation for past versions can be
+[found here][docs].*
+
+[docs]:docs.html
+
+*If you find errors or formatting issues, please email Josiah Schwab
+using [this link][jwschwab].*
 
 [jwschwab]:mailto:jwschwab@berkeley.edu?subject=[MESA%20Docs%20Cleanup]
 
