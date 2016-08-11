@@ -141,13 +141,25 @@ number of an [official MESA release][versions].
 ## Set your environment variables
 
 The easiest way to make sure that your system is always configured
-appropriately is to add the needed commands to the appropriate shell
-start-up file.  The exact paths will vary depending on where you
-installed MESA and whether you are using OS X or Linux.  After you add
-these commands to your shell startup file, don't forget to open a new
-shell (or source the file in an existing one).
+appropriately is to add the needed commands to the your
+[shell start-up file][startup].  The file that you need to edit will
+depend on [which shell you're using][whichshell].
 
-Here is an example from a .bashrc on OS X, using the zip file:
+The exact paths will vary depending on where you installed MESA and
+which operating system that you are using.  After you add these
+commands to your shell startup file, don't forget to open a new shell
+(or source the startup file in an existing one).
+
+[startup]:https://kb.iu.edu/d/abdy
+[whichshell]:http://askubuntu.com/questions/590899/how-to-check-which-shell-am-i-using
+
+You will need to mix and match different aspects of the following
+example configurations depending on your shell, your operating system,
+and your installation method.
+
+Here is an example from a machine that uses bash as its shell (and
+hence uses export to set variables), runs OS X, and downloaded MESA via a zip file:
+
 {% highlight bash %}
 # set MESA_DIR to be the directory to which you downloaded MESA
 export MESA_DIR=/Users/jschwab/Software/mesa-r{{site.version}}
@@ -160,7 +172,10 @@ export MESASDK_ROOT=/Applications/mesasdk
 source $MESASDK_ROOT/bin/mesasdk_init.sh
 {% endhighlight %}
 
-Here is an example from a .cshrc on Linux, using SVN:
+Here is an example from a machine that uses csh as its shell (and
+hence uses setenv to set variables), runs Linux, and downloaded MESA
+via SVN:
+
 {% highlight csh %}
 # set MESA_DIR to be the directory to which you downloaded MESA
 setenv MESA_DIR /home/jschwab/Software/mesa
