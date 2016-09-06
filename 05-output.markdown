@@ -204,7 +204,7 @@ like the following image:
 [hr-pdf]:/assets/hr_sample.pdf
 
 Don't worry if your plot has a different style than this, as that is just a 
-functino of your `matplotlibrc` file, which won't be discussed here.
+function of your `matplotlibrc` file, which won't be discussed here.
 
 ### A Temperature-Density Profile
 To plot a temperature-density profile, the process is very similar:
