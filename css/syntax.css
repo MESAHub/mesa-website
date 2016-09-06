@@ -1,6 +1,6 @@
 
 .highlight { 
-  background-color: #272822;
+  background-color: #000000;
   color: #FFFFFF;
   padding: 0px 7px 0px 10px;
   border: 1px solid #ddd;
@@ -15,8 +15,6 @@ code {
   font-family:'Bitstream Vera Sans Mono','Courier', monospace;
 }
 
-.highlight pre { background-color: #272822; }
-.highlight .hll { background-color: #272822; }
 .highlight .c { color: #75715e } /* Comment */
 .highlight .err { color: #960050; background-color: #1e0010 } /* Error */
 .highlight .k { color: #66d9ef } /* Keyword */
