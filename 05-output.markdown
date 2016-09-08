@@ -1,23 +1,17 @@
 ---
 layout: default
-title: MESA output
+title: using MESA output
 permalink: output.html
 ---
-# What information does MESA output?
-
-This page has information about how to use MESA to evolve a single
-star.  It assumes you have already installed MESA. It tries to give
-you a tour of the basic MESA features and introduce you to some "best
-practices" along the way.  It is by no means a complete guide to MESA.
-
-## Analyzing MESA Output
+# Where does MESA output its data?
 
 By default, MESA stores its data in the ./LOGS directory.  The data
 files are text-based and can fed into your favorite plotting program.
 You should visit the [Tools & Utilities][Tools] section of the MESA
 forum and see if someone has contributed code in your language of
 choice.  (There are reasonably mature routines for python, IDL, ruby
-and Mathematica.)
+and Mathematica.)  An example of python plotting is
+shown [later on this page](#python).
 
 [Tools]:http://mesastar.org/tools-utilities
 
@@ -67,7 +61,7 @@ model of the star given one line per point.  In each case, the lines
 of data are preceded by a line with column numbers and a line with
 column names.
 
-## Controlling MESA Output
+# How do I control what information MESA outputs?
 
 The default MESA output is set by the files
 
@@ -88,3 +82,159 @@ To add/remove the columns of interest, comment/uncomment any lines
 But what if you want a history or profile quantity that isn't on the
 list?  For that, you'll want to
 [use run\_star\_extras.f](run_star_extras.html).
+
+<a id="python"></a>
+# How can I plot MESA output?
+
+While pgstar is great for observing your stellar models evolving in real time
+and for quickly making videos, more complicated and higher-quality plots require
+post-processing in another environment. Perhaps the most popular environment
+in recent years is Python, and in particular, via the 
+[numpy](http://www.numpy.org) and [matplotlib](http://matplotlib.org) packages.
+
+While you may want to write your own tools to read and analyze the output of
+your MESA calculations, 
+[many already exist](http://www.mesastar.org/tools-utilities). In that vein, we
+introduce a simple module for use in python scripts and interactive sessions
+called `mesa_reader`, which only requires [numpy](http://www.numpy.org).
+
+### What is MESA Reader?
+`mesa_reader` is a module consisting of three classes that you can use to read
+in the contents of a typical `LOGS` directory. These three classes are called
+`MesaData`, which corresponds to data in profiles or history files, 
+`MesaProfileIndex`, which corresponds to data found in `profiles.index`, and
+`MesaLogDir`, which ties together data in profiles, the profile index, and the
+history file.
+
+### Examples
+
+Full documentation for how MESA Reader is installed and how to use the three
+classes can be found at the project's 
+[Github repository](https://github.com/wmwolf/py_mesa_reader) and accompanying
+[documentation](https://wmwolf.github.io/py_mesa_reader). Below, we show some
+simple example use cases of MESA Reader.
+
+#### The Basics
+```python    
+# import mesa_reader to make its classes accessible
+import mesa_reader as mr
+
+# make a MesaData object from a history file
+h = mr.MesaData('LOGS/history.data')
+
+# extract the star_age column of data
+ages = h.data('star_age')
+
+# or do it more succinctly
+ages = h.star_age
+```
+
+here, `ages` is now a numpy array that has the same values as are in our 
+`LOGS/history.data` file under the `star_age` header.
+
+That's how to set up a history file, but what about profiles? We can do 
+the same thing if we know the exact file we want to load:
+
+```python
+import mesa_reader as mr
+
+# load the profile file into a MesaData instance
+p = mr.MesaData('LOGS/profile1.data')
+
+# access the temperature column of data
+temperatures = 10 ** p.logT
+```
+
+But often it's frustrating to know exactly what profile file you want to load,
+so we can use the `MesaLogDir` class to simplify the process. It lets us load
+profiles by their associated model number and most simply by just loading the
+last saved profile:
+
+```python
+import mesa_reader as mr
+
+l = mr.MesaLogDir('./LOGS')
+
+# load the profile associated with model number 100
+p_100 = l.profile_data(100)
+# the same as the following
+p_100 = l.profile_data(model_number=100)
+
+# load the profile with PROFILE number 12
+p_12 = l.profile_data(profile_number=12)
+
+# load the last profile saved (largest model number)
+p_last = l.profile_data()
+```
+
+There are many ways to get at specific profile files and even to select profiles
+based on criteria in the history file. See the full
+[documentation](https://wmwolf.github.io/py_mesa_reader) for more.
+
+#### An HR Diagram
+Okay, how about making a plot with this data? MESA Reader has no implicit
+plotting capabilities, but it makes plotting in other environments dead simple.
+For this example, we'll use matplotlib and assume that it is being used in
+pylab's interactive mode:
+
+```python
+# start pylab mode
+%pylab
+# import mesa_reader
+import mesa_reader as mr
+
+# load and plot data
+h = mr.MesaData('LOGS/history.data')
+plot(h.log_Teff, h.log_L)
+
+# set axis labels
+xlabel('log Effective Temperature')
+ylabel('log Luminosity')
+
+# invert the x-axis
+plt.gca().invert_xaxis()
+```
+
+For an example run simulating a massive pulsating star, this produces something
+like the following image:
+
+[![sample hr diagram plot][hr-png]][hr-pdf]
+
+[hr-png]:/assets/hr_sample.png
+[hr-pdf]:/assets/hr_sample.pdf
+
+Don't worry if your plot has a different style than this, as that is just a 
+function of your `matplotlibrc` file, which won't be discussed here.
+
+### A Temperature-Density Profile
+To plot a temperature-density profile, the process is very similar:
+
+```python
+%pylab
+import mesa_reader as mr
+
+# load entire LOG directory information
+l = MesaLogDir('./LOGS')
+# grab the last profile
+p = l.profile_data()
+
+# this works even if you only have logRho and logT!
+loglog(p.Rho, p.T)
+xlabel("Density")
+ylabel("Temperature")
+```
+
+which produces something like the following image:
+
+[![sample T-Rho profile][trho-png]][trho-pdf]
+
+[trho-png]:/assets/TRho_sample.png
+[trho-pdf]:/assets/TRho_sample.pdf
+
+### Going Beyond
+MESA Reader is very general and is not just a tool to extract data columns for
+simple plotting (though that is perhaps the most obvious use). You can use it to
+filter through your data, selecting only periods or profiles that are match
+some criterion (say, profiles that were taken when the star was in a particular
+region of the HR diagram). More complicated plots can be made, like Kippenhahn
+diagrams, with a little bit more clever work. 

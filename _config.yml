@@ -1,4 +1,4 @@
 name: Modules for Experiments in Stellar Astrophysics
 markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 version: 8845
