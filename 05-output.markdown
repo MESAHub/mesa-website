@@ -200,8 +200,8 @@ like the following image:
 
 [![sample hr diagram plot][hr-png]][hr-pdf]
 
-[hr-png]:/assets/hr_sample.png
-[hr-pdf]:/assets/hr_sample.pdf
+[hr-png]:/assets/images/hr_sample.png
+[hr-pdf]:/assets/images/hr_sample.pdf
 
 Don't worry if your plot has a different style than this, as that is just a 
 function of your `matplotlibrc` file, which won't be discussed here.
@@ -228,8 +228,8 @@ which produces something like the following image:
 
 [![sample T-Rho profile][trho-png]][trho-pdf]
 
-[trho-png]:/assets/TRho_sample.png
-[trho-pdf]:/assets/TRho_sample.pdf
+[trho-png]:/assets/images/TRho_sample.png
+[trho-pdf]:/assets/images/TRho_sample.pdf
 
 ### Going Beyond
 MESA Reader is very general and is not just a tool to extract data columns for
