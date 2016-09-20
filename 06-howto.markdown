@@ -75,7 +75,7 @@ end function how_many_extra_history_columns
 
 Now let's calculate the information we want to output.  This
 subroutine has access to the star\_info pointer, so you can make use of
-any of the quantities defined in star/private/star\_data.inc to compute
+any of the quantities defined in star/public/star\_data.inc to compute
 additional information about the star.  Here's a subroutine that
 calculates what we want to know.  There are a few "best practices"
 shown in this routine that are worth remembering, so read through the
