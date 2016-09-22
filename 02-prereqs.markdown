@@ -141,9 +141,11 @@ number of an [official MESA release][versions].
 ## Set your environment variables
 
 The easiest way to make sure that your system is always configured
-appropriately is to add the needed commands to the your
-[shell start-up file][startup].  The file that you need to edit will
-depend on [which shell you're using][whichshell].
+appropriately is to define the neccessary environment variables in
+your [shell start-up file][startup].  The file that you need to edit
+will depend on [which shell you're using][whichshell].  (If you don't
+set the environment variables in your shell start-up file, you will
+need to re-define them each time you open a new shell.)
 
 The exact paths will vary depending on where you installed MESA and
 which operating system that you are using.  After you add these
