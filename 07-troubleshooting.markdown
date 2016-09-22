@@ -7,6 +7,24 @@ permalink: troubleshooting.html
 
 This page has information about troubleshooting MESA.
 
+## Check that your environment variables are set correctly
+
+One of the most common issues is unset or incorrectly set environment
+variables.  In the same terminal window where you are trying to run MESA,
+execute the command
+{% highlight bash %}
+echo $MESA_DIR
+{% endhighlight %}
+and if you're using the MESA SDK, execute the command
+{% highlight bash %}
+echo $MESASDK_ROOT
+{% endhighlight %}
+Confirm that these showed the directories where you have installed
+MESA and the MESA SDK.  If they did not, please re-read the
+instructions on how to [set your environment variables][env].
+
+[env]:prereqs.html#env
+
 ## Consult the FAQ
 
 Check to see if there is any information about your problem in the

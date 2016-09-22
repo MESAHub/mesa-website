@@ -138,6 +138,7 @@ number of an [official MESA release][versions].
 
 [versions]:faq.html#releases
 
+<a id="env"></a>
 ## Set your environment variables
 
 The easiest way to make sure that your system is always configured
