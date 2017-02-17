@@ -75,7 +75,7 @@ First, install a current version (1.9+) of ruby, using whichever tools
 are appropriate for your OS (e.g., port, brew, apt-get, pacman, etc.).
 This will come with rubygems (a ruby package manager).
 
-Next, install the following three gems.  (Rubygems will take care of
+Next, install the following gems.  (Rubygems will take care of
 installing their dependencies).
 
 #+BEGIN_EXAMPLE
