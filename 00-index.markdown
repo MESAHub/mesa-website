@@ -117,17 +117,24 @@ and sustaining advanced development.
 
 ### Interface with the User Community
 
-This starts with answering questions from users, developing a way to
-accept new code in an integrated fashion, maintain a user registry,
-and identify new MESA Council members from those most active and
+This starts with [answering questions from users][answering],
+[developing a way to accept new code in an integrated
+fashion][developing], [maintaining a user registry][maps], and
+identifying new MESA Council members from those most active and
 engaged in the intelligent use of MESA.
+
+[answering]:https://lists.sourceforge.net/lists/listinfo/MESA-users
+[developing]:http://cococubed.asu.edu/mesa_market/add-ons.html
+[maps]:/prereqs.html#maps
 
 ### Enable Scientific Research and Education with MESA
 
 Promote MESA and its goals, e.g., through scientific contributions at
 relevant conferences.  Identify science opportunities that match MESA
 capabilities and facilitate and encourage appropriate collaborative
-activities.  Track the science carried out by the community with MESA.
+activities.  [Track the science carried out by the community with MESA][science].
+
+[science]:http://cococubed.asu.edu/mesa_market/index.html
 
 # Who is to thank for this website ?
 

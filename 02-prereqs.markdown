@@ -48,6 +48,7 @@ And once you begin to know how to use MESA, please help by responding
 to posts on the list.
 
 ## Check the MESA map
+<a id="maps"></a>
 
 Take a look at the maps below to see the locations of MESA users.  To
 have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
