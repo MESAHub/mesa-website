@@ -15,6 +15,13 @@ hooks.  These let you do things that you can't do with inlists alone,
 like change parameters at each step using simple routines or override
 many of the default physics routines.
 
+Someone may have already written something similar to what you want.
+Check the list of [user-submitted routines][addons] to see.  If you
+develop something new and useful, consider sharing it with the
+community.
+
+[addons]:http://cococubed.asu.edu/mesa_market/add-ons.html
+
 ## Activate run\_star\_extras.f
 
 The first step in making use of these capabilities is to activate
