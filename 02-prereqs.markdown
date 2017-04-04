@@ -9,11 +9,10 @@ This page has information to help you prepare for using MESA.  It is
 important to remember that MESA is under construction -- and probably
 will be for the indefinite future.
 
-Jakub Ostrowski has created a
-[MESA installation tutorial on YouTube][youtube] that will visually
-guide you through these instructions.  You may want to take a look!
+[Several screencasts][guides] that will visually guide you through
+these instructions are available.  You may want to take a look!
 
-[youtube]:https://www.youtube.com/watch?v=ce4arwugpA4
+[guides]:http://cococubed.asu.edu/mesa_market/guides.html
 
 ## Look through this presentation; skim the MESA papers
 
