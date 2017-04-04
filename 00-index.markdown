@@ -6,7 +6,7 @@ noToc: true
 ---
 
 _You may also want to visit
-[the MESA community portal](http://mesastar.org), where users share
+[the MESA marketplace](http://cococubed.asu.edu/mesa_market), where users share
 the inlists from their published results, tools & utilities, and
 teaching materials._
 

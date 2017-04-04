@@ -15,6 +15,6 @@ See [Bill's post on MESA-users][mesa-users] for more information.
 
 [mesa-users]:https://sourceforge.net/p/mesa/mailman/message/34195810/
 
-The inlists used are [available for download at mesastar.org][inlists].
+The inlists used are [available for download in the MESA marketplace][inlists].
 
-[inlists]:http://mesastar.org/results/mesa-iii-instrument-paper-inlists
+[inlists]:http://cococubed.asu.edu/mesa_market/inlists.html

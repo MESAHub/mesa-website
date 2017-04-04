@@ -438,9 +438,7 @@ and you can find (slightly out-of-date, but still useful) descriptions
 of most of the test problems in the `docs/` sub-directory of each
 test_suite case.
 
-[high_mass]:http://mesastar.org/documentation/tutorials/massive-star-test-cases/high_mass/view
-
-For example, take a look at the ["high mass" test case][high_mass].
+For example, take a look at the "high mass" test case.
 It starts by creating a pre-main-sequence model of 100 Msun with
 Z=0.02, and then it "relaxes" Z down to 1e-5 and the mass up to 110
 Msun before starting the evolution.  It will take under 200 steps (and

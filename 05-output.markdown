@@ -7,13 +7,13 @@ permalink: output.html
 
 By default, MESA stores its data in the ./LOGS directory.  The data
 files are text-based and can fed into your favorite plotting program.
-You should visit the [Tools & Utilities][Tools] section of the MESA
+You should visit the [Add-ons][addons] section of the MESA
 forum and see if someone has contributed code in your language of
 choice.  (There are reasonably mature routines for python, IDL, ruby
 and Mathematica.)  An example of python plotting is
 shown [later on this page](#python).
 
-[Tools]:http://mesastar.org/tools-utilities
+[addons]:http://cococubed.asu.edu/mesa_market/add-ons.html
 
 In the LOGS directory, you'll find the following files.
 
@@ -94,7 +94,7 @@ in recent years is Python, and in particular, via the
 
 While you may want to write your own tools to read and analyze the output of
 your MESA calculations, 
-[many already exist](http://www.mesastar.org/tools-utilities). In that vein, we
+[many already exist][addons]. In that vein, we
 introduce a simple module for use in python scripts and interactive sessions
 called `mesa_reader`, which only requires [numpy](http://www.numpy.org).
 

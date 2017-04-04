@@ -225,9 +225,9 @@ test the sample.
 ## How can I read and/or plot MESA data using language X?
 
 Users have posted numerous useful scripts in a variety of languages on
-[mesastar.org][tools].
+[the MESA marketplace][tools].
 
-[tools]:http://mesastar.org/tools-utilities
+[tools]:http://cococubed.asu.edu/mesa_market/add-ons.html
 
 ## How can I include the effects of chemical enhancements on the opacities?
 
