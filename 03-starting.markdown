@@ -459,19 +459,24 @@ The test\_suite examples require a few tweaks in order to be used
 "outside" the of the test_suite directory.  First, you need to edit
 make/makefile and delete the line
 
-    include ../../test_suite_makefile_prefix
+    MESA_DIR = ../../../..
 
-Then, edit the included inlist files and delete any references to
-inlist\_test\_suite like
+Then, edit the inlist files and delete the line
 
-    read_extra_star_job_inlist1 = .true.
-    extra_star_job_inlist1_name = '../inlist_test_suite'
+    mesa_dir = '../../..'
 
 These changes ensure that you are using the copy of MESA specified by
-`$MESA_DIR`.
+the `$MESA_DIR` enviroment variable.
 
-You may also need to adjust filenames of any initial models, if they
-are specified by relative path.
+You may also need to adjust filenames of any initial models or other
+inlists, if they are specified by a relative path.  For example, the
+test case 20M\_core\_collapse makes use of the file
+`inlist_massive_defaults` via the lines
+
+    read_extra_controls_inlist1 = .true.
+    extra_controls_inlist1_name = '../../inlist_massive_defaults'
+
+You would need to change this to be an absolute path.
 
 The test\_suite inlists specify rather strict limits on the number of
 retries and backups.  As indicated by the comment in the inlists, you
