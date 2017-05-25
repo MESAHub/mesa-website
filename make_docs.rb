@@ -14,7 +14,7 @@ def convert_file(filename)
   begin
     tree = DefaultsParser.new.parse(contents)
   rescue Parslet::ParseFailed => error
-    puts error.cause.ascii_tree
+    puts error.parse_failure_cause.ascii_tree
   end
   MarkdownTransformer.new.apply(tree)
 end
