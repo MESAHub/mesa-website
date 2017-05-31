@@ -1,0 +1,9 @@
+   ! binary_job.defaults
+
+   inlist_names(1) = 'inlist1' 
+   inlist_names(2) = 'inlist2'
+
+   evolve_both_stars = .false.
+   trace_binary_rlo = .true.
+
+   warn_binary_extra = .true.
