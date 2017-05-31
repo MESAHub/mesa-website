@@ -1,0 +1,16 @@
+---
+layout: post
+title:  "Release 9793"
+date:   2017-05-31
+categories: release
+---
+
+Revision 9793 has been designated a MESA release version.
+
+The full release notes are available in [this mailing list post][notes].
+
+[notes]:https://sourceforge.net/p/mesa/mailman/message/35869775/
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r9793.zip/download
