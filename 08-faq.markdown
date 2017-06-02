@@ -128,6 +128,35 @@ you've [installed Xcode and the command line tools][xcode].
 
 [xcode]:#osx
 
+If you're using Linux and you see an error message like
+
+    In file included from /opt/mesasdk/lib/gcc/x86_64-pc-linux-gnu/5.3.1/include-fixed/features.h:338:0,
+                     from /usr/include/bits/libc-header-start.h:33,
+                     from /usr/include/stdio.h:28,
+                     from test.c:1:
+    /usr/include/sys/cdefs.h:481:49: error: missing binary operator before token "("
+     #if __GNUC_PREREQ (4,8) || __glibc_clang_prereq (3,5)
+                                                     ^
+    In file included from test.c:1:0:
+    /usr/include/stdio.h:320:43: error: missing binary operator before token "("
+     #if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)
+                                               ^
+    /usr/include/stdio.h:399:17: error: missing binary operator before token "("
+     #if __GLIBC_USE (LIB_EXT2)
+                     ^
+    /usr/include/stdio.h:657:43: error: missing binary operator before token "("
+     #if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)
+
+you may need to [tell gcc to regenerate its fixed header files][fix].  You can do so with a command like
+
+    $MESASDK_ROOT/libexec/gcc/x86_64-pc-linux-gnu/5.3.1/install-tools/mkheaders $MESASDK_ROOT
+
+though the exact path (i.e. the 5.3.1 part) may vary slightly
+depending on which version of gcc is included in the MESA SDK release
+you are using.
+
+[fix]:https://gcc.gnu.org/onlinedocs/gcc-7.1.0/gcc/Fixed-Headers.html#Fixed-Headers
+
 If the error persists, please email mesa-users@lists.sourceforge.net
 and
 
