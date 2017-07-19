@@ -43,7 +43,7 @@ installation, you should also consult the [MESA SDK FAQ][sdkfaq].
 Search the [mailing list archives][mla] to see if someone has had a similar
 problem in the past.
 
-[mla]:http://sourceforge.net/p/mesa/mailman/search/?mail_list=mesa-users
+[mla]:https://sourceforge.net/p/mesa/mailman/mesa-users/
 
 ## Post a question to mesa-users
 
