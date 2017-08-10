@@ -43,12 +43,12 @@ installation, you should also consult the [MESA SDK FAQ][sdkfaq].
 Search the [mailing list archives][mla] to see if someone has had a similar
 problem in the past.
 
-[mla]:https://sourceforge.net/p/mesa/mailman/mesa-users/
+[mla]:https://lists.mesastar.org/pipermail/mesa-users/
 
 ## Post a question to mesa-users
 
-Post a message to mesa-users describing the problem.  If you want a
-good answer, it helps ask a good question.
+Send an email message to mesa-users@lists.mesastar.org describing the
+problem.  If you want a good answer, it helps ask a good question.
 
 Provide some information about the computer you are using, including:
 

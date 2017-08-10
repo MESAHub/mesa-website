@@ -35,13 +35,13 @@ of problems that can be studied using MESA.
 The "how-to" documentation is largely embedded in the experience of
 the community of users.  Therefore the first step to becoming a MESA
 user is to join the
-[mesa-users mailing list](https://lists.sourceforge.net/lists/listinfo/mesa-users).
+[mesa-users mailing list](https://lists.mesastar.org/mailman/listinfo/mesa-users).
 (Click the preceding link and complete the "Subscribing to
 mesa-users" section of the form.)
 
 If you have requests for help, you should post your questions to
 mesa-users.  You should also
-[search the mailing list archives](https://sourceforge.net/p/mesa/mailman/mesa-users/)
+[search the mailing list archives](https://lists.mesastar.org/pipermail/mesa-users/)
 to look for similar questions that may have been asked in the past.
 And once you begin to know how to use MESA, please help by responding
 to posts on the list.

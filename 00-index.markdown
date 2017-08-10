@@ -123,7 +123,7 @@ fashion][developing], [maintaining a user registry][maps], and
 identifying new MESA Council members from those most active and
 engaged in the intelligent use of MESA.
 
-[answering]:https://lists.sourceforge.net/lists/listinfo/MESA-users
+[answering]:https://lists.mesastar.org/mailman/listinfo/mesa-users
 [developing]:http://cococubed.asu.edu/mesa_market/add-ons.html
 [maps]:/prereqs.html#maps
 

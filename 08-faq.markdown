@@ -157,7 +157,7 @@ you are using.
 
 [fix]:https://gcc.gnu.org/onlinedocs/gcc-7.1.0/gcc/Fixed-Headers.html#Fixed-Headers
 
-If the error persists, please email mesa-users@lists.sourceforge.net
+If the error persists, please email mesa-users@lists.mesastar.org
 and
 
 + give your operating system and its version information
