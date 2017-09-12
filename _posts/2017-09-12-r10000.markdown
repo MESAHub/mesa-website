@@ -1,0 +1,16 @@
+---
+layout: post
+title:  "Release 10000"
+date:   2017-09-12
+categories: release
+---
+
+Revision 10000 has been designated a MESA release version.
+
+The full release notes are available in [this mailing list post][notes].
+
+[notes]:https://lists.mesastar.org/pipermail/mesa-users/2017-September/007888.html
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r10000.zip/download
