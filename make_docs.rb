@@ -6,7 +6,7 @@ require_relative 'markdownTransformer.rb'
 # get the absolute path of this file
 FILE_PATH=File.expand_path(File.dirname(__FILE__))
 
-DEFAULTS_VERSIONS=['r7624', 'r8118', 'r8845', 'r9575', 'r9793']
+DEFAULTS_VERSIONS=['r7624', 'r8118', 'r8845', 'r9575', 'r9793', 'r10000']
 DEFAULTS_FILES=["star_job.defaults", "controls.defaults", "pgstar.defaults", "binary_controls.defaults"]
 
 def convert_file(filename)
