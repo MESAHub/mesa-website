@@ -64,10 +64,12 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 
 The minimum system requirements for MESA are:
 
-* Mac or Linux operating system
+* Mac or Linux operating system (Windows users may want to try [MESA-Docker])
 * 64-bit processor
 * 4 GB RAM
 * 10 GB free disk space
+
+[MESA-Docker]:https://github.com/evbauer/MESA-Docker
 
 Most laptop or desktop computers built in the last three years will
 satisfy these requirements.
