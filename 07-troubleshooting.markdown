@@ -48,7 +48,7 @@ problem in the past.
 ## Post a question to mesa-users
 
 Send an email message to mesa-users@lists.mesastar.org describing the
-problem.  If you want a good answer, it helps ask a good question.
+problem.  If you want a good answer, it helps to ask a good question.
 
 Provide some information about the computer you are using, including:
 
