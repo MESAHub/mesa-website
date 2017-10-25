@@ -6366,10 +6366,8 @@
          !### RTI_m_full_boost
          !### RTI_m_no_boost
          
-         !### Note that these parameters are not exactly the same
-         !### as used by Paul Duffell.  
-         !### His calibrated D is 2, where mesa uses D = 3 (see mesaIV paper).
-         !### Users should try both values since the choice is not clear cut.
+         ! Note that these parameters are not exactly the same as used by Paul Duffell.
+         ! His calibrated D is 2, where MESA uses D = 3 (see MESA IV).
          
       RTI_A = 1d-3
       RTI_B = 2.5d0

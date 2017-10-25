@@ -9,7 +9,7 @@ Revision 10108 has been designated a MESA release version.
 
 The full release notes are available in [this mailing list post][notes].
 
-[notes]:https://lists.mesastar.org/pipermail/mesa-users/2017-October/008134.html
+[notes]:https://lists.mesastar.org/pipermail/mesa-users/2017-October/008135.html
 
 A [ZIP file of this release][zip] is available for download.
 
