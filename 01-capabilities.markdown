@@ -16,6 +16,7 @@ of problems that can be studied using MESA.
 * [Paper 1 (Paxton et al. 2011)](http://adsabs.harvard.edu/abs/2011ApJS..192....3P)
 * [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
 * [Paper 3 (Paxton et al. 2015)](http://adsabs.harvard.edu/abs/2015ApJS..220...15P)
+* [Paper 4 (Paxton et al. 2017)](http://adsabs.harvard.edu/abs/2017arXiv171008424P)
 
 Additional capabilities are documented by MESA users in their publications
 
