@@ -164,7 +164,7 @@ example configurations depending on your shell, your operating system,
 and your installation method.
 
 Here is an example from a machine that uses bash as its shell (and
-hence uses export to set variables), runs OS X, and downloaded MESA via a zip file:
+hence uses export to set variables):
 
 {% highlight bash %}
 # set MESA_DIR to be the directory to which you downloaded MESA
@@ -179,8 +179,7 @@ source $MESASDK_ROOT/bin/mesasdk_init.sh
 {% endhighlight %}
 
 Here is an example from a machine that uses csh as its shell (and
-hence uses setenv to set variables), runs Linux, and downloaded MESA
-via SVN:
+hence uses setenv to set variables):
 
 {% highlight csh %}
 # set MESA_DIR to be the directory to which you downloaded MESA
