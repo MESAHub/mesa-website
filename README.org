@@ -71,7 +71,7 @@ If you're making significant changes to the site, you probably want to
 see the effects of your changes as you go along.  You can generate and
 view a version of the site on your own machine.
 
-First, install a current version (1.9+) of ruby, using whichever tools
+First, install a current version (2.3+) of ruby, using whichever tools
 are appropriate for your OS (e.g., port, brew, apt-get, pacman, etc.).
 This will come with rubygems (a ruby package manager).
 
