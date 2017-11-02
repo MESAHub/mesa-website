@@ -164,6 +164,20 @@ and
 + indicate which version of the SDK you are using
 + attach the file `$MESA_DIR/crlibm/crlibm/config.log`
 
+<a id="build_and_test_error"></a>
+## Why do i get an error during installation "./build_and_test FAILED"?
+
+If you receive the error:
+    
+    ./build_and_test FAILED
+    
+during installation, then please email mesa-users@lists.mesastar.org list, and
+
++ attach the file `$MESA_DIR/MODULE/test/tmp.txt'
+
+where MODULE is replaced with the name of the module that failed. The name of the 
+module that failed should be printed on the line before the ./build_and_test message was printed.
+
 
 # PGPLOT and pgstar
 
