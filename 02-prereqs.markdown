@@ -54,10 +54,12 @@ Take a look at the maps below to see the locations of MESA users.  To
 have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 
 [![Map of MESA users (World)][mmw_png]][mmw_pdf]
+
 [mmw_png]:assets/images/mesa_users_27jul2016_world_mercator.png
 [mmw_pdf]:assets/images/mesa_users_27jul2016_world_mercator.pdf
 
 [![Map of MESA users (USA)][mmu_png]][mmu_pdf]
+
 [mmu_png]:assets/images/mesa_users_27jul2016_usa_mercator.png
 [mmu_pdf]:assets/images/mesa_users_27jul2016_usa_mercator.pdf
 
