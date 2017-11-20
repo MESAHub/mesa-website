@@ -147,15 +147,14 @@ If you're using Linux and you see an error message like
     /usr/include/stdio.h:657:43: error: missing binary operator before token "("
      #if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)
 
-you may need to [tell gcc to regenerate its fixed header files][fix].  You can do so with a command like
+you may need to [tell gcc to regenerate its fixed header files][fix].
 
-    $MESASDK_ROOT/libexec/gcc/x86_64-pc-linux-gnu/5.3.1/install-tools/mkheaders $MESASDK_ROOT
+[fix]:https://gcc.gnu.org/onlinedocs/gcc-7.2.0/gcc/Fixed-Headers.html#Fixed-Headers
 
-though the exact path (i.e. the 5.3.1 part) may vary slightly
-depending on which version of gcc is included in the MESA SDK release
-you are using.
+You can do so with the commands:
 
-[fix]:https://gcc.gnu.org/onlinedocs/gcc-7.1.0/gcc/Fixed-Headers.html#Fixed-Headers
+    GCC_VERSION=`gcc --version | grep ^gcc | sed 's/^.* //g'`
+    $MESASDK_ROOT/libexec/gcc/x86_64-pc-linux-gnu/$GCC_VERSION/install-tools/mkheaders $MESASDK_ROOT
 
 If the error persists, please email mesa-users@lists.mesastar.org
 and
