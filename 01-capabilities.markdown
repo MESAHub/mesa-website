@@ -33,6 +33,7 @@ This movie has more than you ever wanted to know about the evolution
 of a 1 Msun star from pre-main sequence to cool white dwarf. (61MB)
 
 [![1 Msun from pre-main sequence to white dwarf][2]][1]
+
 [1]:assets/movies/1M_pre_ms_to_wd.mov
 [2]:assets/movies/1M_pre_ms_to_wd.png
 
@@ -43,6 +44,7 @@ white dwarf with some nice thermal pulses at the tip of the AGB
 (initial Z = 0.02). (40MB)
 
 [![2 Msun from He flash to white dwarf][4]][3]
+
 [3]:assets/movies/2M_he_flash_to_wd.mov
 [4]:assets/movies/2M_he_flash_to_wd.png
 
@@ -53,6 +55,7 @@ collapse (initial Z = 0.02 and ZAMS uniform rotation = 0.5 of
 critical). (13MB)
 
 [![16 Msun from ZAMS to core collapse][6]][5]
+
 [5]:assets/movies/16M_z2m2_wwc70.mov
 [6]:assets/movies/16M_z2m2_wwc70.png
 
@@ -63,6 +66,7 @@ accretion of pure helium onto a neutron star envelope leading to Type
 I X-ray bursts. (10MB)
 
 [![Type I X-ray burst][8]][7]
+
 [7]:assets/movies/nshe.mov
 [8]:assets/movies/nshe.png
 
@@ -72,5 +76,6 @@ This movie shows explosive nucleosynthesis with a 204 isotope net, as
 discussed in Section 6.2.2 of Paper III. (1.5MB)
 
 [![Explosive Nucleosynthesis][10]][9]
+
 [9]:assets/movies/15M_204i_ccsn.mov
 [10]:assets/movies/15M_204i_ccsn.png
