@@ -48,7 +48,7 @@ white dwarf with some nice thermal pulses at the tip of the AGB
 
 ## Evolve a 16 Msun star
 
-This one shows the evolution of a 16 Msun star from zams to core
+This one shows the evolution of a 16 Msun star from ZAMS to core
 collapse (initial Z = 0.02 and ZAMS uniform rotation = 0.5 of
 critical). (13MB)
 
