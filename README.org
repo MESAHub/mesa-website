@@ -35,8 +35,7 @@ git merge --ff-only master
 There has not yet been a need for development on a longer timescale
 than that, so there is not a separate dev branch.
 ** Repository Layout
-This site uses the [[http://jekyllrb.com/][jekyll]] static site generator.  (The old site used
-webgen.) 
+This site uses the [[http://jekyllrb.com/][jekyll]] static site generator.
 *** ??-<name>.markdown
 These files are the main pages of the site.  They are written in
 Markdown and then the HTML pages are generated from these files.
