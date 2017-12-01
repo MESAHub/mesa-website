@@ -84,9 +84,9 @@ gem install nokogiri
 gem install parslet
 #+END_EXAMPLE
 
-Next, clone this git repository.
+Then, clone this git repository.
 #+BEGIN_EXAMPLE
-git clone https://github.com/jschwab/mesa-website
+git clone https://github.com/MESAHub/mesa-website
 #+END_EXAMPLE
 
 Now, change to the mesa-website directory and tell jekyll to serve a
