@@ -102,8 +102,7 @@ made.  Read the jekyll documentation to learn more.
 Once you've finished making your changes, commit them and then send me
 a pull request or email me a patch.
 ** Publishing
-Email me if you want to know about how the site is published to
-sourceforge.
+The site is auto-deployed to sourceforge after pushes to the maint branch.
 ** Doing a MESA release
 The following things need to be done when a new MESA release occurs.
 *** Edit _config.yml
