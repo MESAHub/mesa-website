@@ -1,7 +1,6 @@
 * MESA Website
-This is the raw version of the new (as of March 2014, revision 6188)
-website for the MESA stellar evolution code.  One of the main goals is
-to help get new users started more quickly.
+This is the source code of the website for the MESA stellar evolution
+code.
 
 You can [[http://mesa.sourceforge.net][view the site here]].
 ** Contributing
