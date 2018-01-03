@@ -177,6 +177,11 @@ during installation, then please email mesa-users@lists.mesastar.org list, and
 where MODULE is replaced with the name of the module that failed. The name of the 
 module that failed should be printed on the line before the ./build_and_test message was printed.
 
+If the file tmp.txt file does not exist in the folder then run the tester program
+
+    ./tester 2>&1 | tee tester.log
+
+and send the tester.log file to the mesa-users@lists.mesastar.org list. If the tester program does not exist then contact the mesa-users@lists.mesastar.org list.
 
 # PGPLOT and pgstar
 
