@@ -16,13 +16,14 @@ of problems that can be studied using MESA.
 * [Paper 1 (Paxton et al. 2011)](http://adsabs.harvard.edu/abs/2011ApJS..192....3P)
 * [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
 * [Paper 3 (Paxton et al. 2015)](http://adsabs.harvard.edu/abs/2015ApJS..220...15P)
-* [Paper 4 (Paxton et al. 2017)](http://adsabs.harvard.edu/abs/2017arXiv171008424P)
+* [Paper 4 (Paxton et al. 2018)](http://adsabs.harvard.edu/abs/2018ApJS..234...34P)
 
 Additional capabilities are documented by MESA users in their publications
 
 * [Citations to Instrument Paper 1](http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=2011ApJS..192....3P&amp;refs=CITATIONS&amp;db_key=AST)
 * [Citations to Instrument Paper 2](http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=2013ApJS..208....4P&amp;refs=CITATIONS&amp;db_key=AST)
 * [Citations to Instrument Paper 3](http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=2015ApJS..220...15P&amp;refs=CITATIONS&amp;db_key=AST)
+* [Citations to Instrument Paper 4](http://adsabs.harvard.edu/cgi-bin/nph-ref_query?bibcode=2018ApJS..234...34P&amp;refs=CITATIONS&amp;db_key=AST)
 
 To give you yet more flavor of what MESA can do, here are some movies
 made using png output from mesa/star.
