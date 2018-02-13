@@ -124,10 +124,11 @@ are free to rename it, just make sure to set MESA\_DIR accordingly
 (see the next section).
 
 You can also download zip files of [older MESA releases][releases].
-If you plan to do so, please read [this FAQ entry][svnerror].
+If you plan to do so, please read [this FAQ entry][oldversion].
 
 [releases]:http://sourceforge.net/projects/mesa/files/releases/
 [svnerror]:faq.html#svn-error
+[oldversion]:faq.html#old-version
 
 If you'd prefer, you can instead checkout a copy of MESA from its
 subversion repository, using the command:

@@ -91,6 +91,39 @@ these versions from a zipfile, you will see messages like
 
 when you run MESA.  These messages are safe to ignore.
 
+<a id="old-version"></a>
+## How do I install older versions of MESA?
+
+Older versions of MESA may fail to compile with more recent versions
+of the MESA SDK.  There are two basic solutions:
+
+(1) Use the contemporary version of the SDK.  Look at the list of [MESA release versions](#which-svn-revisions-were-mesa-release-versions), find the release date, and then go pick an [SDK](http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk) from shortly before the release.  
+
+(2) Fix the individual compilation errors (there are typically only a handful to work through).  The basic workflow is
+
+- ./install until an error turns up,
+- cd to that module and edit and ./mk until it compiles, then
+- go back to ./install and repeat until everything works before
+- a final ./touch and ./install.
+
+The following two FAQs give examples of specific errors.
+
+
+## Why do I get an error like "Error: 'time0' may be used uninitialized in this function"?
+
+This sort of error typically occurs when using an older MESA release
+with a newer SDK.  These warnings (which are treated as errors) can
+safely be ignored.  To do so, edit the file `utils/makefile_header`
+and add `-Wno-uninitialized` to `FCbasic`.
+
+
+## Why do I get an error like "Error: Blank required in STOP statement near (1)"
+
+This sort of error typically occurs when using an older MESA release
+with a newer SDK.  To work around this, simply insert the blank space
+as requested. i.e. change `stop'fixup'` to `stop 'fixup'`.
+
+
 <a id="yosemite"></a>
 <a id="osx"></a>
 ## What do I need to do to run MESA on OS X?
