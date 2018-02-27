@@ -102,6 +102,7 @@ want to change.
     extra_pgstar_inlist1_name = 'inlist_pgstar'
 
 / ! end of pgstar namelist
+
 {% endhighlight %}
 
 ### inlist_project
@@ -146,6 +147,7 @@ reach the zero-age main sequence (ZAMS).
     xa_central_lower_limit(1) = 1d-3
 
 / ! end of controls namelist
+
 {% endhighlight %}
 
 
@@ -191,6 +193,7 @@ these for now, but to learn more, have look at the
     TRho_Profile_win_aspect_ratio = 0.75
 
 / ! end of pgstar namelist
+
 {% endhighlight %}
 
 ## Running MESA
@@ -341,6 +344,7 @@ order to do this your inlist might look like:
     Dutch_scaling_factor = 0.8
 
 / ! end of controls namelist
+
 {% endhighlight %}
 
 If you want to try this out, save the preceding text as a file named
