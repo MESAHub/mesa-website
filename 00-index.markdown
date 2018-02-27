@@ -81,7 +81,7 @@ on the MESA instrument papers
 
 <ul>
   <li><i>Asteroseismology</i>: <a href="http://www.astro.wisc.edu/~townsend">Rich Townsend</a></li>
-  <li><i>Binaries</i>: <a href="http://www.astro.uni-bonn.de/~pablo/">Pablo Marchant Campos</a></li>
+  <li><i>Binaries</i>: Pablo Marchant Campos</li>
   <li><i>Microphysics</i>: <a href="http://cococubed.asu.edu/">Frank Timmes</a></li>
   <li><i>Website</i>: <a href="https://yoshiyahu.org/">Josiah Schwab</a></li>
 </ul>
@@ -94,11 +94,11 @@ and requests for help related to that area.
 <a name="role-council"></a>
 
 <ul>
-  <li><a href="http://www.kitp.ucsb.edu/~bildsten/">Lars Bildsten</a></li>
-  <li><a href="http://www.stsci.edu/~dotter/">Aaron Dotter</a></li>
+  <li><a href="http://www.kitp.ucsb.edu/bildsten/">Lars Bildsten</a></li>
+  <li>Aaron Dotter</li>
   <li><a href="http://www.astro.uvic.ca/~fherwig/">Falk Herwig</a></li>
-  <li><a href="http://cococubed.com/">Frank Timmes</a></li>
-  <li><a href="http://www.pa.msu.edu/~ebrown/home/Welcome">Ed Brown</a></li>
+  <li><a href="http://cococubed.asu.edu/">Frank Timmes</a></li>
+  <li><a href="http://web.pa.msu.edu/people/ebrown/">Ed Brown</a></li>
   <li><a href="http://www.astro.wisc.edu/~townsend">Rich Townsend</a></li>
   <li><a href="http://www.matteocantiello.com/">Matteo Cantiello</a></li>
 </ul>
