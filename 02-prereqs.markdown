@@ -29,7 +29,7 @@ of problems that can be studied using MESA.
 * [Paper 1 (Paxton et al. 2011)](http://adsabs.harvard.edu/abs/2011ApJS..192....3P)
 * [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
 * [Paper 3 (Paxton et al. 2015)](http://adsabs.harvard.edu/abs/2015ApJS..220...15P)
-* [Paper 4 (Paxton et al. 2017)](http://adsabs.harvard.edu/abs/2017arXiv171008424P)
+* [Paper 4 (Paxton et al. 2018)](http://adsabs.harvard.edu/abs/2018ApJS..234...34P)
 
 ## Join the mailing list
 
@@ -55,13 +55,13 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 
 [![Map of MESA users (World)][mmw_png]][mmw_pdf]
 
-[mmw_png]:assets/images/mesa_users_27jul2016_world_mercator.png
-[mmw_pdf]:assets/images/mesa_users_27jul2016_world_mercator.pdf
+[mmw_png]:assets/images/mesa_users_01jan2018_world_mercator.png
+[mmw_pdf]:assets/images/mesa_users_01jan2018_world_mercator.pdf
 
 [![Map of MESA users (USA)][mmu_png]][mmu_pdf]
 
-[mmu_png]:assets/images/mesa_users_27jul2016_usa_mercator.png
-[mmu_pdf]:assets/images/mesa_users_27jul2016_usa_mercator.pdf
+[mmu_png]:assets/images/mesa_users_01jan2018_usa_mercator.png
+[mmu_pdf]:assets/images/mesa_users_01jan2018_usa_mercator.pdf
 
 ## Ensure your system meets the minimum hardware requirements
 
@@ -124,10 +124,11 @@ are free to rename it, just make sure to set MESA\_DIR accordingly
 (see the next section).
 
 You can also download zip files of [older MESA releases][releases].
-If you plan to do so, please read [this FAQ entry][svnerror].
+If you plan to do so, please read [this FAQ entry][oldversion].
 
 [releases]:http://sourceforge.net/projects/mesa/files/releases/
 [svnerror]:faq.html#svn-error
+[oldversion]:faq.html#old-version
 
 If you'd prefer, you can instead checkout a copy of MESA from its
 subversion repository, using the command:

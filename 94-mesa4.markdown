@@ -10,7 +10,7 @@ Experiments in Stellar Astrophysics (MESA): Convective Boundaries,
 Element Diffusion, and Massive Star Explosions" have associated MP4
 movies.
 
-### Figure 36
+### Figure 29
 
 [![With Duffell RTI][withfig]][with]
 
@@ -24,7 +24,7 @@ movies.
 [without]:/assets/movies/without_Duffell_RTI.mp4
 
 
-### Figure 57
+### Figure 50
 
 [![90Msun PPISN][ppisnfig]][ppisn]
 
