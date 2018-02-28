@@ -225,5 +225,87 @@ message
     ************************************************
     ************************************************
 
-If so, move on to "getting started".  If not, take a look at
-"troubleshooting".
+If so, move on to "getting started".  If not, take a look below.
+
+# What should you if MESA did not install successfully?
+
+First, confirm that you can reproduce the error.  Do
+
+    cd $MESA_DIR
+    ./clean
+    ./install | tee build.log
+
+and see if you get the same error.  (The use of the `tee` command will
+save the output of `./install` in the file `build.log` while still
+displaying it in your terminal.)
+
+## Check that your environment variables are set correctly
+
+One of the most common issues is unset or incorrectly set environment
+variables.  In the same terminal window where you are trying to install MESA,
+execute the command
+{% highlight bash %}
+echo $MESA_DIR
+{% endhighlight %}
+and if you're using the MESA SDK, execute the command
+{% highlight bash %}
+echo $MESASDK_ROOT
+{% endhighlight %}
+Confirm that these showed the directories where you have installed
+MESA and the MESA SDK.  If they did not, please re-read the
+instructions on how to [set your environment variables][env].
+
+[env]:prereqs.html#env
+
+## Confirm that you installed the MESA SDK correctly
+
+Please check that you followed the MESA SDK [installation
+instructions](http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk).
+Pay particular attention to the prerequisites for your system.
+
+## Consult the FAQ
+
+Check to see if there is any information about your problem in the
+[MESA FAQ][faq].
+
+[faq]:faq.html
+
+If you are using the MESA SDK and are having a problem with
+installation, you should also consult the [MESA SDK FAQ][sdkfaq].
+
+[sdkfaq]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Frequently_Asked_Questions_.01FAQ.01
+
+
+## Search the mesa-users mailing list archive
+
+Search the [mailing list archives][mla] to see if someone has had a similar
+problem in the past.
+
+[mla]:https://lists.mesastar.org/pipermail/mesa-users/
+
+
+## Post a question to mesa-users
+
+If the previous steps have not solved your problem, send an email
+message to mesa-users@lists.mesastar.org describing the problem.
+
+Please provide the following information:
+
++ What version of MESA are you trying to build?
+
++ Are you using the MESA SDK?  If so, what version?
+
++ Describe your computer (machine type, operating system, operating system version).
+
++ What is the output of each of the following commands?
+
+```
+uname -a
+gfortran -v
+echo $MESASDK_ROOT
+echo $PATH
+echo $MESA_DIR
+```
+
+
++ What is the error message you recieved?  In addition, please attach the full `build.log` file.
