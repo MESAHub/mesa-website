@@ -79,6 +79,7 @@ on the MESA instrument papers
 ## Developers
 <a name="role-developers"></a>
 
+*Current developers:*
 <ul>
   <li><a href="https://warrickball.github.io/">Warrick Ball</a></li>
   <li><a href="http://www.kitp.ucsb.edu/bildsten/">Lars Bildsten</a></li>
@@ -91,6 +92,13 @@ on the MESA instrument papers
   <li><a href="http://cococubed.asu.edu/">Frank Timmes</a></li>
   <li><a href="http://www.astro.wisc.edu/~townsend">Rich Townsend</a></li>
   <li><a href="http://wmwolf.github.io/">Bill Wolf</a></li>
+</ul>
+
+
+*Past Developers:*
+<ul>
+  <li><a href="http://web.pa.msu.edu/people/ebrown/">Ed Brown</a></li>
+  <li><a href="http://www.astro.uvic.ca/~fherwig/">Falk Herwig</a></li>
 </ul>
 
 
