@@ -227,7 +227,7 @@ message
 
 If so, move on to "getting started".  If not, take a look below.
 
-# What should you if MESA did not install successfully?
+# What should you do if MESA did not install successfully?
 
 First, confirm that you can reproduce the error.  Do
 
