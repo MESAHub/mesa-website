@@ -189,12 +189,9 @@ You can do so with the commands:
     GCC_VERSION=`gcc --version | grep ^gcc | sed 's/^.* //g'`
     $MESASDK_ROOT/libexec/gcc/x86_64-pc-linux-gnu/$GCC_VERSION/install-tools/mkheaders $MESASDK_ROOT
 
-If the error persists, please email mesa-users@lists.mesastar.org
-and
+If the error persists, please email mesa-users@lists.mesastar.org.  Follow [the instructions here][post] and also attach the file `$MESA_DIR/crlibm/crlibm/config.log`.
 
-+ give your operating system and its version information
-+ indicate which version of the SDK you are using
-+ attach the file `$MESA_DIR/crlibm/crlibm/config.log`
+[post]:prereqs.html#post-a-question-to-mesa-users
 
 <a id="build_and_test_error"></a>
 ## Why do i get an error during installation "./build_and_test FAILED"?
@@ -203,18 +200,19 @@ If you receive the error:
     
     ./build_and_test FAILED
     
-during installation, then please email mesa-users@lists.mesastar.org list, and
-
-+ attach the file `$MESA_DIR/MODULE/test/tmp.txt'
-
-where MODULE is replaced with the name of the module that failed. The name of the 
-module that failed should be printed on the line before the ./build_and_test message was printed.
+during installation, then please email mesa-users@lists.mesastar.org
+list.  Follow [the instructions here][post] and also attach the file
+`$MESA_DIR/MODULE/test/tmp.txt', where MODULE is replaced with the
+name of the module that failed.  The name of the module that failed
+should be printed on the line before the ./build_and_test message was
+printed.
 
 If the file tmp.txt file does not exist in the folder then run the tester program
 
     ./tester 2>&1 | tee tester.log
 
-and send the tester.log file to the mesa-users@lists.mesastar.org list. If the tester program does not exist then contact the mesa-users@lists.mesastar.org list.
+and also attach tester.log file to your mesa-users message. If the
+tester program does not exist, state that in your message.
 
 # PGPLOT and pgstar
 
