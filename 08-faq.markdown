@@ -189,19 +189,19 @@ You can do so with the commands:
     GCC_VERSION=`gcc --version | grep ^gcc | sed 's/^.* //g'`
     $MESASDK_ROOT/libexec/gcc/x86_64-pc-linux-gnu/$GCC_VERSION/install-tools/mkheaders $MESASDK_ROOT
 
-If the error persists, please email mesa-users@lists.mesastar.org.  Follow [the instructions here][post] and also attach the file `$MESA_DIR/crlibm/crlibm/config.log`.
+If the error persists, please email mesa-users@lists.mesastar.org.  Follow [the instructions for posting a question to mesa-users][post] and also attach the file `$MESA_DIR/crlibm/crlibm/config.log`.
 
 [post]:prereqs.html#post-a-question-to-mesa-users
 
 <a id="build_and_test_error"></a>
-## Why do i get an error during installation "./build_and_test FAILED"?
+## Why do I get an error during installation "./build_and_test FAILED"?
 
 If you receive the error:
     
     ./build_and_test FAILED
     
 during installation, then please email mesa-users@lists.mesastar.org
-list.  Follow [the instructions here][post] and also attach the file
+list.  Follow [the instructions for posting a question to mesa-users][post] and also attach the file
 `$MESA_DIR/MODULE/test/tmp.txt`, where MODULE is replaced with the
 name of the module that failed.  The name of the module that failed
 should be printed on the line before the ./build_and_test message was
