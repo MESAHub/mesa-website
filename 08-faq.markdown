@@ -193,27 +193,6 @@ If the error persists, please email mesa-users@lists.mesastar.org.  Follow [the 
 
 [post]:prereqs.html#post-a-question-to-mesa-users
 
-<a id="build_and_test_error"></a>
-## Why do I get an error during installation "./build_and_test FAILED"?
-
-If you receive the error:
-    
-    ./build_and_test FAILED
-    
-during installation, then please email mesa-users@lists.mesastar.org
-list.  Follow [the instructions for posting a question to mesa-users][post] and also attach the file
-`$MESA_DIR/MODULE/test/tmp.txt`, where MODULE is replaced with the
-name of the module that failed.  The name of the module that failed
-should be printed on the line before the ./build_and_test message was
-printed.
-
-If the file tmp.txt file does not exist in the folder then run the tester program
-
-    ./tester 2>&1 | tee tester.log
-
-and also attach tester.log file to your mesa-users message. If the
-tester program does not exist, state that in your message.
-
 # PGPLOT and pgstar
 
 ## Why don't I see any PGPLOT output when I run MESA?
