@@ -133,7 +133,7 @@ If you plan to do so, please read [this FAQ entry][oldversion].
 If you'd prefer, you can instead checkout a copy of MESA from its
 subversion repository, using the command:
 
-    svn co -r {{site.version}} svn://svn.code.sf.net/p/mesa/code/trunk mesa
+    svn co -r {{site.version}} https://subversion.assembla.com/svn/mesa^mesa/trunk mesa
 
 Note that there might be newer versions out there in the svn
 repository, but they are probably untested, unstable, and generally
