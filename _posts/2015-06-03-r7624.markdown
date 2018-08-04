@@ -8,6 +8,7 @@ categories: release
 Revision 7624 has been designated a MESA release version.
 
 For the full release notes, see [this mailing list post][notes].
+
 [notes]:https://sourceforge.net/p/mesa/mailman/message/34171342/
 
 
