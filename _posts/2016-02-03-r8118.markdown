@@ -11,7 +11,7 @@ We call your attention to some high level items.  Please consult the
 full release notes, available in [this mailing list post][notes], to
 learn more.
 
-[notes]:http://sourceforge.net/p/mesa/mailman/message/34821561/
+[notes]:https://lists.mesastar.org/pipermail/mesa-users/2016-February/006205.html
 
 + Almost all extras routines in run\_star\_extras and
   run\_binary\_extras are now implemented as hooks, in a similar way

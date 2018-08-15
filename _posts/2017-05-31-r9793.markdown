@@ -9,7 +9,7 @@ Revision 9793 has been designated a MESA release version.
 
 The full release notes are available in [this mailing list post][notes].
 
-[notes]:https://sourceforge.net/p/mesa/mailman/message/35869775/
+[notes]:https://lists.mesastar.org/pipermail/mesa-users/2017-May/007726.html
 
 A [ZIP file of this release][zip] is available for download.
 
