@@ -140,12 +140,23 @@ previous version of OS X.
 xcode-select --install
 {% endhighlight %}
 
+* If you are using MacOS 10.14 (Mojave), there has been a change in how the system headers are provided (see section "Command Line Tools" in the [Xcode 10 release notes][xcodenotes]).  As a workaround, Apple provides an extra package that will install the headers to the base system.  At present, one must do this:
+
+{% highlight bash %}
+open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
+{% endhighlight %}
+
+
 * Install the latest version of the [MESA SDK][sdkosx] appropriate for
 your version of OS X.
+
+
+
 
 [xquartz]:http://xquartz.macosforge.org/landing/
 [clt]:https://developer.apple.com/library/ios/technotes/tn2339/_index.html#//apple_ref/doc/uid/DTS40014588-CH1-WHAT_IS_THE_COMMAND_LINE_TOOLS_PACKAGE_
 [sdkosx]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Mac_OS_X
+[xcodenotes]:https://developer.apple.com/documentation/xcode_release_notes/xcode_10_release_notes
 
 <a id="crlibm-fail"></a>
 ## Why do I get the error "C compiler cannot create executables"?
@@ -156,7 +167,7 @@ If you receive the error
     See `config.log' for more details.
 
 during the MESA installation of crlibm, please check that you are not
-using an unsupported 32-bit system.  If you're using OS X, make sure
+using an unsupported 32-bit system.  If you're using MacOS, make sure
 you've [installed Xcode and the command line tools][xcode].
 
 [xcode]:#osx
