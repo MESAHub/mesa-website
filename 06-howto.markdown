@@ -400,8 +400,8 @@ subroutine null_other_neu(  &
    real(dp), intent(in) :: z2bar ! mean charge squared
    real(dp), intent(in) :: log10_Tlim
    logical, intent(inout) :: flags(num_neu_types) ! true if should include the type of loss
-   real(dp), intent(out) :: loss(num_neu_rvs) ! total from all sources
-   real(dp), intent(out) :: sources(num_neu_types, num_neu_rvs)
+   real(dp), intent(inout) :: loss(num_neu_rvs) ! total from all sources
+   real(dp), intent(inout) :: sources(num_neu_types, num_neu_rvs)
    integer, intent(out) :: ierr
    call neu_get(  &
       T, log10_T, Rho, log10_Rho, abar, zbar, z2bar, log10_Tlim, flags, &
@@ -438,8 +438,8 @@ subroutine tutorial_other_neu(  &
    real(dp), intent(in) :: z2bar ! mean charge squared
    real(dp), intent(in) :: log10_Tlim
    logical, intent(inout) :: flags(num_neu_types) ! true if should include the type of loss
-   real(dp), intent(out) :: loss(num_neu_rvs) ! total from all sources
-   real(dp), intent(out) :: sources(num_neu_types, num_neu_rvs)
+   real(dp), intent(inout) :: loss(num_neu_rvs) ! total from all sources
+   real(dp), intent(inout) :: sources(num_neu_types, num_neu_rvs)
    integer, intent(out) :: ierr
 
    ! before we can use controls associated with the star we need to get access
