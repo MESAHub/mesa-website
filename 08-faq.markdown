@@ -117,11 +117,39 @@ safely be ignored.  To do so, edit the file `utils/makefile_header`
 and add `-Wno-uninitialized` to `FCbasic`.
 
 
-## Why do I get an error like "Error: Blank required in STOP statement near (1)"
+## Why do I get an error like "Error: Blank required in STOP statement near (1)"?
 
 This sort of error typically occurs when using an older MESA release
 with a newer SDK.  To work around this, simply insert the blank space
 as requested. i.e. change `stop'fixup'` to `stop 'fixup'`.
+
+
+## Why do I get a segfault in do\_history\_info?
+
+This sort of error typically occurs when using an older MESA release
+(r10398 or before) with a newer SDK (that includes gfortran 7.3 or later).
+
+    Program received signal SIGSEGV: Segmentation fault - invalid memory reference. 
+    
+    Backtrace for this error: 
+    #0  0x7f28c0a93a7f in ??? 
+    #1  0x54313f in do_history_info 
+           at ../private/history.f90:383 
+    ...
+       
+To work around this, edit `$MESA_DIR/star/private/history.f90` and replace the line 
+
+{% highlight fortran %}
+if (write_flag) write(io,*)
+{% endhighlight %}
+with
+
+{% highlight fortran %}
+if (open_close_log .and. write_flag) close(io)
+{% endhighlight %}
+
+Note that this only applies to this specific segfault and not
+segfaults in general.
 
 
 <a id="yosemite"></a>
