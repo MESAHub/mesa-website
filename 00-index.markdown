@@ -87,8 +87,10 @@ on the MESA instrument papers
   <li><a href="http://www.matteocantiello.com/">Matteo Cantiello</a></li>
   <li>Aaron Dotter</li>
   <li><a href="http://rjfarmer.io/">Robert Farmer</a></li>
+  <li><a href="http://adamjermyn.com/">Adam Jermyn</a></li>
   <li>Pablo Marchant</li>
   <li><a href="https://yoshiyahu.org/">Josiah Schwab</a></li>
+  <li><a href="https://www.camk.edu.pl/en/staff/smolec/">Radek Smolec</a></li>
   <li>Anne Thoul</li>
   <li><a href="http://cococubed.asu.edu/">Frank Timmes</a></li>
   <li><a href="http://www.astro.wisc.edu/~townsend">Rich Townsend</a></li>
