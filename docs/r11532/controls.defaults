@@ -2283,7 +2283,7 @@
  	    ! conv_premix_time_factor to a value <= 0 disables this check. STILL UNDER DEVELOPMENT, AND DISABLED
 	    ! BY DEFAULT
 
-         conv_premix_time_factor = 0.
+         conv_premix_time_factor = 0.0
 
             ! ### conv_premix_fix_pgas
 
@@ -7690,7 +7690,7 @@
       
       !### include_rotation_in_total_energy
          
-         !#### previously called `include_rotation_in_energy_error_report`
+         !### previously called `include_rotation_in_energy_error_report`
          
          include_rotation_in_total_energy = .false.
          
