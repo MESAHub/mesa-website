@@ -11,8 +11,8 @@ MESA release.  Unless you encounter bugs that negatively impact your
 work, stick with that version throughout the project.  If you're
 starting from a set of input files that were designed for an older
 version, we suggest you invest some time porting it to the latest
-version, as if you run into any issues it's much easier for the
-community to assist you that way.
+version, as if you run into any issues this will make it much easier
+for the community to assist you.
 
 Before modifying any source code in the main MESA directory, check if
 these changes cannot be applied locally in your work folder using the
@@ -35,6 +35,11 @@ You should always perform some sort of convergence study to ensure
 that your results are not sensitive to the time or mass resolution of
 your models.
 
+Throughout your project, the best way to solicit community help and
+input is via a message to the [mesa-users@lists.mesastar.org mailing
+list][list].
+
+[list]:prereqs.html#join-the-mailing-list
 
 # In the paper
 
@@ -101,8 +106,14 @@ entry, providing an immutable way to reference an upload in a
 publication. The service is also backed by the CERN data
 infrastructure, ensuring the safety of data and its long-term
 availability.  As Zenodo allows uploads of up to 50GB, this gives the
-possibility to not only share the input files, but also
-your simulation data products.
+possibility to not only share the input files, but also your
+simulation data products.  Beware that once an entry is published in
+Zenodo it cannot be removed, but new versions can be included if
+amendments are needed. While setting up an upload in Zenodo, or
+testing the service, you can make use of the
+["sandbox"](https://sandbox.zenodo.org/) first. The "sandbox" allows
+you to see how a final entry would look before submitting the real
+thing to the main service.
 
 We have a created a [Zenodo
 community](https://zenodo.org/communities/mesa/) with which you can
