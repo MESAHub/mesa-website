@@ -1,0 +1,199 @@
+
+! Format for MESA defaults files
+
+   ! This document defines a format for MESA defaults files.  The
+   ! relatively strict formatting guidelines are meant to allow for
+   ! human-readability, while simultaneously being easy to parse.
+
+   ! This file is written in the format it describes.  It is divided
+   ! into the following sections:
+
+      ! Separators
+      ! Anchors
+      ! Comments
+      ! Options & Defaults
+      ! Whitespace Style
+
+!-----------------------------------------------------------------------
+
+   !# Separators
+
+      ! A defaults file is divided into sections.  These sections are
+      ! delimited by the section separator, which is a line beginning
+      ! with a '!' (bang) and followed by at least 4'-' (dash).
+
+      !## Prelude
+
+         ! The file must not begin with a section separator, and all
+         ! content before the first section separator is treated as a
+         ! special section referred to as the Prelude.
+
+      !## Section
+
+         ! Each section must begin with a top-level anchor (see
+         ! below).  From the standpoint of the parser, the section
+         ! separators are redundant, but they improve the
+         ! human-readability of the file.
+
+!-----------------------------------------------------------------------
+
+   !# Anchors
+
+      ! Anchors are special comments which begin with a '!' (bang) and
+      ! are followed by one, two, or three '#' (hash).
+
+      ! Anchors delineate the structure of the document.  All material
+      ! appearing below an anchor is assumed to be at the level of
+      ! that anchor until the next anchor with an equal or lesser
+      ! level is encountered.
+
+      ! When exported to HTML, anchors become headings, with a level
+      ! equal to the number of hashes and an id derived from its name.
+
+      !## Level 1 (Section) & 2 (Sub-section)
+
+         ! Anchors with one or two hashes are for organization and
+         ! navigation purposes.  They will be included in the table of
+         ! contents.
+
+      !## Level 3 (Option)
+
+         ! Anchors with three hashes are reserved exclusively to
+         ! indicate an option and its accompanying documentation.
+
+!-----------------------------------------------------------------------
+
+   !# Comments
+
+      ! Comment lines begin with a bang, followed by a single space,
+      ! and then have at least one non-whitespace character.  Empty
+      ! comments are treated like blank lines.
+
+      ! Comments should be formatted using
+      ! [Markdown](http://daringfireball.net/projects/markdown/syntax).
+      ! Plain text is valid Markdown, and most comments will probably
+      ! not make use of Markdown features.
+
+      !## Regular Comments
+  
+         ! Most comments will be paragraphs of text.
+
+         ! In Markdown, a paragraph is "one or more consecutive lines of
+         ! text, separated by one or more blank lines."  Each block of
+         ! comments is treated as a paragraph, and so the lengths of the
+         ! lines will not be preserved.  (This feature allow us to nicely
+         ! display much of the content in a non-fixed width font!)  For
+         ! example, the following two blocks will look similar when
+         ! rendered for the web.
+     
+         ! This block has no line breaks.
+     
+         ! This block
+         ! has several
+         ! line
+         ! breaks
+
+      !## Formatted Comments
+
+         ! More complicated comments benefit greatly form additional
+         ! formatting.
+
+         ! You can trigger emphasis using *one* or __two__
+         ! _underscores_ or **asterisks**.  The use of `backquotes`
+         ! lets you put fixed-width font material inline.
+
+         ! It is frequently helpful to make a lists
+
+         ! + foo
+         ! + bar
+         ! + baz
+
+         ! If you're writing code in your comments, then you probably
+         ! do want things to appear in a fixed-width font. Comments
+         ! which begin with with 4 spaces are treated as code.
+         ! (Remember, a comment begins a bang & space, so there will
+         ! be 5 spaces total.)
+
+         !     foo =   1
+         !     bar =  10
+         !     baz = 100
+
+         ! The content of comment blocks gets passed down, so you can
+         ! even trigger syntax highlighting!
+
+         ! {% highlight fortran %}   
+         ! subroutine foo(bar)
+         !   implicit none
+         !   integer, intent(in) :: bar
+         !   bar = bar + 1  
+         ! end subroutine foo
+         ! {% endhighlight %}
+
+
+         ! If you know where you want the line breaks to be, but don't
+         ! want to render things as code (in a fixed-width font), you
+         ! can force a line break by appending two trailing spaces to
+         ! a line.
+
+         ! this is line one  
+         ! this is another line
+
+
+
+!-----------------------------------------------------------------------
+
+   !# Options & Defaults
+
+      !## Single Options
+
+      ! Most MESA options stand alone and have their own
+      ! documentation.
+
+         !### number_option
+
+         ! number options are great.  MESA is good at taking numbers
+         ! and making more numbers for you.  Often you'll want to set
+         ! `number_option > 0`, but sometimes you want to set
+         ! `number_option <= 0`.
+
+      number_option = 1
+
+         !### string_option
+
+         ! string options are great.  you can tell MESA what you want
+         ! it to do.
+
+      string_option = 'make me a sandwich'
+
+         !### boolean_option
+
+         ! boolean options are great.  they can take one of two values:
+
+         ! + .true.
+         ! + .false.
+
+      boolean_option = .true.
+
+      !## Multiple Options
+
+         !### xa_average_lower_limit_species
+         !### xa_average_lower_limit
+
+         ! Sometimes there are options that need to grouped together,
+         ! because they share documentation. If options are to be
+         ! grouped, both their anchors and their default values should
+         ! be adjacent.
+
+      xa_average_lower_limit_species(1) = '' 
+      xa_average_lower_limit(1) = 0
+
+
+!-----------------------------------------------------------------------
+
+   !# Whitespace Style
+
+      ! An indent is 3 spaces.  No tabs are used.  Almost all
+      ! whitespace at the beginning of lines is strictly cosmetic and
+      ! is not used by the parser in determining the structure of the
+      ! file.  Whitespace at the end of lines should be avoided,
+      ! except when used to indicate the presence of line breaks.
