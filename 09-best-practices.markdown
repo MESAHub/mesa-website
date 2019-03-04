@@ -8,11 +8,31 @@ permalink: bestpractices.html
 
 When you begin a new project you should generally use the most recent
 MESA release.  Unless you encounter bugs that negatively impact your
-work, stick with that version throughout the project.
+work, stick with that version throughout the project.  If you're
+starting from a set of input files that were designed for an older
+version, we suggest you invest some time porting it to the latest
+version, as if you run into any issues it's much easier for the
+community to assist you that way.
 
+Before modifying any source code in the main MESA directory, check if
+these changes cannot be applied locally in your work folder using the
+[hooks provided by MESA][hooks]. If you have a
+use case that cannot be completed with the provided set of hooks, you
+can always contact us to request a new one.
+
+[hooks]:run_star_extras.html
+
+The MESA test suite (`star/test_suite` and `binary/test_suite`) is a
+valuable source of examples and a good first stop when setting up a
+new problem with MESA.  Looking at the test suite inlists is a quick
+way to familiarize yourself with the set of options relevant to your
+problem.  More information is available on [how to use a test suite
+case as a starting point for your own work directory][how].
+
+[how]: starting.html#the-test-suite-as-a-source-of-examples
 
 You should always perform some sort of convergence study to ensure
-that your results are not sensitive to the time or space resolution of
+that your results are not sensitive to the time or mass resolution of
 your models.
 
 
@@ -54,9 +74,15 @@ Thermal neutrino loss rates are from \citet{Itoh1996}.
 {% endhighlight %}
 
 Note that this only summarizes the "default" capabilities.  If you are
-making use of other microphysics options or prescriptions such as wind
-mass loss rates, please consult the documentation for appropriate
-references.
+making use of other microphysics options, or employing prescriptions
+such as wind mass loss rates, please consult the documentation for
+appropriate references.
+
+
+If you are making use of an instrument that is provided in MESA (e.g.,
+ADIPLS, GYRE, RSP, or STELLA), please make sure to include citations
+to the papers that describe it.
+
 
 A [BibTex file](assets/mesa.bib) with these references is available.
 
