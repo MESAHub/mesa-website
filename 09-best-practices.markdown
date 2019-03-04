@@ -97,8 +97,10 @@ A [BibTex file](assets/mesa.bib) with these references is available.
 
 You should make all information needed for others to recreate your
 MESA results publicly available.  This includes your inlists and
-run\_star\_extras/run\_binary\_extras, as well as any modifications to
-MESA that you may have made.
+run\_star\_extras/run\_binary\_extras, the MESA version and the MESA
+SDK version (or compiler version for non-SDK builds), as well as any
+modifications to MESA that you may have made.
+
 
 We recommend using [Zenodo](http://about.zenodo.org/) for this
 purpose.  Zenodo assigns digital object identifiers (DOIs) for each
