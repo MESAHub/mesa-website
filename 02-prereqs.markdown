@@ -30,6 +30,7 @@ of problems that can be studied using MESA.
 * [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
 * [Paper 3 (Paxton et al. 2015)](http://adsabs.harvard.edu/abs/2015ApJS..220...15P)
 * [Paper 4 (Paxton et al. 2018)](http://adsabs.harvard.edu/abs/2018ApJS..234...34P)
+* [Paper 5 (Paxton et al. 2019)](http://adsabs.harvard.edu/abs/2019arXiv190301426P)
 
 ## Join the mailing list
 
