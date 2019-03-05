@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Release 11532"
+categories: release
+---
+
+Revision 11532 has been designated a MESA release version.
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r11532.zip/download
