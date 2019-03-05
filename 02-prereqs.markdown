@@ -228,6 +228,15 @@ message
 
 If so, move on to "getting started".  If not, take a look below.
 
+## Learn about MESA best practices
+
+Read the linked page that summarizes some [best practices][best] to
+keep in mind throughout the lifecycle of your project.
+
+
+[best]:bestpractices.html
+
+
 # What should you do if MESA did not install successfully?
 
 First, confirm that you can reproduce the error.  Do
