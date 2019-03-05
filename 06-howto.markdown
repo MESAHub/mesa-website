@@ -1,6 +1,6 @@
 ---
 layout: default
-title: beyond inlists (extending MESA)
+title: extending MESA
 permalink: run_star_extras.html
 ---
 # How do you extend MESA?
