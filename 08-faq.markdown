@@ -33,13 +33,13 @@ to right, Frank Timmes, Aaron Dotter, Falk Herwig, Lars Bildsten, and
 Bill Paxton).  Photo taken by Bill's patient wife, Kathlyn, who
 deserves a great deal of credit for the existence of MESA.
 
-By the fifth MESA paper, there's bigger room and a better
+By the fifth MESA paper, there's a bigger room and a better
 screen. Left-to-right: Aaron Dotter, Jared Goldberg, Lars Bildsten,
 Radek Smolec, Anne Thoul, Bill Paxton, Adam Jermyn, Josiah Schwab,
 Frank Timmes, Croissants, Rich Townsend, Coffee, and Pablo Marchant.
 Photo taken by Matteo Cantiello.
 
-[![MESAV-Photo][small-MESAV-photo]][photo]
+[![MESAV-Photo][small-MESAV-photo]][mesaV-photo]
 
 [small-MESAV-photo]:/assets/images/paper_v_session_small.jpg
 [MESAV-photo]:/assets/images/paper_v_session.jpg
