@@ -6,6 +6,10 @@ categories: release
 
 Revision 11532 has been designated a MESA release version.
 
+The full release notes are available in [this mailing list post][notes].
+
+[notes]: https://lists.mesastar.org/pipermail/mesa-users/2019-March/009842.html
+
 A [ZIP file of this release][zip] is available for download.
 
 [zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r11532.zip/download
