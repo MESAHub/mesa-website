@@ -56,7 +56,7 @@ information.
 
 + [r4411](release/2012/08/25/r4411.html): major renaming and reorganization of the code
 + [r8118](release/2016/02/03/r8118.html): renaming and restructuring of controls related to winds. `run_star_extras` routines changed to hooks.
-+ [r8845](release/2016/06/19/r8845.html): names using "cnt" were changed to use "interval" (e.g., `terminal_cnt` was renamed to `terminal_interval`).  the option `photostep` was renamed to `photo_interval`.
++ [r8845](release/2016/06/19/r8845.html): most names using "cnt" were changed to use "interval" (e.g., `terminal_cnt` was renamed to `terminal_interval`).  the option `photostep` was renamed to `photo_interval`.  One exception is `Abundance_legend_max_cnt` which remained unchanged since it is not an interval between events.
 
 
 # Prereqs & Installation
