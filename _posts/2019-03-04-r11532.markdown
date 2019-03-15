@@ -4,6 +4,8 @@ title:  "Release 11532"
 categories: release
 ---
 
+*There is a significant memory leak in this version of MESA.  Users should strongly prefer revision 11554 over this version.*
+
 Revision 11532 has been designated a MESA release version.
 
 The full release notes are available in [this mailing list post][notes].
