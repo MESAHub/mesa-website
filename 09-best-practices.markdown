@@ -47,6 +47,7 @@ You should provide a clear statement of which version of MESA was used
 in the calculation.  We also recommend noting which version of the
 MESA SDK was used to compile MESA.
 
+## Citing MESA
 
 You should cite all of the available MESA instrument papers at the
 time of the MESA version being used, as MESA is sum of this work.
@@ -83,15 +84,31 @@ making use of other microphysics options, or employing prescriptions
 such as wind mass loss rates, please consult the documentation for
 appropriate references.
 
+A [BibTex file](assets/mesa.bib) with these references is available.
+
+## Citing included tools
 
 If you are making use of an instrument that is provided in MESA (e.g.,
 ADIPLS, GYRE, RSP, or STELLA), please make sure to include citations
 to the papers that describe it.
 
+{% highlight tex %}
+ADIPLS \citep{ChristensenDalsgaard2008}
+{% endhighlight %}
 
-A [BibTex file](assets/mesa.bib) with these references is available.
+{% highlight tex %}
+GYRE \citep{Townsend2013, Townsend2018}
+{% endhighlight %}
 
+{% highlight tex %}
+RSP \citep{Smolec2008}
+{% endhighlight %}
 
+{% highlight tex %}
+STELLA \citep{Blinnikov2004, Baklanov2005, Blinnikov2006}
+{% endhighlight %}
+
+A [BibTex file](assets/tools.bib) with these references is available.
 
 # At the end of the project
 
