@@ -74,8 +74,9 @@ and the high-temperature, Compton-scattering dominated regime by
 \citet{Buchler1976}.  Electron conduction opacities are from
 \citet{Cassisi2007}.
 
-Nuclear reaction rates are from JINA REACLIB \citep{Cyburt2010} and
-include screening with the prescription of \citet{Chugunov2007}.
+Nuclear reaction rates are from JINA REACLIB \citep{Cyburt2010} plus additional
+tabulated weak reaction rates \citet{Fuller1985, Oda1994, Langanke2000}.
+Screening is included via the prescription of \citet{Chugunov2007}.
 Thermal neutrino loss rates are from \citet{Itoh1996}.
 {% endhighlight %}
 
