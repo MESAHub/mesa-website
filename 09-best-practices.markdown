@@ -85,6 +85,14 @@ making use of other microphysics options, or employing prescriptions
 such as wind mass loss rates, please consult the documentation for
 appropriate references.
 
+
+In the the MESA binary module, by default:
+{% highlight tex %} 
+Roche lobe radii in binary systems are computed using the fit of \citet{Eggleton1983}.
+Mass transfer rates in Roche lobe overflowing binary systems are determined following theprescription of \citet{Ritter1988}.
+{% endhighlight %}
+
+
 A [BibTex file](assets/mesa.bib) with these references is available.
 
 ## Citing included tools
