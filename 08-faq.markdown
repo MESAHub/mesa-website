@@ -214,7 +214,14 @@ as requested. i.e. change `stop'fixup'` to `stop 'fixup'`.
 This sort of error typically occurs when using an older MESA release
 with a newer SDK.  These warnings (which are treated as errors) can
 safely be ignored.  To do so, edit the file `utils/makefile_header`
-and add `-Wno-do-subscript` to `FCbasic`.
+and delete `-Werror` from `FCwarn`.
+
+## Why do I get an error like "Error: '__builtin_memset' specified size between 9223372036854775808 and 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Werror=stringop-overflow=]"?
+
+This sort of error typically occurs when using an older MESA release
+with a newer SDK.  These warnings (which are treated as errors) can
+safely be ignored.  To do so, edit the file `utils/makefile_header`
+and delete `-Werror` from `FCwarn`.
 
 
 ## Why do I get a segfault in do\_history\_info?
