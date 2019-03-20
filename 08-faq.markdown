@@ -93,78 +93,6 @@ you last built MESA.  (Sometimes a changed gfortran version is an
 indication that you forgot to activate the MESA SDK.)  To fix, run
 ./clean in the MESA directory, and then try building again.
 
-<a id="svn-error"></a>
-## When I install MESA from a zipfile, why do I get svn errors?
-
-Older versions of MESA (r6794 or earlier) assumed that they would be
-installed from the subversion repository.  Therefore, if you install
-these versions from a zipfile, you will see messages like
-
-    svn: E155007: '/Users/fxt/mesa/mesa-r6794' is not a working copy
-
-when you run MESA.  These messages are safe to ignore.
-
-<a id="old-version"></a>
-## How do I install older versions of MESA?
-
-Older versions of MESA may fail to compile with more recent versions
-of the MESA SDK.  There are two basic solutions:
-
-(1) Use the contemporary version of the SDK.  Look at the list of [MESA release versions](#which-svn-revisions-were-mesa-release-versions), find the release date, and then go pick an [SDK](http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk) from shortly before the release.  
-
-(2) Fix the individual compilation errors (there are typically only a handful to work through).  The basic workflow is
-
-- ./install until an error turns up,
-- cd to that module and edit and ./mk until it compiles, then
-- go back to ./install and repeat until everything works before
-- a final ./touch and ./install.
-
-The following two FAQs give examples of specific errors.
-
-
-## Why do I get an error like "Error: 'time0' may be used uninitialized in this function"?
-
-This sort of error typically occurs when using an older MESA release
-with a newer SDK.  These warnings (which are treated as errors) can
-safely be ignored.  To do so, edit the file `utils/makefile_header`
-and add `-Wno-uninitialized` to `FCbasic`.
-
-
-## Why do I get an error like "Error: Blank required in STOP statement near (1)"?
-
-This sort of error typically occurs when using an older MESA release
-with a newer SDK.  To work around this, simply insert the blank space
-as requested. i.e. change `stop'fixup'` to `stop 'fixup'`.
-
-
-## Why do I get a segfault in do\_history\_info?
-
-This sort of error typically occurs when using an older MESA release
-(r10398 or before) with a newer SDK (that includes gfortran 7.3 or later).
-
-    Program received signal SIGSEGV: Segmentation fault - invalid memory reference. 
-    
-    Backtrace for this error: 
-    #0  0x7f28c0a93a7f in ??? 
-    #1  0x54313f in do_history_info 
-           at ../private/history.f90:383 
-    ...
-       
-To work around this, edit `$MESA_DIR/star/private/history.f90` and replace the line 
-
-{% highlight fortran %}
-if (write_flag) write(io,*)
-{% endhighlight %}
-with
-
-{% highlight fortran %}
-if (open_close_log .and. write_flag) close(io)
-{% endhighlight %}
-
-Note that this only applies to this specific segfault and not
-segfaults in general.
-
-
 <a id="yosemite"></a>
 <a id="osx"></a>
 ## What do I need to do to run MESA on OS X?
@@ -244,6 +172,89 @@ You can do so with the commands:
 If the error persists, please email mesa-users@lists.mesastar.org.  Follow [the instructions for posting a question to mesa-users][post] and also attach the file `$MESA_DIR/crlibm/crlibm/config.log`.
 
 [post]:prereqs.html#post-a-question-to-mesa-users
+
+
+<a id="old-version"></a>
+# Installing Older Versions of MESA
+
+Older versions of MESA may fail to compile with more recent versions
+of the MESA SDK.  There are two basic solutions:
+
+(1) Use the contemporary version of the SDK.  There is a [list of old MESA SDKs][old-mesasdk] that indicates which version of MESA was current when each was released.
+
+[old-mesasdk]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk-old
+
+(2) Fix the individual compilation errors (there are typically only a handful to work through).  The basic workflow is
+
+- ./install until an error turns up,
+- cd to that module and edit and ./mk until it compiles, then
+- go back to ./install and repeat until everything works before
+- a final ./touch and ./install.
+
+The following FAQs give examples of specific errors.
+
+
+## Why do I get an error like "Error: 'time0' may be used uninitialized in this function"?
+
+This sort of error typically occurs when using an older MESA release
+with a newer SDK.  These warnings (which are treated as errors) can
+safely be ignored.  To do so, edit the file `utils/makefile_header`
+and add `-Wno-uninitialized` to `FCbasic`.
+
+
+## Why do I get an error like "Error: Blank required in STOP statement near (1)"?
+
+This sort of error typically occurs when using an older MESA release
+with a newer SDK.  To work around this, simply insert the blank space
+as requested. i.e. change `stop'fixup'` to `stop 'fixup'`.
+
+
+## Why do I get an error like "Error: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Werror=do-subscript]"?
+
+This sort of error typically occurs when using an older MESA release
+with a newer SDK.  These warnings (which are treated as errors) can
+safely be ignored.  To do so, edit the file `utils/makefile_header`
+and add `-Wno-do-subscript` to `FCbasic`.
+
+
+## Why do I get a segfault in do\_history\_info?
+
+This sort of error typically occurs when using an older MESA release
+(r10398 or before) with a newer SDK (that includes gfortran 7.3 or later).
+
+    Program received signal SIGSEGV: Segmentation fault - invalid memory reference. 
+    
+    Backtrace for this error: 
+    #0  0x7f28c0a93a7f in ??? 
+    #1  0x54313f in do_history_info 
+           at ../private/history.f90:383 
+    ...
+       
+To work around this, edit `$MESA_DIR/star/private/history.f90` and replace the line 
+
+{% highlight fortran %}
+if (write_flag) write(io,*)
+{% endhighlight %}
+with
+
+{% highlight fortran %}
+if (open_close_log .and. write_flag) close(io)
+{% endhighlight %}
+
+Note that this only applies to this specific segfault and not
+segfaults in general.
+
+<a id="svn-error"></a>
+## When I install MESA from a zipfile, why do I get svn errors?
+
+Older versions of MESA (r6794 or earlier) assumed that they would be
+installed from the subversion repository.  Therefore, if you install
+these versions from a zipfile, you will see messages like
+
+    svn: E155007: '/Users/fxt/mesa/mesa-r6794' is not a working copy
+
+when you run MESA.  These messages are safe to ignore.
+
 
 # PGPLOT and pgstar
 
