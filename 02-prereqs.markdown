@@ -220,7 +220,7 @@ message
     ************************************************
     ************************************************
     
-    mesa installation was successful.
+    MESA installation was successful
     
     ************************************************
     ************************************************
@@ -243,11 +243,9 @@ First, confirm that you can reproduce the error.  Do
 
     cd $MESA_DIR
     ./clean
-    ./install | tee build.log
+    ./install
 
-and see if you get the same error.  (The use of the `tee` command will
-save the output of `./install` in the file `build.log` while still
-displaying it in your terminal.)
+and see if you get the same error.
 
 ## Check that your environment variables are set correctly
 
@@ -318,10 +316,11 @@ echo $MESA_DIR
 ```
 
 
-+ What is the error message you recieved?  In addition, please attach the full `build.log` file.
++ What is the error message you recieved?  In addition, please attach
+the full `$MESA_DIR/build.log` file.
 
 If the error message you received was `./build_and_test FAILED` also
-attach the file `$MESA_DIR/MODULE/test/tmp.txt`, where MODULE is
+attach the file `$MESA_DIR/MODULE/test/tmp.txt`, where `MODULE` is
 replaced with the name of the module that failed.  The name of the
 module that failed should be printed on the line before the
 ./build_and_test message was printed.
