@@ -109,7 +109,7 @@ previous version of OS X.
 xcode-select --install
 {% endhighlight %}
 
-* If you are using MacOS 10.14 (Mojave), there has been a change in how the system headers are provided (see section "Command Line Tools" in the [Xcode 10 release notes][xcodenotes]).  As a workaround, Apple provides an extra package that will install the headers to the base system.  At present, one must do this:
+* If you are using macOS 10.14 (Mojave), there has been a change in how the system headers are provided (see section "Command Line Tools" in the [Xcode 10 release notes][xcodenotes]).  As a workaround, Apple provides an extra package that will install the headers to the base system.  At present, one must do this:
 
 {% highlight bash %}
 open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
@@ -127,6 +127,13 @@ your version of OS X.
 [sdkosx]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Mac_OS_X
 [xcodenotes]:https://developer.apple.com/documentation/xcode_release_notes/xcode_10_release_notes
 
+
+<a id="mojave"></a>
+## Why do I get the error "stdlib.h: No such file or directory"?
+
+If yore using macOS 10.14 (Mojave), then this error indicates that you did not install the system headers (see previous FAQ or [the SDK website][sdkosx]).
+
+
 <a id="crlibm-fail"></a>
 ## Why do I get the error "C compiler cannot create executables"?
 
@@ -136,7 +143,7 @@ If you receive the error
     See `config.log' for more details.
 
 during the MESA installation of crlibm, please check that you are not
-using an unsupported 32-bit system.  If you're using MacOS, make sure
+using an unsupported 32-bit system.  If you're using macOS, make sure
 you've [installed Xcode and the command line tools][xcode].
 
 [xcode]:#osx
