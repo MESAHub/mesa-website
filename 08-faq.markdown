@@ -247,7 +247,7 @@ This sort of error typically occurs when using an older MESA release
 To work around this, edit `$MESA_DIR/star/private/history.f90` and replace the line 
 
 {% highlight fortran %}
-if (write_flag) write(io,*)
+if (open_close_log) close(io)
 {% endhighlight %}
 with
 
