@@ -148,7 +148,7 @@ you've [installed Xcode and the command line tools][xcode].
 
 [xcode]:#osx
 
-If you're using Linux and you see an error message like
+If you're using Linux and you see an error message in config.log like
 
     In file included from /opt/mesasdk/lib/gcc/x86_64-pc-linux-gnu/5.3.1/include-fixed/features.h:338:0,
                      from /usr/include/bits/libc-header-start.h:33,
