@@ -7,9 +7,9 @@ You can [[http://mesa.sourceforge.net][view the site here]].
 Did you find an error?  Do you see something that can be improved?  Do
 you have other materials you've written yourself that you think could
 be incorporated? If so please either:
-*** Email Me
+*** Email Josiah Schwab
 If you subscribe to the mesa-users mailing list, you should have no
-trouble finding my email address.
+trouble finding Josiah's email address.
 *** Contribute via GitHub
 Clone this repo and send me a pull request.
 ** Branching and Merging
