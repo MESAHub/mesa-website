@@ -89,7 +89,7 @@ appropriate references.
 In the the MESA binary module, by default:
 {% highlight tex %} 
 Roche lobe radii in binary systems are computed using the fit of \citet{Eggleton1983}.
-Mass transfer rates in Roche lobe overflowing binary systems are determined following theprescription of \citet{Ritter1988}.
+Mass transfer rates in Roche lobe overflowing binary systems are determined following the prescription of \citet{Ritter1988}.
 {% endhighlight %}
 
 
