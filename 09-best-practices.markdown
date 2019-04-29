@@ -64,12 +64,12 @@ net, and neu modules.  We therefore encourage users to briefly
 summarize these, including appropriate citations.
 
 {% highlight tex %}
-The MESA EOS is a blend of the OPAL \citet{Rogers}, SCVH
+The MESA EOS is a blend of the OPAL \citet{Rogers2002}, SCVH
 \citet{Saumon1995}, PTEH \citet{Pols1995}, HELM
 \citet{Timmes2000}, and PC \citet{Potekhin2010} EOSes.
 
 Radiative opacities are primarily from OPAL \citep{Iglesias1993,
-Iglesias1996}, with low-temperature data from \citet{Fergusson2005}
+Iglesias1996}, with low-temperature data from \citet{Ferguson2005}
 and the high-temperature, Compton-scattering dominated regime by
 \citet{Buchler1976}.  Electron conduction opacities are from
 \citet{Cassisi2007}.
