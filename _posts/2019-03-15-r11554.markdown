@@ -4,6 +4,8 @@ title:  "Release 11554"
 categories: release
 ---
 
+*There are problems in the default EOS in this version of MESA.  Users should strongly prefer revision 11701 over this version.*
+
 Revision 11554 has been designated a MESA release version.  This release fixes a memory leak in r11532 that can cause long-running jobs to fail.
 
 The full release notes are available in [this mailing list post][notes].

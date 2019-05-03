@@ -4,7 +4,7 @@ title:  "Release 11532"
 categories: release
 ---
 
-*There is a significant memory leak in this version of MESA.  Users should strongly prefer revision 11554 over this version.*
+*There is a significant memory leak in this version of MESA.  There are problems in the default EOS in this version of MESA.  Users should strongly prefer revision 11701 over this version.*
 
 Revision 11532 has been designated a MESA release version.
 

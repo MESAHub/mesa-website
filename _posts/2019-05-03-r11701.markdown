@@ -1,0 +1,15 @@
+---
+layout: post
+title:  "Release 11701"
+categories: release
+---
+
+Revision 11701 has been designated a MESA release version.  This release fixes two issues in the default equation of state.  Users of versions r11532 or r11554 are strongly recommended to upgrade.
+
+The full release notes are available in [this mailing list post][notes].
+
+[notes]: https://lists.mesastar.org/pipermail/mesa-users/2019-May/010093.html
+
+A [ZIP file of this release][zip] is available for download.
+
+[zip]:http://sourceforge.net/projects/mesa/files/releases/mesa-r11701.zip/download
