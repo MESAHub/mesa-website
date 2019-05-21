@@ -19,8 +19,8 @@ these instructions are available.  You may want to take a look!
 Before you use MESA, you should get a feel for what it can do.
 
 For a brief summary of the capabilities of MESA, take a look at this
-[presentation by Matteo Cantiello](assets/mesa_website_deck.pdf).  (He has
-also provided a [Keynote version](assets/mesa_website_deck.zip).)
+[presentation by Matteo Cantiello](assets/mesa_website_deck_2019.pdf).  (He has
+also provided a [Keynote version](assets/mesa_website_deck_2019.zip).)
 
 The full capabilities of MESA are documented in the instrument papers.
 Looking through the figures will give you a feel for the broad range
