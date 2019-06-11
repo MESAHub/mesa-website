@@ -145,6 +145,6 @@ thing to the main service.
 
 We have a created a [Zenodo
 community](https://zenodo.org/communities/mesa/) with which you can
-associate your Zenodo uploads. The [MESA Marketplace](mesastar.org)
+associate your Zenodo uploads. The [MESA Marketplace](http://mesastar.org)
 will remain in use as an aggregator portal, and we request users to
 inform us of new uploads so that they are highlighted there as well.
