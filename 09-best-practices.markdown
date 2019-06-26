@@ -121,6 +121,12 @@ RSP \citep{Smolec2008}
 STELLA \citep{Blinnikov2004, Baklanov2005, Blinnikov2006}
 {% endhighlight %}
 
+## Citing the MESASDK
+
+The MESASDK can be cited via its Zenodo link [for Mac's](http://doi.org/10.5281/zenodo.2669543)
+and [for Linux](http://doi.org/10.5281/zenodo.2669541). Citations should also contain the 
+version of the MESASDK used, individual Zenodo DOI's are available for each MESASDK version.
+
 A [BibTex file](assets/tools.bib) with these references is available.
 
 # At the end of the project
