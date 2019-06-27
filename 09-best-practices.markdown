@@ -74,12 +74,14 @@ and the high-temperature, Compton-scattering dominated regime by
 \citet{Buchler1976}.  Electron conduction opacities are from
 \citet{Cassisi2007}.
 
-Nuclear reaction rates are from JINA REACLIB \citep{Cyburt2010} plus additional
-tabulated weak reaction rates \citet{Fuller1985, Oda1994, Langanke2000}.
-Screening is, for MESA versions before 11701, depends on the prescriptions of
-\citet{Salpeter1954,Dewitt1973,Alastuey1978,Itoh1979}. For MESA versions
-after 11701, screening is included via the prescription of \citet{Chugunov2007}.
-Thermal neutrino loss rates are from \citet{Itoh1996}.
+Nuclear reaction rates are from JINA REACLIB \citep{Cyburt2010} plus
+additional tabulated weak reaction rates \citet{Fuller1985, Oda1994,
+Langanke2000}.  (For MESA versions before 11701): Screening is
+included via the prescriptions of \citet{Salpeter1954, Dewitt1973,
+Alastuey1978, Itoh1979}. (For MESA versions 11701 or later): Screening
+is included via the prescription of \citet{Chugunov2007}.  Thermal
+neutrino loss rates are from \citet{Itoh1996}.
+
 {% endhighlight %}
 
 Note that this only summarizes the "default" capabilities, of the currently
