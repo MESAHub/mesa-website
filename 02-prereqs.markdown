@@ -26,11 +26,11 @@ The full capabilities of MESA are documented in the instrument papers.
 Looking through the figures will give you a feel for the broad range
 of problems that can be studied using MESA.
 
-* [Paper 1 (Paxton et al. 2011)](http://adsabs.harvard.edu/abs/2011ApJS..192....3P)
-* [Paper 2 (Paxton et al. 2013)](http://adsabs.harvard.edu/abs/2013ApJS..208....4P)
-* [Paper 3 (Paxton et al. 2015)](http://adsabs.harvard.edu/abs/2015ApJS..220...15P)
-* [Paper 4 (Paxton et al. 2018)](http://adsabs.harvard.edu/abs/2018ApJS..234...34P)
-* [Paper 5 (Paxton et al. 2019)](http://adsabs.harvard.edu/abs/2019arXiv190301426P)
+* [Paper 1 (Paxton et al. 2011)](https://ui.adsabs.harvard.edu/abs/2011ApJS..192....3P/abstract)
+* [Paper 2 (Paxton et al. 2013)](https://ui.adsabs.harvard.edu/abs/2013ApJS..208....4P/abstract)
+* [Paper 3 (Paxton et al. 2015)](https://ui.adsabs.harvard.edu/abs/2015ApJS..220...15P/abstract)
+* [Paper 4 (Paxton et al. 2018)](https://ui.adsabs.harvard.edu/abs/2018ApJS..234...34P/abstract)
+* [Paper 5 (Paxton et al. 2019)](https://ui.adsabs.harvard.edu/abs/2019ApJS..243...10P/abstract)
 
 ## Join the mailing list
 
