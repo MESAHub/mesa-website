@@ -88,7 +88,7 @@ on the MESA instrument papers
   <li>Aaron Dotter</li>
   <li><a href="http://rjfarmer.io/">Robert Farmer</a></li>
   <li><a href="http://adamjermyn.com/">Adam Jermyn</a></li>
-  <li><a href="http://www.meridithjoyce.com/">Meredith Joyce</a></li>
+  <li><a href="http://www.meridithjoyce.com/">Meridith Joyce</a></li>
   <li>Pablo Marchant</li>
   <li><a href="https://yoshiyahu.org/">Josiah Schwab</a></li>
   <li><a href="https://www.camk.edu.pl/en/staff/smolec/">Radek Smolec</a></li>
