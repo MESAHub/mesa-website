@@ -375,3 +375,11 @@ desired mixture (that MESA supports) and for any user-specified iron
 and nickel enhancement factors.
 
 [opmono]:https://bitbucket.org/ehsan_moravveji/op_mono/overview
+
+# Other
+
+## Why am I having difficulty receiving mesa-users messages?
+
+If you are using an address hosted at qq.com, this domain is blocked
+by our mail host.  Due to a deluge of spam, no mail will be accepted
+from or delivered to qq.com.
