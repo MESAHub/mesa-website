@@ -352,7 +352,11 @@ The easiest way to get the idea is to look at a sample, and in the
 MESA directory you will find a subdirectory called “sample”. Make a
 copy of the sample directory anywhere you’d like and give it whatever
 name you want. Follow the instructions in the README file to make and
-test the sample.
+test the sample.  You may also want to look at the following
+information from previous MESA summer schools:
+
+* [Kevin Moore (2015)][https://mesa2015-external-code.readthedocs.io/en/latest/]
+* [Frank Timmes (2019)][https://zenodo.org/record/3372835]
 
 # Third-party Tools
 
