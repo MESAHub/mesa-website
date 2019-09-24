@@ -61,8 +61,8 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 
 [![Map of MESA users (USA)][mmu_png]][mmu_pdf]
 
-[mmu_png]:assets/images/mesa_users_01jul2019_usa_mercator.png
-[mmu_pdf]:assets/images/mesa_users_01jul2019_usa_mercator.pdf
+[mmu_png]:assets/images/mesa_users_sep2019_usa_mercator.png
+[mmu_pdf]:assets/images/mesa_users_sep2019_usa_mercator.pdf
 
 ## Ensure your system meets the minimum hardware requirements
 
