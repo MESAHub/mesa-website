@@ -60,6 +60,10 @@ Then, describe the problem.  Include sufficient materials
 (inlist files, saved models, etc.) so that someone else can (attempt
 to) reproduce your problem.
 
+Avoid attaching screenshots of output or error messages.  Rather copy
+the text into your message or, if there's a lot of text, attach it in
+a plain text file.
+
 Perhaps someone else can give you some useful information -- or at
 least some sympathy.
 
