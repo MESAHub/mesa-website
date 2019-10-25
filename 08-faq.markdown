@@ -269,6 +269,18 @@ these versions from a zipfile, you will see messages like
 
 when you run MESA.  These messages are safe to ignore.
 
+<a id="failed-jina"></a>
+## Why do i get messages like "r_ne18_wk_f18 failed in do_jina_reaclib     321"
+
+If are using both r11701 and the MESASDK version 20190830 
+then you should switch to using the
+previous MESASDK (20190503) and re-install MESA. 
+This is due to having a newer compiler in 20190830 than we 
+used to release r11701, generating a bug that is not present with older compilers.
+
+If you are not using both the MESA r11701 and the MESASDK version 20190830
+and you receive this message, please email mesa-users@lists.mesastar.org.
+This is a critical error and you should not continue. 
 
 # PGPLOT and pgstar
 
