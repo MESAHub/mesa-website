@@ -74,7 +74,8 @@ and the high-temperature, Compton-scattering dominated regime by
 \citet{Buchler1976}.  Electron conduction opacities are from
 \citet{Cassisi2007}.
 
-Nuclear reaction rates are from JINA REACLIB \citep{Cyburt2010} plus
+Nuclear reaction rates are a combination of rates from
+NACRE \citep{Angulo1999}, JINA REACLIB \citep{Cyburt2010}, plus
 additional tabulated weak reaction rates \citet{Fuller1985, Oda1994,
 Langanke2000}.  (For MESA versions before 11701): Screening is
 included via the prescriptions of \citet{Salpeter1954, Dewitt1973,
