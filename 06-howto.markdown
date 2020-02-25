@@ -69,8 +69,8 @@ nuclear energy generation takes place.
 Let's indicate that we want to add two columns to our history file.
 
 {% highlight fortran %}
-integer function how_many_extra_history_columns(id, id_extra)
-   integer, intent(in) :: id, id_extra
+integer function how_many_extra_history_columns(id)
+   integer, intent(in) :: id
    integer :: ierr
    type (star_info), pointer :: s
    ierr = 0
@@ -89,13 +89,12 @@ shown in this routine that are worth remembering, so read through the
 code and pay attention to the comments.
 
 {% highlight fortran %}
-subroutine data_for_extra_history_columns(id, id_extra, n, names, vals, ierr)
+subroutine data_for_extra_history_columns(id, n, names, vals, ierr)
 
-   ! MESA provides routines for taking logarithms which will handle
-   ! cases where you pass them zero, etc.  Take advantage of this!
-   use crlibm_lib, only: safe_log10_cr
+   ! use MESA provided math routines
+   use math_lib, only: safe_log10
 
-   integer, intent(in) :: id, id_extra, n
+   integer, intent(in) :: id, n
    character (len=maxlen_history_column_name) :: names(n)
    real(dp) :: vals(n)
    integer, intent(out) :: ierr
@@ -135,7 +134,7 @@ subroutine data_for_extra_history_columns(id, id_extra, n, names, vals, ierr)
 
    ! column 2
    names(2) = "log_R90"
-   vals(2) = safe_log10_cr(s% R(i) / rsol) ! in solar radii
+   vals(2) = safe_log10(s% R(i) / rsol) ! in solar radii
 
    ierr = 0
 end subroutine data_for_extra_history_columns
@@ -150,9 +149,9 @@ subroutine \`data\_for\_extra\_profile\_columns'.
 Here I've just uncommented the stock example.
 
 {% highlight fortran %}
-integer function how_many_extra_profile_columns(id, id_extra)
+integer function how_many_extra_profile_columns(id)
    use star_def, only: star_info
-   integer, intent(in) :: id, id_extra
+   integer, intent(in) :: id
    integer :: ierr
    type (star_info), pointer :: s
    ierr = 0
@@ -162,10 +161,10 @@ integer function how_many_extra_profile_columns(id, id_extra)
 end function how_many_extra_profile_columns
 
 
-subroutine data_for_extra_profile_columns(id, id_extra, n, nz, names, vals, ierr)
+subroutine data_for_extra_profile_columns(id, n, nz, names, vals, ierr)
    use star_def, only: star_info, maxlen_profile_column_name
    use const_def, only: dp
-   integer, intent(in) :: id, id_extra, n, nz
+   integer, intent(in) :: id, n, nz
    character (len=maxlen_profile_column_name) :: names(n)
    real(dp) :: vals(nz,n)
    integer, intent(out) :: ierr
@@ -214,9 +213,9 @@ comments discuss some useful MESA features.
 {% highlight fortran %}
 ! returns either keep_going or terminate.
 ! note: cannot request retry or backup; extras_check_model can do that.
-integer function extras_finish_step(id, id_extra)
+integer function extras_finish_step(id)
 
-   integer, intent(in) :: id, id_extra
+   integer, intent(in) :: id
    integer :: ierr
    type (star_info), pointer :: s
 
@@ -240,17 +239,17 @@ integer function extras_finish_step(id, id_extra)
    ! MESA also provides a number variables that are useful for implementing
    ! algorithms which require a state. if you just use these variables
    ! restarts, retries, and backups will work without doing anything special.
-   ! they are named xtra1 .. xtra30, ixtra1 .. ixtra30, and lxtra1 .. lxtra30.
-   ! they are automatically versioned, that is if you set s% xtra1, then
-   ! s% xtra1_old will contains the value of s% xtra1 from the previous step
-   ! and s% xtra1_older contains the one from two steps ago.
+   ! they are arrays named xtra, ixtra, and lxtra, of length 30.
+   ! they are automatically versioned, that is if you set s% xtra(1), then
+   ! s% xtra_old(1) will contains the value of s% xtra1 from the previous step
+   ! and s% xtra_older(1) contains the one from two steps ago.
 
-   s% xtra1 = s% log_center_density
+   s% xtra(1) = s% log_center_density
 
    ! this expression will evaluate to true if f times the log center density
    ! has crossed an integer during the last step.  If f = 5, then we will get
    ! output at log center density = {... 1.0, 1.2, 1.4, 1.6, 1.8, 2.0 ... }
-   if ((floor(f * s% xtra1_old) - floor(f * s% xtra1) .ne. 0)) then
+   if ((floor(f * s% xtra_old(1)) - floor(f * s% xtra(1)) .ne. 0)) then
 
       ! save a profile & update the history
       s% need_to_update_history_now = .true.
@@ -314,11 +313,11 @@ neon burning.
 
 {% highlight fortran %}
 ! returns either keep_going, retry, backup, or terminate.
-integer function extras_check_model(id, id_extra)
+integer function extras_check_model(id)
 
   use chem_def, only : i_burn_ne, category_name
 
-  integer, intent(in) :: id, id_extra
+  integer, intent(in) :: id
   integer :: ierr
   type (star_info), pointer :: s
 
