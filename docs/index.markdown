@@ -9,6 +9,13 @@ This page contains links to documentation for past versions of MESA.
 The documentation for the current version is always linked in the left
 sidebar.
 
+## r12778
+
+  + [star\_job.defaults](/docs/r12778/star_job_defaults.html)
+  + [controls.defaults](/docs/r12778/controls_defaults.html)
+  + [pgstar.defaults](/docs/r12778/pgstar_defaults.html)
+  + [binary\_controls.defaults](/docs/r12778/binary_controls_defaults.html)
+
 ## r12115
 
   + [star\_job.defaults](/docs/r12115/star_job_defaults.html)
