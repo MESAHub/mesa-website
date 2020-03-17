@@ -191,7 +191,24 @@ of the MESA SDK.  There are two basic solutions:
 
 [old-mesasdk]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk-old
 
-(2) Fix the individual compilation errors (there are typically only a handful to work through).  The basic workflow is
+(2) Fix the individual compilation errors (there are typically only a handful to work through). 
+
+Older MESA versions (r10398 or earlier) used a compiler flag
+that treated warnings as errors.  When warnings are
+added in newer compiler versions, MESA fails to build.
+
+These warnings can safely be ignored.  To stop treating them as errors,
+edit the file `utils/makefile_header` and delete `-Werror` from
+`FCwarn`.  This should resolve error messages of the form
+`Error: <message> [-Werror=<warning-type>]`,
+including, but not limited to:
+
+- `Error: 'time0' may be used uninitialized in this function  [-Werror=maybe-uninitialized]`
+- `Error: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Werror=do-subscript]`
+- `Error: '__builtin_memset' specified size between 9223372036854775808 and 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Werror=stringop-overflow=]`
+- `Error: Impure function 'is_inf_qp_0d' at (1) might not be evaluated [-Werror=function-elimination]`
+
+After these warning errors are eliminated, the basic workflow is
 
 - ./install until an error turns up,
 - cd to that module and edit and ./mk until it compiles, then
@@ -201,34 +218,11 @@ of the MESA SDK.  There are two basic solutions:
 The following FAQs give examples of specific errors.
 
 
-## Why do I get an error like "Error: 'time0' may be used uninitialized in this function"?
-
-This sort of error typically occurs when using an older MESA release
-with a newer SDK.  These warnings (which are treated as errors) can
-safely be ignored.  To do so, edit the file `utils/makefile_header`
-and add `-Wno-uninitialized` to `FCbasic`.
-
-
 ## Why do I get an error like "Error: Blank required in STOP statement near (1)"?
 
 This sort of error typically occurs when using an older MESA release
 with a newer SDK.  To work around this, simply insert the blank space
 as requested. i.e. change `stop'fixup'` to `stop 'fixup'`.
-
-
-## Why do I get an error like "Error: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Werror=do-subscript]"?
-
-This sort of error typically occurs when using an older MESA release
-with a newer SDK.  These warnings (which are treated as errors) can
-safely be ignored.  To do so, edit the file `utils/makefile_header`
-and delete `-Werror` from `FCwarn`.
-
-## Why do I get an error like "Error: '__builtin_memset' specified size between 9223372036854775808 and 18446744073709551615 exceeds maximum object size 9223372036854775807 [-Werror=stringop-overflow=]"?
-
-This sort of error typically occurs when using an older MESA release
-with a newer SDK.  These warnings (which are treated as errors) can
-safely be ignored.  To do so, edit the file `utils/makefile_header`
-and delete `-Werror` from `FCwarn`.
 
 
 ## Why do I get a segfault in do\_history\_info?
@@ -270,7 +264,7 @@ these versions from a zipfile, you will see messages like
 when you run MESA.  These messages are safe to ignore.
 
 <a id="failed-jina"></a>
-## Why do i get messages like "r_ne18_wk_f18 failed in do_jina_reaclib     321"
+## Why do i get messages like "r_ne18_wk_f18 failed in do_jina_reaclib     321"?
 
 If are using both r11701 and the MESASDK version 20190830 
 then you should switch to using the
