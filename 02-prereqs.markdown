@@ -22,7 +22,7 @@ For a brief summary of the capabilities of MESA, take a look at this
 [presentation by Matteo Cantiello](assets/mesa_website_deck_2019.pdf).  (He has
 also provided a [Keynote version](assets/mesa_website_deck_2019.zip).)
 
-The full capabilities of MESA are documented in the instrument papers.
+MESA's full capabilities are documented in the instrument papers.
 Looking through the figures will give you a feel for the broad range
 of problems that can be studied using MESA.
 
@@ -41,11 +41,11 @@ user is to join the
 (Click the preceding link and complete the "Subscribing to
 mesa-users" section of the form.)
 
-If you have requests for help, you should post your questions to
+If you need help, you should post your questions to
 mesa-users.  You should also
 [search the mailing list archives](https://lists.mesastar.org/pipermail/mesa-users/)
 to look for similar questions that may have been asked in the past.
-And once you begin to know how to use MESA, please help by responding
+Once you begin to know how to use MESA, please help by responding
 to posts on the list.
 
 ## Check the MESA map
@@ -66,7 +66,7 @@ have your location added, [email Frank Timmes](mailto:fxt44@mac.com).
 
 ## Ensure your system meets the minimum hardware requirements
 
-The minimum system requirements for MESA are:
+MESA requires:
 
 * Mac or Linux operating system (Windows users may want to try [MESA-Docker])
 * 64-bit processor
@@ -80,26 +80,22 @@ satisfy these requirements.
 
 ## Install the prerequisites (MESA SDK)
 
-Before you can do an install for MESA, you need to get the
-prerequisites.  The [MESA SDK] provided by Rich Townsend simplifies
-this process.  It provides a prebuilt set of compilers and run-time
+Before you can install MESA, you need the
+prerequisites.  The [MESA SDK] provided by Rich Townsend
+provides a prebuilt set of compilers and run-time
 libraries that should make your MESA install go smoothly.  Visit the
 [MESA SDK website][MESA SDK] for the details of setting it up.
 
 [MESA SDK]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk
 
-If you would prefer to use ifort (the MESA SDK uses gfortran), that is
-also an option, so long as you use ifort 14 or later.  Even if you
-choose to use ifort, you should still visit the MESA SDK website to
-get a feel for the other MESA requirements.
+We strongly recommend using the SDK and support is limited if you don't.
+If you would prefer to build MESA without the SDK,
+replace the file `$MESA_DIR/utils/makefile_header` with
+`$MESA_DIR/utils/makefile_header_non_mesasdk` and adapt it
+to your system.
 
-Not using the MESA SDK means you'll need to replace the file
-$MESA\_DIR/utils/makefile\_header with a version customized to your
-system.  There's a template to get you started at
-$MESA\_DIR/utils/makefile\_header\_non\_mesasdk.
-
-Regardless of whether you use the MESA SDK or ifort, and whether your
-machine runs mac or linux, the output of MESA should be bit-for-bit
+Regardless of what compiler and operating system you use to install
+MESA, its output should be bit-for-bit
 identical.  If it's not, Bill considers it to be a bug.  (This has
 been the case since Release 5819 in early January 2014.)
 
@@ -111,17 +107,17 @@ the [latest MESA release][release].
 [release]:http://sourceforge.net/projects/mesa/files/releases/mesa-r{{site.version}}.zip/download
 
 The compressed file is about 1GB, so don't worry if it takes a little
-while to download.  If you are experiencing slow download speeds, you
+while to download.  If the download is slow, you
 may want to change which mirror you are using.  (After you select a
 zipfile to download, click the "try another mirror" link near the top
 of the page.)
 
 The unzipped and installed package will be large, so make sure you
-have at least 10 GB free on your disk.
+have at least 20 GB free on your disk.
 
 When you unzip the file, it will create a directory named
 mesa-r{{site.version}}.  This will be your main MESA directory.  You
-are free to rename it, just make sure to set MESA\_DIR accordingly
+are free to rename it, just make sure to set `MESA_DIR` accordingly
 (see the next section).
 
 You can also download zip files of [older MESA releases][releases].
@@ -136,11 +132,10 @@ subversion repository, using the command:
 
     svn co -r {{site.version}} https://subversion.assembla.com/svn/mesa^mesa/trunk mesa
 
-Note that there might be newer versions out there in the svn
+Note that there might be newer versions in the svn
 repository, but they are probably untested, unstable, and generally
 not at all what you want, so please stick to the officially released
-ones.  To repeat: always use "-r", and to make sure that you get an
-officially released version always follow "-r" with the version
+ones.  To repeat: always use "-r" with the version
 number of an [official MESA release][versions].
 
 [versions]:faq.html#releases
@@ -149,16 +144,20 @@ number of an [official MESA release][versions].
 ## Set your environment variables
 
 The easiest way to make sure that your system is always configured
-appropriately is to define the neccessary environment variables in
+appropriately is to define the necessary environment variables in
 your [shell start-up file][startup].  The file that you need to edit
-will depend on [which shell you're using][whichshell].  (If you don't
+will depend on [which shell you're using][whichshell].
+You can find out by running `echo $0`.
+The default on most Linux distros is bash,
+in which case you need to edit `$HOME/.bashrc`.
+If you don't
 set the environment variables in your shell start-up file, you will
-need to re-define them each time you open a new shell.)
+need to re-define them each time you open a new shell.
 
-The exact paths will vary depending on where you installed MESA and
-which operating system that you are using.  After you add these
+The exact paths depend on where you installed MESA and
+which operating system you are using.  After you add these
 commands to your shell startup file, don't forget to open a new shell
-(or source the startup file in an existing one).
+(or `source` the startup file in an existing one).
 
 [startup]:https://kb.iu.edu/d/abdy
 [whichshell]:http://askubuntu.com/questions/590899/how-to-check-which-shell-am-i-using
@@ -168,7 +167,7 @@ example configurations depending on your shell, your operating system,
 and your installation method.
 
 Here is an example from a machine that uses bash as its shell (and
-hence uses export to set variables):
+hence uses `export` to set variables):
 
 {% highlight bash %}
 # set MESA_DIR to be the directory to which you downloaded MESA
@@ -182,23 +181,11 @@ export MESASDK_ROOT=/Applications/mesasdk
 source $MESASDK_ROOT/bin/mesasdk_init.sh
 {% endhighlight %}
 
-Here is an example from a machine that uses csh as its shell (and
-hence uses setenv to set variables):
-
-{% highlight csh %}
-# set MESA_DIR to be the directory to which you downloaded MESA
-setenv MESA_DIR /home/jschwab/Software/mesa
-
-# set OMP_NUM_THREADS to be the number of cores on your machine
-setenv OMP_NUM_THREADS 4
-
-# you should have done this when you set up the MESA SDK
-setenv MESASDK_ROOT /opt/mesasdk
-source $MESASDK_ROOT/bin/mesasdk_init.csh
-{% endhighlight %}
+If your machine uses csh as it's shell, replace `export` with `setenv`.
 
 One caveat is that if you put the MESA SDK in your shell profile,
-you'll always be using the MESA SDK supplied version of gcc which may be a compatibility issue if
+you'll always be using the MESA SDK supplied version of GCC,
+which may be a compatibility issue if
 you work with other other codes.  Alternative (unsupported)
 initialization scripts are available [here][mesa-init].
 
@@ -213,8 +200,8 @@ so do something else for a bit or get up and get a cup of coffee.
     ./install
 
 Note that there is no reason to use `sudo`.  The MESA install does not
-require root privileges.  Once it is done, you should receive the
-message
+require root privileges.  Once MESA has finished installing,
+you should receive the message
 
     ************************************************
     ************************************************
@@ -259,8 +246,8 @@ and if you're using the MESA SDK, execute the command
 {% highlight bash %}
 echo $MESASDK_ROOT
 {% endhighlight %}
-Confirm that these showed the directories where you have installed
-MESA and the MESA SDK.  If they did not, please re-read the
+Confirm that these show the directories where you have installed
+MESA and the MESA SDK.  If not, please re-read the
 instructions on how to [set your environment variables][env].
 
 [env]:prereqs.html#env
@@ -283,21 +270,20 @@ installation, you should also consult the [MESA SDK FAQ][sdkfaq].
 
 [sdkfaq]:http://www.astro.wisc.edu/~townsend/static.php?ref=mesasdk#Frequently_Asked_Questions_.01FAQ.01
 
-
 ## Search the mesa-users mailing list archive
 
 Search the [mailing list archives][mla] to see if someone has had a similar
-problem in the past.
+problem before.
 
 [mla]:https://lists.mesastar.org/pipermail/mesa-users/
-
 
 ## Post a question to mesa-users
 
 If the previous steps have not solved your problem, send an email
-message to mesa-users@lists.mesastar.org describing the problem.
+to mesa-users@lists.mesastar.org describing the problem.
 
-Please provide the following information:
+Please provide the following information in your message
+(don't attach screenshots):
 
 + What version of MESA are you trying to build?
 
@@ -315,19 +301,18 @@ echo $PATH
 echo $MESA_DIR
 ```
 
-
-+ What is the error message you recieved?  In addition, please attach
++ What error message did you recieve?  In addition, please attach
 the full `$MESA_DIR/build.log` file.
 
 If the error message you received was `./build_and_test FAILED` also
 attach the file `$MESA_DIR/MODULE/test/tmp.txt`, where `MODULE` is
 replaced with the name of the module that failed.  The name of the
 module that failed should be printed on the line before the
-./build_and_test message was printed.
+`./build_and_test` message was printed.
 
-If the file tmp.txt file does not exist in the folder then run the tester program
+If the file `tmp.txt` does not exist in the folder then run the `tester` program
 
     ./tester 2>&1 | tee tester.log
 
-and also attach tester.log file to your mesa-users message. If the
-tester program does not exist, state that in your message.
+and also attach `tester.log` file to your mesa-users message. If the
+tester program does not exist, say so in your message.
