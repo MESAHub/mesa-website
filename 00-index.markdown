@@ -82,7 +82,7 @@ on the MESA instrument papers
 *Current developers:*
 <ul>
   <li><a href="https://warrickball.github.io/">Warrick Ball</a></li>
-  <li>Evan Bauer</li>
+  <li><a href="https://evbauer.github.io/">Evan Bauer</a></li>
   <li><a href="http://www.kitp.ucsb.edu/bildsten/">Lars Bildsten</a></li>
   <li><a href="http://www.matteocantiello.com/">Matteo Cantiello</a></li>
   <li>Aaron Dotter</li>
