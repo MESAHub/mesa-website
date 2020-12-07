@@ -7,6 +7,3 @@ mesapath: $MESA\_DIR/star/defaults/star\_job.defaults
 ---
 
 {% include docheader.markdown %}
-
-{% include_relative docs/r{{site.version}}/star_job.markdown %}
-

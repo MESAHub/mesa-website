@@ -7,5 +7,3 @@ mesapath: $MESA\_DIR/star/defaults/controls.defaults
 ---
 
 {% include docheader.markdown %}
-
-{% include_relative docs/r{{site.version}}/controls.markdown %}
