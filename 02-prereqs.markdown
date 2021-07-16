@@ -128,15 +128,22 @@ If you plan to do so, please read [this FAQ entry][oldversion].
 [oldversion]:faq.html#old-version
 
 If you'd prefer, you can instead checkout a copy of MESA from its
-subversion repository, using the command:
+git repository, using the command:
 
-    svn co -r {{site.version}} https://subversion.assembla.com/svn/mesa^mesa/trunk mesa
+    git clone https://github.com/MESAHub/mesa
+    git checkout r{{site.version}} 
 
-Note that there might be newer versions in the svn
+Note that there might be newer versions out there in the git
 repository, but they are probably untested, unstable, and generally
 not at all what you want, so please stick to the officially released
-ones.  To repeat: always use "-r" with the version
-number of an [official MESA release][versions].
+ones.  To repeat: always check out a tag that starts with a r and then
+follows an [official MESA release][versions]. The repository is large
+so if you need to have multiple copies of the repository please clone
+from your local copy instead of repeatdly cloning from github.
+
+The old SVN repository can be found at [zenodo]:https://zenodo.org/record/4745225
+this is only needed if you need a unreleases version of MESA before r15140,
+all development after r15140 can be found on github.
 
 [versions]:faq.html#releases
 
