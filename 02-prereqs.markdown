@@ -139,10 +139,11 @@ not at all what you want, so please stick to the officially released
 ones.  To repeat: always check out a tag that starts with a r and then
 follows an [official MESA release][versions]. The repository is large
 so if you need to have multiple copies of the repository please clone
-from your local copy instead of repeatdly cloning from github.
+from your local copy instead of repeatedly cloning from github.
 
-The old SVN repository can be found at [zenodo]:https://zenodo.org/record/4745225
-this is only needed if you need a unreleases version of MESA before r15140,
+The old SVN repository can be found at: 
+[zenodo]:https://zenodo.org/record/4745225
+this is only needed if you need a unreleased version of MESA before r15140,
 all development after r15140 can be found on github.
 
 [versions]:faq.html#releases
