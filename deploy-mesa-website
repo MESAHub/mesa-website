@@ -1,0 +1,51 @@
+#!/bin/bash -x
+
+build_site() {
+
+    # clone and build
+    git clone --branch $1 ${GIT_REPO} ${TMP_GIT_CLONE}
+    # ruby ${TMP_GIT_CLONE}/make_docs.rb
+    jekyll build --source ${TMP_GIT_CLONE} --destination ${TMP_WWW}
+
+}
+
+export LANG=en_US.UTF-8
+
+HOME=/home/jschwab
+GIT_REPO=$HOME/git/mesa-website.git
+
+TMP_GIT_CLONE=/tmp/mesa-website
+TMP_WWW=/tmp/mesa-htdocs/
+
+BRANCH="$1"
+
+# pick which branches are ok and set their destination directories
+case "$BRANCH" in
+    maint)
+        PUBLIC_WWW=jschwab@web.sourceforge.net:/home/project-web/mesa/htdocs/
+        BACKUP_WWW=/home/jschwab/git/docs.mesastar.org/
+        ;;
+    master)
+        PUBLIC_WWW=/home/jschwab/git/mesa-website/
+        ;;
+    *)
+        exit
+        ;;
+esac
+# update bare repo
+git -C ${GIT_REPO} fetch -p origin
+
+# go ahead and build the site
+build_site ${BRANCH}
+
+# copy into production
+rsync -avz ${TMP_WWW} ${PUBLIC_WWW}
+
+# copy into backup production
+if [ -n "${BACKUP_WWW}" ]; then
+    rsync -avz ${TMP_WWW} ${BACKUP_WWW}
+fi
+
+# clean up after ourselves
+rm -rf ${TMP_GIT_CLONE}
+rm -rf ${TMP_WWW}

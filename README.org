@@ -3,15 +3,15 @@ This is the source code of the website for the MESA stellar evolution
 code.
 
 You can [[http://mesa.sourceforge.net][view the site here]].
+
+NOTE: Much of the content on this website is being migrated into the [[https://docs.mesastar.org/][MESA documentation website]], which is generated from the [[https://github.com/MESAHub/mesa][MESA GitHub repository]].  Most non-news updates should happen there.
+
 ** Contributing
 Did you find an error?  Do you see something that can be improved?  Do
 you have other materials you've written yourself that you think could
-be incorporated? If so please either:
-*** Email Josiah Schwab
-If you subscribe to the mesa-users mailing list, you should have no
-trouble finding Josiah's email address.
-*** Contribute via GitHub
-Clone this repo and send me a pull request.
+be incorporated? If so, you can clone this repo and send a pull request.
+
+NOTE: Given the switch to the Sphinx documentation, contributions there are preferred.
 ** Branching and Merging
 There are two branches.
 *** maint
@@ -97,10 +97,9 @@ Visit 0.0.0.0:4000 in your web browser to see the site.  As you edit
 the files, the site will be regenerated to reflect the changes you've
 made.  Read the jekyll documentation to learn more.
 
-Once you've finished making your changes, commit them and then send me
-a pull request or email me a patch.
+Once you've finished making your changes, commit them.
 ** Publishing
-The site is auto-deployed to sourceforge after pushes to the maint branch.
+Previously, this site was auto-deployed to sourceforge after pushes to the maint branch.  This process was triggered via git webhook and ran on a server controlled by Josiah.  Now, this publication process needs to be triggered manually.  The included file deploy-mesa-website (which was the script that Josiah's server would run post-push) should provide a useful guide to the necessary steps.  Essentially, one simply runs Jekyll locally to generate the static site and then copies the generated files to sourceforce using rsync.
 ** Doing a MESA release
 The following things need to be done when a new MESA release occurs.
 *** Edit _config.yml
