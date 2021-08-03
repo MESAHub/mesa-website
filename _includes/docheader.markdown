@@ -2,7 +2,7 @@ The web documentation corresponding to MESA release [15140][release] has moved t
 
 [release]:/release/2020/12/07/r15140.html
 
-[dms]:https://docs.mesastar.org/en/latest/reference.html
+[dms]:https://docs.mesastar.org/en/r15140/reference.html
 
 The defaults files documentation for previous versions remains
 available on this site in the [documentation archive][da].
